@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id-ID" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>ReddOneDigital-Checkin</title>
+    <%= stylesheet_link_tag    'nimiqQR-css/fonts-qr' %>
+    <%= stylesheet_link_tag    'nimiqQR-css/style_debug' %>
+    <style>
+        hr.guest-hr {
+            position: absolute;
+            border: none;
+            background: black;
+            background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%);
+            bottom: 0;
+            left: 5px;
+            right: 0;
+            height: 1.5px;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            /* display: none; <- Crashes Chrome on hover */
+            -webkit-appearance: none;
+            margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+        }
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="container-padding">
+            <a href="<%= scanners_path %>">
+                <%= image_tag 'reddone-logo-small', class:'navbar-logo' %>
+            </a>
+            <div class="nav-right">
+                <button id="btn-flipCam" onclick="flipCam()">
+                        <%= image_tag 'scanner/flip-camera', class:'navbar-flipCam'%>
+                </button>
+                <a href="#" onclick="searchPerson()">
+                    <%= image_tag 'scanner/search-white', class:'navbar-search'%>
+                </a>
+                <button id="options" onclick="options()">
+                    <%= image_tag 'scanner/settings-white', class:'navbar-settings'%>
+                </button>
+            </div>
+        </header>
+        <main id="qr-scanner-box">
+            <video id="qr-video" style=""></video>
+            <%# <video id="qr-video"></video> %>
+            <div id="show-scan-region"></div>
+            <lottie-player id="frameScan" src="../assets/lottie/ScannerRed.json" autoplay loop background="transparent"
+            speed="1.5" style=""></lottie-player>
+        </main>
+        <footer>
+            <div class="guest-footer">
+                <div class="guest-information container-padding-2">
+                    <p id="guest-name"></p>
+                    <p id="guest-category"></p>
+                    <p id="guest-total"></p>
+                    <div id="guest-information-masking"></div>
+                </div>
+                <div class="guest-status">
+                    <lottie-player id="markStatus" src="../assets/lottie/Mark_Initial.json" autoplay loop
+                    background="transparent" speed="0.5"></lottie-player>
+                    <p id="msgStatus">Silahkan Scan</p>
+                </div>
+            </div>
+            <p class="page-status">DigitalGuestBook &copy;2015, ReddOneDigital - Halaman Check Out</p>
+        </footer>
+    </div>
+
+    <!--  checkin popup -->
+    <div id="result-popup">
+        <div class="inner-modal" id="result-popup-inner">
+            <h1 id="messageStatusModal">SELAMAT DATANG</h1>
+            <lottie-player id="markStatusModal" src="../assets/lottie/Mark_Check.json" autoplay background="transparent" speed="1"></lottie-player>
+        </div>
+    </div>
+
+    <!-- <%# search popup %> -->
+    <div id="search-popup">
+        <div class="search-top">
+            <input id="myInput" class="border-outline-n" type="text" autocomplete="off" placeholder="Tuliskan Nama Atau Kode..">
+            <button class="border-outline-n"
+                onclick="$('#search-popup').fadeOut();$('#myInput').val('');">X</button>
+        </div>
+            <%= image_tag 'scanner/loader-loading.gif', id: "content-loader" %>
+        <div id="search-table" style="position:relative">
+        </div>
+    </div>
+
+    <%# search popup confirm %>
+    <div id="search-popup-confirm">
+        <div class="confirm-outter" onclick="$('#search-popup-confirm').fadeOut();"></div>
+        <div class="confirm-inner">
+            <div class="confirm-title">
+                <p>Lakukan Check Out Untuk</p>
+            </div>
+            <div class="confirm-content">
+                <h1 id="confirm-name"></h1>
+                <h3 id="confirm-id"></h3>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-n" onclick="$('#search-popup-confirm').fadeOut();">TIDAK</button>
+                <button class="confirm-y" onclick="userAns('ansTrue')">YA</button>
+            </div>
+        </div>
+    </div>
+
+    <%# options nav %>
+    <div id="options-modal">
+        <div id="options-modal-inner">
+            <div class="opt disable-cam">
+                <h6>Kamera</h6>
+                <div class="slider">
+                    <input type="checkbox" name="disableCam" class="slider-checkbox" id="disableCam" value="on" checked>
+                    <label class="slider-label" for="disableCam">
+                        <span class="slider-inner slider-inner-disableCam"></span>
+                        <span class="slider-circle"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="opt guest-debugScanner">
+                <h6>Debug Scanner</h6>
+                <div class="slider">
+                    <input type="checkbox" name="debugScanner" class="slider-checkbox" id="debugScanner">
+                    <label class="slider-label" for="debugScanner">
+                        <span class="slider-inner slider-inner-debugScanner"></span>
+                        <span class="slider-circle"></span>
+                    </label>
+                </div>
+            </div>
+            <button id="options-modal-close">X</button>
+        </div>
+    </div>
+
+    <%= javascript_include_tag 'nimiqQR-js/assets/jquery-3.5.1.min' %>
+    <%= javascript_include_tag 'nimiqQR-js/assets/lottie-player', :defer => "defer" %>
+    <%= javascript_include_tag 'nimiqQR-js/qr-scanner.umd.min' %>
+    <%= javascript_include_tag 'nimiqQR-js/html5-qrcode.min' %>
+    <%= javascript_include_tag "nimiqQR-js/own/scanner", :defer => "defer" %>
+
+    <script>
+        // qrscanner
+        QrScanner.WORKER_PATH = "<%= asset_path j 'nimiqQR-js/qr-scanner-worker.min.js' %>";
+
+        // define this page for API
+        const thisPage = 'update_souvenir_mobile';
+        const video = document.getElementById('qr-video');
+        const camHasCamera = document.getElementById('cam-has-camera');
+        const camHasFlash = document.getElementById('cam-has-flash');
+        const flashToggle = document.getElementById('flash-toggle');
+        const flashState = document.getElementById('flash-state');
+        const camQrResult = document.getElementById('cam-qr-result');
+        const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+        const fileSelector = document.getElementById('file-selector');
+        const fileQrResult = document.getElementById('file-qr-result');
+        // const box = document.getElementById('qr-scanner-box');
+        const lottieStatus = document.getElementById('markStatus');
+        const lottieStatusModal = document.getElementById('markStatusModal');
+        const lottieCheck = "<%= asset_path j 'lottie/Mark_Check.json' %>";
+        const lottieCross = "<%= asset_path j 'lottie/Mark_Cross.json' %>";
+        const statusCheck = "<%= asset_path j 'scanner/Status_Check.png' %>";
+        const statusCross = "<%= asset_path j 'scanner/Status_Cross.png' %>";
+
+            let state = 1;
+            function sentGuest(guestcode) {
+                if (guestcode && state) {
+                    state = 0;
+                    $.ajax({
+                        type: 'GET',
+                        url: '/<%= @active_event_type.downcase%>/'+thisPage,
+                        data: {
+                            souvenir: guestcode
+                        },
+                        success: function (result) {
+                            // audio.play();
+                            let data = result;
+                            if (data['guest_id']) {
+                                $('#guest-name').html(data['nama']);
+                                $('#guest-category').html(data['guest_id']);
+                            } else {
+                                $('#guest-name').html('ID Tidak Terdaftar');
+                                $('#guest-category').html('Silahkan Hubungi Teknisi / Helpdesk');
+                            }
+                            // add popup
+                            if (data['hasil']) {
+                                sThankYou.play();
+                                // console.log('masuk');
+                                lottieStatus.load(lottieCheck);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCheck);
+                            } else {
+                                if(data['guest_id']){
+                                    sAlready.play();
+                                }else{
+                                    sNotFound.play();
+                                }
+                                // console.log('already');
+                                lottieStatus.load(lottieCross);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCross);
+                            }
+                            if(data['jumlah_undangan'] === null || data['jumlah_undangan'] === 0 || data['jumlah_undangan'] === undefined){
+                                $('#guest-total').html('');
+                            }else{
+                                $('#guest-total').html('Jumlah Orang = '+data['jumlah_undangan']);
+                            }
+                            setTimeout(() => {
+                                $("#result-popup").fadeOut();
+                                setTimeout(() => {
+                                    state = 1;
+                                }, 150);
+                            }, 2500);
+                        },
+                        fail: function (result) {
+                            // console.log('failed');
+                        },
+                        error: function (result) {
+                            // console.log(result);
+                        }
+                    });
+                }
+            };
+    </script>
+</body>
+</html>

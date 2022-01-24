@@ -1,0 +1,11 @@
+<%= render 'hadir-svg' %>
+<div class="result-text">
+  <% if @find_guest[0].guest_id.present? %><p><span class="name"><%= @find_guest[0].guest_id %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="name"><%= @find_guest[0].nama_peserta %></span></p><% end %>
+  <% if @find_guest[0].nip.present? %><p><span class="name"><%= @find_guest[0].nip %></span></p><% end %>
+  <% if @find_guest[0].address.present? %><p><span class="address"><%= @find_guest[0].address %></span></p><% end %>
+  <% if @find_guest[0].instansi.present? %><p><span class="name"><%= @find_guest[0].instansi %></span></p><% end %>
+  <% if @find_guest[0].category.present? %><p><span class="name"><%= @find_guest[0].category %></span></p><% end %>
+  <% if @find_guest[0].kelas.present? %><p><span class="name"><%= @find_guest[0].kelas %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="address">Waktu Keluar : <%= Time.now.strftime("%H:%M:%S")  %></span></p><% end %>
+</div>

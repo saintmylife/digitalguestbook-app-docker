@@ -1,0 +1,18 @@
+<div style="padding-top:10px;" >
+<!-- foto ukuran 4x6 -->
+ <div class="active-wedding" style="padding-top: 10px !important;">
+<!-- <h4><span class="bg-black">THE WEDDING OF</span></h4> -->
+         <span class="active-wedding-name" style=>Welcome To
+           </span>
+     </div>
+<br>
+<%= render 'hadir-svg' %>
+
+<div class="result-text">
+  <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="name"><%= @find_guest[0].nama %></span></p><% end %>
+  <% if @find_guest[0].instansi != nil %><p><span class="name"><%= @find_guest[0].instansi %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="address" style="font-size:22px;">Waktu Terakhir Check In :<% end %></span><br>
+
+</div>
+</div>

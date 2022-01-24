@@ -1,0 +1,21 @@
+<section class="scanning">
+  <div class="input-guest col-sm-12">
+    <%= form_tag update_souvenir_movings_path, method: "GET", id: "form_souvenir",remote: true do %>
+      <%= text_field_tag "souvenir",nil, class:"form-control", autofocus:"true" %>
+      <input id="eventid" name="eventid" type="hidden" value="<%= @eventid %>">
+      <input id="classname" name="classname" type="hidden" value="Class10">
+    <% end %>
+  </div>
+
+  <h4><span class="bg-black">CHECK OUT CLASS X</span></h4>
+
+  <div id="notice"></div>
+</section>
+
+<script>
+$(document).ready(function(){
+  $("#form_souvenir").bind("ajax:complete", function(event,xhr,status){
+    $('#souvenir').val('');
+  });
+});
+</script>

@@ -1,0 +1,24 @@
+<!-- foto ukuran 4x6 -->
+<div >
+
+ <div class="active-wedding" style="padding-top: 10px !important;">
+<!-- <h4><span class="bg-black">THE WEDDING OF</span></h4> -->
+         <span class="active-wedding-name">Welcome To
+           </span>
+     </div>
+<br>
+
+<div>
+    <% if File.file?("app/assets/images/foto/#{@find_guest[0].guest_id}.jpeg") %>
+    <%= image_tag("foto/#{@find_guest[0].guest_id}.jpg", style:'height:354.5px;') %>
+    <% else %>
+    <p style="height:150px;"><%= render 'hadir-svg' %></p>
+    <% end %>
+</div>
+<div class="result-text" style="line-height: 1.2;padding-top:10px;">
+  <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+  <% if @find_guest[0].nama != nil %><p><span class="name"><%= @find_guest[0].nama %></span></p><% end %>
+  <% if @find_guest[0].instansi != nil %><p><span class="name"><%= @find_guest[0].instansi %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="address" style="font-size:22px;">Waktu Check In : <%= Time.now.strftime("%H:%M:%S") %></span></p><% end %>
+</div>
+</div>

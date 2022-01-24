@@ -1,0 +1,53 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Report Gathering
+    </h3>
+  </div>
+  <div class="panel-body">
+    <%= form_tag  report_gatherings_path, method: "GET", class: 'form-horizontal' do %>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Pilih Event</label>
+        <div class="col-sm-10">
+          <select name="event_id" class="form-control">
+            <% @events.each do |event| %>
+              <option value="<%= event.id %>"><%= event.name %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <label class="col-sm-2 control-label">Kategori</label>
+        <div class="col-sm-10" id="jenis_kategori">
+          <select class="form-control select2" name="jenis_kategori">
+            <option value="all">Semua</option>
+            <%# @jenis_kategori.each do |jk| %>
+              <option value="<%#= jk %>"><%#= jk %></option>
+            <%# end %>
+          </select>
+        </div>
+      </div> -->
+      <!--
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Kategori</label>
+        <div class="col-sm-10" id="jenis_kategori">
+          <select class="form-control select2" name="presence">
+            <option value="all">Semua</option>
+            <option value="hadir">Hadir</option>
+            <option value="tidak_hadir">Tidak Hadir</option>
+          </select>
+        </div>
+      </div>
+      -->
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+          <%= submit_tag 'Submit', class: 'btn btn-success' %>
+          <% if params[:event_id].present? %>
+            <%= link_to 'Download as .xlsx', report_gatherings_path(format: :xlsx, event_id: params[:event_id], jenis_kategori: params[:jenis_kategori], class: 'btn btn-default') %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

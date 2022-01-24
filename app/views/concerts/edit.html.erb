@@ -1,0 +1,89 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Edit Pengunjung
+        </h3>
+    </div>
+  <div class="panel-body">
+    <%= simple_form_for @concert do |f| %>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Kategori</label>
+        <div class="col-sm-10">
+          <%= f.input :kategori, collection: ['KWITANSI','TIKET'], label:false, include_blank: false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }   %>
+        </div>
+      </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Guest ID</label>
+        <div class="col-sm-10">
+          <%= f.input :guest_id, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Nama</label>
+          <div class="col-sm-10">
+            <%= f.input :nama, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Alamat</label>
+            <div class="col-sm-10">
+              <%= f.input :alamat, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">No KTP</label>
+              <div class="col-sm-10">
+                <%= f.input :no_ktp, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+              </div>
+            </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">No Telepon</label>
+              <div class="col-sm-10">
+                <%= f.input :no_ponsel, label:false, as: :string, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">E-Mail</label>
+                <div class="col-sm-10">
+                  <%= f.input :email, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Jenis Tiket</label>
+                  <div class="col-sm-10">
+                    <%= f.input :jenis_tiket, label:false, placeholder: "Presale, Early Bird, VIP ..", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                  </div>
+                </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Class User</label>
+                <div class="col-sm-10">
+                  <%= f.input :class_user, label:false, placeholder: "Regular, VIP, VVIP ..", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                </div>
+              </div>
+
+                <div class="form-group" id="jumlah_tiket">
+                  <label class="col-sm-2 control-label">Jumlah Tiket</label>
+                    <div class="col-sm-10">
+                      <%= f.input :jumlah_tiket, label:false, placeholder: "Isi jika Kategorinya adalah TIKET", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                    </div>
+                  </div>
+
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+              <%= link_to "Back", master_concerts_path, class:"btn btn-danger"%>
+              <%= f.button :submit, "Ganti Data", class:"btn btn-success" %>
+            </div>
+        </div>
+          <% end %>
+</div>

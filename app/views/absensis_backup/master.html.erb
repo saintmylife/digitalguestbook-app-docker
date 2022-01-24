@@ -1,0 +1,55 @@
+<div class="panel panel-default" id="master-data-concert">
+  <div class="panel-heading">
+    <h3 class="panel-title">Master Data</h3><br>
+  </div>
+
+  <div class="panel-body" >
+    <h4><div class="alert alert-info">Data Absensi yang sedang aktif : <b><u><%= active_wedding_name %></u></b></div></h4>
+    <hr>
+    <div class="row">
+      <%= form_tag master_absensis_path, :method => 'GET', remote: true do %>
+      <div class="col-sm-4">
+      <%= text_field_tag "search",params[:search], class: "form-control form-control-sm", placeholder: "Search" %>
+      <input id="name" name="name" type="hidden" value="absensis">
+      <div class="checkbox col-sm">
+        <label>
+          Pencarian :
+          <%= radio_button_tag 'checkbox',0,true%> Nama</label>
+        <label>
+          <%= radio_button_tag 'checkbox',1,false %> Guest ID</label>
+      </div>
+      </div>
+      <%= submit_tag "Cari",class:'btn btn-success col-sm-1' %>
+      <% end %>
+    </div>
+
+
+    <table class="table table-hovered table-bordered margin10">
+      <thead>
+        <tr>
+          <th style="text-align:center"><%= sortable "guest_id", "ID" %></th>
+          <th style="text-align:center"><%= sortable "nama", "Nama"%></th>
+          <th style="text-align:center"><%= sortable "alamat", "Alamat" %></th>
+          <th style="text-align:center"><%= sortable "kategori", "Kategori" %></th>
+          <th style="text-align:center"><%= sortable "nama_meja", "Nama Meja" %></th>
+          <th style="text-align:center"><%= sortable "presence", "Status Kehadiran" %></th>
+          <th style="text-align:center"><%= sortable "time_of_entry", "Waktu Kehadiran" %></th>
+          <th style="text-align:center"><%= sortable "souvenir", "Status Souvenir" %></th>
+          <th style="text-align:center"><%= sortable "time_of_get_souvenir", "Waktu Tukar Souvenir"%></th>
+          <th style="text-align:center">Print QR</th>
+        </tr>
+      </thead>
+      <tbody id='list_wedding'>
+        <%= render 'list_absensi' %>
+      </tbody>
+    </table>
+    <div class="pull-right">
+          <%= paginate @absensis %>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+</script>

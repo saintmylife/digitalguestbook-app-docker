@@ -1,0 +1,12 @@
+<% if @find_guest.first.event_id == 1 %>
+	<%= @find_guest.first.no_undian %>
+<% else %>
+	<%= @find_guest.first.nama_meja %>
+<% end %>
+<script>
+  function ready() {
+    window.print();
+  }
+
+  document.addEventListener("DOMContentLoaded", ready)
+</script>

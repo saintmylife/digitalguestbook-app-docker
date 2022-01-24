@@ -1,0 +1,78 @@
+<%= notice %>
+<div class="panel panel-default">
+  
+  <div class="panel-heading">
+    <h3 class="panel-title">Guest Presence</h3><br>
+    Masukan Guest Code untuk absensi di event.
+  </div>
+
+
+  <div class="panel-body">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= text_field_tag "guest_code",nil, class:"form-control form-control-sm", placeholder:"Input your guest code" %>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="form-group">
+        <a id="submit_presence" class="btn btn-primary waves-effect" data-remote="true">Sumbit</a>
+        <%= link_to 'Back', guests_path, class:"btn btn-danger btn--icon-text waves-effect" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if @qrcode.present? %>
+<div class="panel panel-default">
+  <div class="panel-body">
+   
+    <table class="qr-code">
+      <% @qrcode.modules.each_index do |x| %>
+        <tr>
+          <% @qrcode.modules.each_index do |y| %>
+            <% if @qrcode.dark?(x,y) %>
+              <td class="black"/>
+            <% else %>
+              <td class="white"/>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>  
+  </div>
+</div>
+<% end %>  
+  
+
+<script>
+  $("#submit_presence").click(function(){
+    if($("#guest_code").val() == "" || $("#guest_code").val() == undefined ){
+      alert("Input cannot be null");
+    }else{
+      $(this).attr('href','/guests/print_no_undian?guest_code='+$("#guest_code").val());
+      window.open($(this).attr('href'),'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=350,height=250'); 
+    }
+  });
+</script>
+
+<style>
+  table.qr-code {
+    border-width: 0;
+    border-style: none;
+    border-color: #0000ff;
+    border-collapse: collapse;
+  }
+  table.qr-code td {
+    border-width: 0;
+    border-style: none;
+    border-color: #0000ff;
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+    width: 6px;
+    height: 6px;
+  }
+  table.qr-code td.black { background-color: #000; }
+  table.qr-code td.white { background-color: #fff; }
+</style>

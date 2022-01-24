@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en" moznomarginboxes mozdisallowselectionprint>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    @media print {
+      @page { margin: 0; }
+      body { margin: 0.5cm; }
+    }
+  </style>
+</head>
+
+<body>
+<% 
+  guest = Guest.where(guest_id: params[:guest_id]).first 
+  setting = Setting.first
+%>
+
+<% if setting.no_undian == false && setting.nama_angpao == false && setting.nama_meja == false && setting.jumlah_souvenir == true && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 3cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">SOUVENIR</td>
+      </tr>
+      <tr>
+        <td><%= guest.jumlah_souvenir %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == false && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 2cm;">
+    <tbody>
+      <tr style="height: 0.1cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+         <td><%= guest.nama %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == false && setting.nama_angpao == false && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 2cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">NAMA MEJA</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama_meja %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == true && setting.nama_angpao == false && setting.nama_meja == false && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 5cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+
+<% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 6cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+          <td style="border-bottom:1px black solid; margin: 0px;">
+          <%= guest.custom_one_text %></td>
+      </tr>
+      <tr style="height:0.1cm;">
+          <td>
+          Zona: <%= guest.nama_meja %></br>
+          Valid For: <%= guest.jumlah_undangan %>
+        </td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+
+<% if setting.no_undian == true && setting.nama_angpao == true && setting.nama_meja == false && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 9cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>      
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == true && setting.nama_angpao == false && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <table style="width: 100%; text-align: center; height: 8cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">NAMA MEJA</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama_meja %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == true && setting.nama_undangan == false   %>
+  <table style="width: 100%; text-align: center; height: 9.5cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">NAMA MEJA</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama_meja %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">SOUVENIR</td>
+      </tr>
+      <tr>
+        <td><%= guest.jumlah_souvenir %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama %></td>
+      </tr>            
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == true && setting.nama_angpao == false && setting.nama_meja == true && setting.jumlah_souvenir == true && setting.nama_undangan == false   %>
+  <table style="width: 100%; text-align: center; height: 11.5cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">NAMA MEJA</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama_meja %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">SOUVENIR</td>
+      </tr>
+      <tr>
+        <td><%= guest.jumlah_souvenir %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>            
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == true && setting.nama_angpao == true && setting.nama_meja == false && setting.jumlah_souvenir == true && setting.nama_undangan == false   %>
+  <table style="width: 100%; text-align: center; height: 11.5cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">SOUVENIR</td>
+      </tr>
+      <tr>
+        <td><%= guest.jumlah_souvenir %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>            
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == true && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false   %>
+  <table style="width: 100%; text-align: center; height: 10cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;"><%= guest.custom_one_text %></td>
+      </tr>
+      <tr style="height:0.1cm;">
+        <td><%= guest.nama_meja %></br>Valid For: <%= guest.jumlah_undangan %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>            
+    </tbody>
+  </table>
+<% end %>
+
+<% if setting.no_undian == true && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == true && setting.nama_undangan == true %>
+
+  <table style="width: 100%; text-align: center; height: 14cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">NAMA MEJA</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama_meja %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.no_undian %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">ANGPAO</td>
+      </tr>
+      <tr>
+        <td><%= guest.nama %></td>
+      </tr>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">SOUVENIR</td>
+      </tr>
+      <tr>
+        <td><%= guest.jumlah_souvenir %></td>
+      </tr>
+    </tbody>
+  </table>
+
+<% end %>
+
+
+
+
+
+
+
+
+
+<script>
+  setTimeout(function () { window.print(); }, 500);
+  window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
+</script>
+
+        
+</body>
+</html>
+
+
+
+

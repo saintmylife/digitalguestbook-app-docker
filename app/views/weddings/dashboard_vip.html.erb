@@ -1,0 +1,54 @@
+<div style="width:100%;height:100%;overflow:hidden">
+<div class="row">
+ <div class="col-md-12">
+  <h3 style="text-align:center;color:black;">VIP GUESTS LIST</h3>
+  <hr style="width:200px;color:black;">
+  <p style="color:black;font-weight:800;">Total VIP Checkin: <%= @total_guest_vip %></p>
+ </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md-12 col-sm-6">
+      <button class="btn btn-primary pull-right" id="reload">
+         <i class="fa fa-refresh"></i> Refresh
+      </button>
+  </div>
+</div>
+
+
+<div class="row" style="margin-top:10px;">
+  <div class="col-md-12 col-sm-12">
+     <div class="panel panel-default panel-table" style="overflow-y:unset">
+       <!-- Default panel contents
+       <div class="panel-heading"></div>
+       -->
+       <!-- Table -->
+       <table class="table table-bordered table-hover panel-dashboard" style="font-family:'Helvetica-Neue';background-color:rgb(233,233,233);table-layout:fixed;width:100%;">
+         <thead style="font-size:12px; text-align:center">
+           <tr style="background:grey;color:white;">
+             <td><b>Kategori</b></td>
+             <td><b>NAMA</b></td>
+             <td><b>WAKTU</b></td>
+           </tr>
+         </thead>
+         <tbody style="text-align:center;width:100%;font-weight:bold" id="vip-list">
+           <% @guest_vip.each do |guest_vip| %>
+             <tr>
+               <td id="kategori" style="word-wrap: break-word;"><b><%= guest_vip.kategori %></b></td>
+               <td id="nama" style="word-wrap: break-word;"><b><%= guest_vip.nama %></b></td>
+               <td id="waktu" style="vertical-align:middle;" ><b><%= guest_vip.waktu.in_time_zone.strftime("%H:%M:%S %Z") %></b></td>
+              
+             </tr>
+           <% end %>
+         </tbody>
+       </table>
+     </div>
+   </div>
+</div>
+<script>
+$("#reload").click(function(){
+    location.reload(true);
+});
+toastr['info']('Refresh data berhasil');
+
+</script>

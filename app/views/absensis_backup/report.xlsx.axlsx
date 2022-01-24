@@ -1,0 +1,76 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  wb.add_worksheet(name: "Semua") do |sheet|
+    sheet.add_row [
+      "ID",
+      "Nama",
+      "Alamat",
+      "Kota",
+      "Kategori",
+      "Jabatan",
+      "Nama Meja",
+      "Status",
+      "Check In & Terima Souvenir",
+      "Waktu Check In",
+      "Waktu Terima Souvenir",
+      if @setting.custom_one == true
+        @setting.custom_one_text
+      end,
+      if @setting.custom_two == true
+        @setting.custom_two_text
+      end,
+      if @setting.custom_three == true
+        @setting.custom_three_text
+      end,
+      if @setting.custom_four == true
+        @setting.custom_four_text
+      end,
+      if @setting.custom_five == true
+        @setting.custom_five_text
+      end,
+      ]
+    @guests.each do |guest|
+      if guest.presence == true
+        kehadiran = 'Check In'
+      else
+        kehadiran = 'Tidak Check In'
+      end
+      if guest.souvenir == true
+        souvenir = 'Terima Souvenir'
+      else
+        souvenir = 'Tidak Terima Souvenir'
+      end
+
+      sheet.add_row [
+                      guest.guest_id.to_i,
+                      guest.nama,
+                      guest.alamat,
+                      guest.kota,
+                      guest.kategori,
+                      guest.jabatan,
+                      guest.nama_meja,
+                      guest.status,
+                      kehadiran+' - '+souvenir,
+                      guest.time_of_entry.present? ? guest.time_of_entry.strftime("%H:%M:%S") : '-',
+                      guest.time_of_get_souvenir.present? ? guest.time_of_get_souvenir.strftime("%H:%M:%S") : '-',
+                      @setting.custom_one == true ? guest.custom_one_text : nil,
+                      @setting.custom_two == true ? guest.custom_two_text : nil,
+                      @setting.custom_three == true ? guest.custom_three_text : nil,
+                      @setting.custom_four == true ? guest.custom_four_text : nil,
+                      @setting.custom_five == true ? guest.custom_five_text : nil
+                    ],
+                    style: [
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil]
+    end
+  end
+end

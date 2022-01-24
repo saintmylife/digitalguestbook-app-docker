@@ -1,0 +1,8 @@
+<%= render 'hadir-svg' %>
+<div class="result-text">
+  <% if @find_guest[0].guest_id != nil %><p><span class="name"><%= @find_guest[0].guest_id %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="name"><%= @find_guest[0].nama %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].class_user %></span></p><% end %>
+    <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].jenis_tiket %></span></p><% end %>
+     <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= Time.now.strftime("%H:%M:%S") %></span></p><% end %>
+</div>

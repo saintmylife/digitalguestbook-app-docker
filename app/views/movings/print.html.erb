@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" moznomarginboxes mozdisallowselectionprint>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    @media print {
+      @page { margin: 0; }
+      body { margin: 0.5cm; }
+    }
+  </style>
+</head>
+<body>
+    <%
+      guest = Concert.where(guest_id: params[:guest_id]).first
+      setting = Setting.first
+    %>
+
+<% if setting.no_undian == true  %>
+  <table style="width: 100%; text-align: center; height: 3cm;">
+    <tbody>
+      <tr style="height: 0.5cm;">
+        <td style="border-bottom:1px black solid; margin: 0px;">DOORPRIZE</td>
+      </tr>
+      <tr>
+        <td><%= guest.guest_id[0,6] %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+
+
+<script>
+  setTimeout(function () { window.print(); }, 500);
+  window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
+</script>
+
+
+</body>
+</html>

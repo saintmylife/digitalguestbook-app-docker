@@ -1,0 +1,5 @@
+$("#total_guest").html("<%= @total_guest.present? ? @total_guest:"-" %>");
+$("#guest_sudah_hadir").html("<%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %>");
+$("#guest_belum_hadir").html("<%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %>");
+$("#jumlah_souvenir").html("<%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %>");
+toastr['info']('Refresh data berhasil');

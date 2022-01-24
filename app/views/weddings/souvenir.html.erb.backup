@@ -1,0 +1,23 @@
+<section class="scanning">
+  <div class="input-guest col-sm-12">
+    <%= form_tag update_souvenir_weddings_path, method: "GET", id: "form_souvenir",remote: true do %>
+      <%= text_field_tag "souvenir",nil, class:"form-control", autofocus:"true" %>
+    <% end %>
+  </div>
+
+  <div class="active-wedding">
+<%#    <h4><span class="bg-black">THE WEDDING OF</span></h4>%>
+    <h4><span class="bg-black">Pengambilan Souvenir</span></h4>
+    <p><h4><span class="active-wedding-name"><%= active_wedding_name %></span></h4></p>
+    <br/>
+  </div>
+  <div id="notice"></div>
+</section>
+
+<script>
+$(document).ready(function(){
+  $("#form_souvenir").bind("ajax:complete", function(event,xhr,status){
+    $('#souvenir').val('');
+  });
+});
+</script>

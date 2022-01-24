@@ -1,0 +1,204 @@
+<div class="row dashboard-header-surya">
+ <div class="col-md-12">
+  <h3 class="debug-surya">DASHBOARD
+  <%= link_to dashboard_absensis_path(notice: true), class: 'btn btn-primary pull-right' do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  <hr>
+  <span class="pull-right"><b>Total Peserta : <%= @total_guest.present? ? @total_guest:"-" %></b></span>
+  </h3>
+
+ </div>
+</div>
+
+
+
+<div class="flex-container-surya">
+
+    <% @jumlah_guest.each do |jumlah_guest| %>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS I</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= jumlah_guest.hadir.present? ? jumlah_guest.hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= jumlah_guest.hadir.present? ? jumlah_guest.hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS II</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS III</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS IV</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS V</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+<!-- ROW 2 -->
+<div class="flex-container-surya">
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS VI</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS VII</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS VIII</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS IX</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah">CLASS X</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+</div>

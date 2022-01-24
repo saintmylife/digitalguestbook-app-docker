@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  no_undian: false
+  nama_meja: false
+  nama_undangan: false
+
+two:
+  no_undian: false
+  nama_meja: false
+  nama_undangan: false

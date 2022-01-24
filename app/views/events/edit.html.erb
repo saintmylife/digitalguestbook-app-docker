@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Form Edit Event</h3><br>
+  </div>
+  <div class="panel-body">
+    <%#= render 'form', event: @event %>
+    <%= render 'form_edit', event: @event, status:@event.status, date:@event.date%>
+  </div>
+</div>

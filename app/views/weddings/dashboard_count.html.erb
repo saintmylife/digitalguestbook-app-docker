@@ -1,0 +1,143 @@
+<div class="row dashboard-header" style="width:100%;">
+  <div class="col-md-12">
+    <h3>DASHBOARD
+      <%= link_to dashboard_count_weddings_path, class: 'btn btn-primary pull-right',id:'btn-refresh',remote: true do %>
+      <i class="fa fa-refresh"></i> Refresh
+      <% end %>
+    </h3>
+    <hr />
+  </div>
+</div>
+<div class="row" style="padding:20px;">
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard biru">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-users fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL</small>
+          <p id="total_guest"><%= @total_guest.present? ? @total_guest:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard hijau">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-check-square fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>HADIR</small>
+          <div class="row">
+            <div class="col-md-3">
+              <p id="guest_sudah_hadir"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %>
+              </p>
+            </div>
+            <div class="col-md-2">
+              <p> / </p>
+            </div>
+            <div class="col-md-3">
+              <p id="guest_sudah_hadir_jumlah" style="color:red">
+                <%= @total_orang%>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard merah">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-times fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>BELUM CHECK IN</small>
+          <p id="guest_belum_hadir"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard kuning">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-american-sign-language-interpreting fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>SOUVENIR TERAMBIL</small>
+          <p id="jumlah_souvenir"><%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="display:flex;justify-content:center;padding:20px;">
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-check-square fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>Jumlah Undangan / Orang Masuk</small>
+          <div class="row">
+            <div class="col-md-3">
+              <%# <p id="undangan_masuk"><%= @undangan_masuk.nil? ? @undangan_masuk:"0" %>
+              <p id="undangan_masuk"><%= @undangan_masuk || "0" %>
+              <%# <p id="undangan_masuk"><%= @undangan_masuk.present? ? @undangan_masuk:"" %>
+              </p>
+            </div>
+            <div class="col-md-2">
+              <p> <%= @undangan_masuk.present? ? '/':'' %> </p>
+            </div>
+            <div class="col-md-3">
+              <p id="orang_masuk" style="color:red">
+                <%= @orang_masuk || "0" %>
+                <%# <%= @orang_masuk.nil? ? @orang_masuk:"0" %>
+                <%# <%= @orang_masuk.present? ? @orang_masuk:"" %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-check-square fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>Jumlah Undangan / Orang Keluar</small>
+          <div class="row">
+            <div class="col-md-3">
+              <%# <p id="undangan_keluar"><%= @total_undangan_keluar.present? ? @total_undangan_keluar:"-" %>
+              <p id="undangan_keluar"><%= @total_undangan_keluar || "-" %>
+              </p>
+            </div>
+            <div class="col-md-1">
+              <p> <%= @undangan_masuk.present? ? "/":""%> </p>
+            </div>
+            <div class="col-md-3 p-0">
+              <p id="orang_keluar" style="color:red">
+                <%= @total_orang_keluar || "-"%>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

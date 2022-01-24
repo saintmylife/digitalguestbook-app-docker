@@ -1,0 +1,106 @@
+<div class="row dashboard-header-surya">
+ <div class="col-md-12">
+  <h3 class="debug-surya">DASHBOARD
+  <%= link_to dashboard_movings_path(notice: true), class: 'btn btn-primary pull-right' do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  <hr>
+  <span class="pull-right"><b>Total Peserta : <%= @total_guest.present? ? @total_guest:"-" %></b></span>
+  </h3>
+
+ </div>
+</div>
+
+
+
+<div class="flex-container-surya">
+
+<% @cekkelas.each do |cekkelas|  %>
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+
+              <% case cekkelas
+              when "Class01" %>
+              <!-- CLASS 1 -->
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS I</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_1 - @jumlah_guest_keluar_1 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_1 %></span>
+              </p>
+              <% when "Class02" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS II</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_2 - @jumlah_guest_keluar_2 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_2 %></span>
+              </p>
+              <% when "Class03" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS III</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_3 - @jumlah_guest_keluar_3 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_3 %></span>
+              </p>
+              <% when "Class04" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS IV</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_4 - @jumlah_guest_keluar_4 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_4 %></span>
+              </p>
+              <% when "Class05" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS V</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_5 - @jumlah_guest_keluar_5 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_5 %></span>
+              </p>
+              <% when "Class06" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS VI</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_6 - @jumlah_guest_keluar_6 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_6 %></span>
+              </p>
+              <% when "Class07" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS VII</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_7 - @jumlah_guest_keluar_7 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_7 %></span>
+              </p>
+              <% when "Class08" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS VIII</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_8 - @jumlah_guest_keluar_8 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_8 %></span>
+              </p>
+              <% when "Class09" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS IX</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_9 - @jumlah_guest_keluar_9 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_9 %></span>
+              </p>
+              <% when "Class10" %>
+              <span class="judul-tengah" style="text-transform: uppercase;">CLASS X</span>
+              <p>
+                <span class="text-ijo" id="souvenir_sudah"><%= @jumlah_guest_masuk_10 - @jumlah_guest_keluar_10 %></span>
+                <span> / </span>
+                <span class="text-merah"id="souvenir_belum"> <%= @jumlah_guest_keluar_10 %></span>
+              </p>
+              <% end %>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>

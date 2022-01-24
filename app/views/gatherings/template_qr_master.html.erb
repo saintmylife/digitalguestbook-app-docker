@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" moznomarginboxes mozdisallowselectionprint>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    @media print {
+      @page { margin: 0; }
+      body { margin: 0.5cm; }
+    }
+  </style>
+</head>
+<body>
+    <table style="width: 100%; text-align: center;" >
+        <tbody>
+          <tr>
+            <td><img src="<%= generate_qr(params[:guest_id]) %>" class: "qr-code" style="width:50%;"></td>
+          </tr>
+          <tr>
+            <td><p style="font-size:8px; margin-top:-5px;"><%= params[:guest_id] %></p></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <script>
+        setTimeout(function () { window.print(); }, 500);
+        window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
+      </script>
+
+</body>
+</html>

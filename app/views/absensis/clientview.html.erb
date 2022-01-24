@@ -1,0 +1,36 @@
+<section class="scanning2">
+<div class="row dashboard-header"  style="padding-left:50px;padding-top:30px;">
+ <div class="col-md-12">
+  <h3 style="text-align:left;padding-left:80px;">CLIENT DASHBOARD
+  <%= link_to clientview_absensis_path, class: 'btn btn-primary pull-right' do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  </h3>
+  <hr/>
+ </div>
+</div>
+
+    <% @jenis_kategori.each do |jenis_kategori| %>
+    <div class="row" style="padding-left:360px;padding-right:320px;padding-top:50px;">
+      <% if jenis_kategori.kategori != "Panitia" && jenis_kategori.kategori != nil %>
+      <div class="col-md">
+        <div class="panel-dashboard biru" style="height:180px;">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x" style="vertical-align:middle"></i>
+            </div>
+            <div class="col-sm-8">
+                  <span style="font-size:36px;"><%= jenis_kategori.kategori %></span><br><br>
+                  <p id="total_guest" style="font-size:42px;"><%= jenis_kategori.hadir %><span class="pull-right">
+                  <%= (jenis_kategori.hadir.to_f / (jenis_kategori.tidakhadir + jenis_kategori.hadir).to_f * 100).round(2)%>%</span>
+                  </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<br>
+      <% end %>
+    <% end %>
+
+</section>

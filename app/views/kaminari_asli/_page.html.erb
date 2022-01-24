@@ -1,0 +1,6 @@
+
+<% if page.current? %>
+  <li class='active'>
+  <%= link_to_unless page.current?, page, url, {remote: remote, rel: page.rel} %>
+  </li>
+  <% end %>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Reddonedigital</title>
+
+    <!-- Bootstrap -->
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application' %>
+    <%= javascript_include_tag 'application' %>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-presence">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="<%= root_path %>">
+            <img alt="Reddonedigital" src="<%= image_path('logo.png') %>">
+          </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+
+<!-- Master -->
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Master <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="<%= type_of_events_path %>">Buat Type Event</a></li>
+                  <li><a href="<%= events_path %>">Daftar Event</a></li>
+                </ul>
+              </li>
+
+            <li><a href="<%= settings_path %>">Setting</a></li>
+
+<!-- Absensi -->
+    <li class="dropdown">
+      <a id="dLabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#" href="#">
+      Absensi <span class="caret"></span></a>
+      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+        <li class="dropdown-submenu">
+          <a tabindex="-1" href="#">Moving Class</a>
+          <ul class="dropdown-menu">
+<!-- Menu Moving Class -->
+        <li><a href="<%= dashboard_movings_path %>">Dashboard</a></li>
+        <li><a href="<%= masterdata_movings_path %>">Master</a></li>
+        <li class="divider"></li>
+<!-- Class I -->
+            <li class="dropdown-submenu">
+              <a href="#">Class I</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class II -->
+            <li class="dropdown-submenu">
+              <a href="#">Class II</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class2_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir2_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class III -->
+            <li class="dropdown-submenu">
+              <a href="#">Class III</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class3_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir3_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class IV -->
+            <li class="dropdown-submenu">
+              <a href="#">Class IV</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class4_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir4_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class V -->
+            <li class="dropdown-submenu">
+              <a href="#">Class V</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class5_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir5_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class VI -->
+            <li class="dropdown-submenu">
+              <a href="#">Class VI</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class6_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir6_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class VII -->
+            <li class="dropdown-submenu">
+              <a href="#">Class VII</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class7_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir7_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class VIII -->
+            <li class="dropdown-submenu">
+              <a href="#">Class VIII</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class8_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir8_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class IX -->
+            <li class="dropdown-submenu">
+              <a href="#">Class IX</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class9_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir9_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- Class X -->
+            <li class="dropdown-submenu">
+              <a href="#">Class X</a>
+              <ul class="dropdown-menu">
+                <li><a href=<%= class10_movings_path %>>Check In</a></li>
+                <li><a href=<%= souvenir10_movings_path %>>Check Out</a></li>
+              </ul>
+            </li>
+<!-- DONE -->
+          </ul>
+        </li>
+        <li class="divider"></li>
+        <li><a href="<%= dashboard_absensis_path %>">Dashboard</a></li>
+        <li><a href="<%= absensis_path %>">Check In</a></li>
+        <li><a href="<%= souvenir_absensis_path %>">Check Out</a></li>
+        <li><a href="<%= masterdata_absensis_path %>">Master</a></li>
+      </ul>
+    </li>
+
+<!-- WEDDING -->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wedding<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<%= dashboard_weddings_path %>">Dashboard</a></li>
+                <li><a href="<%= weddings_path %>">Kehadiran</a></li>
+                <li><a href="<%= souvenir_weddings_path %>">Tukar Souvenir</a></li>
+                <li><a href="<%= masterdata_weddings_path %>">Master</a></li>
+              </ul>
+            </li>
+
+<!-- CONCERT -->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Concert<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<%= dashboard_concerts_path %>">Dashboard</a></li>
+                <li><a href="<%= concerts_path %>">Kehadiran</a></li>
+                <li><a href="<%= souvenir_concerts_path %>">Penukaran Kwitansi</a></li>
+                <li><a href="<%= masterdata_concerts_path %>">Master</a></li>
+              </ul>
+            </li>
+
+<!-- GATHERING -->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gathering<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<%= dashboard_gatherings_path %>">Dashboard</a></li>
+                <li><a href="<%= gatherings_path %>">Kehadiran</a></li>
+                <li><a href="<%= souvenir_gatherings_path %>">Penukaran Souvenir</a></li>
+                <li><a href="<%= masterdata_gatherings_path %>">Master</a></li>
+              </ul>
+            </li>
+
+<!-- DOORPRIZE -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">UNDIAN<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="<%= undians_path %>">Lucky Draw</a></li>
+                  <li><a href="<%= winner_undians_path %>">List Pemenang</a></li>
+                </ul>
+            </li>
+
+<!-- REPORT -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Report<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="<%= report_weddings_path %>">Wedding</a></li>
+                  <li><a href="<%= report_concerts_path %>">Concert</a></li>
+                  <li><a href="<%= report_gatherings_path %>">Gathering</a></li>
+                  <li><a href="<%= report_absensis_path %>">Absensi</a></li>
+                  <li><a href="<%= report_movings_path %>">Moving Class</a></li>
+                </ul>
+            </li>
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    <% unless flash.empty? %>
+        <script type="text/javascript">
+          <% flash.each do |f| %>
+            <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+            toastr['<%= type %>']('<%= f[1] %>');
+          <% end %>
+$(function(){
+	$(".dropdown-menu > li > a.trigger").on("click",function(e){
+		var current=$(this).next();
+		var grandparent=$(this).parent().parent();
+		if($(this).hasClass('left-caret')||$(this).hasClass('right-caret'))
+			$(this).toggleClass('right-caret left-caret');
+		grandparent.find('.left-caret').not(this).toggleClass('right-caret left-caret');
+		grandparent.find(".sub-menu:visible").not(current).hide();
+		current.toggle();
+		e.stopPropagation();
+	});
+	$(".dropdown-menu > li > a:not(.trigger)").on("click",function(){
+		var root=$(this).closest('.dropdown');
+		root.find('.left-caret').toggleClass('right-caret left-caret');
+		root.find('.sub-menu:visible').hide();
+	});
+});
+        </script>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

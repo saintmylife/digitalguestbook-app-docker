@@ -1,0 +1,68 @@
+<body style="background-color:white;">
+
+
+<div class="panel panel-default" style="display:block;">
+  <div class="panel-heading">
+    <h3 style="text-align:center;font-size:36px;"> DOORPRIZE</h3>
+    <div style ="text-align:center;font-size:36px;"><b><%#= active_wedding_name %></b></div>
+      </div>
+
+
+<div class="panel-body" style="margin:auto">
+<div id="jalannya" style="text-align: center">
+    <%= image_tag("defaultdraw.png", style:'align:middle;width:80%;') %>
+</div>
+	<div align="center" id="luckyname" >
+	</div>
+<div align="center" id="hadiah" style="font-size: 60px;">
+</div>
+	<div align="center" id="loading">
+	</div>
+	 <button type="button" class="btn btn-primary btn-lg center-block" style="margin-top:50px;" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Tekan Tombol Stop Untuk Berhenti">Pilih Pemenang</button>
+   <button type="button" id="stop" class="btn btn-danger btn-lg center-block" style="display: none; margin-top:10px;">Stop</button>
+</div>
+  </div>
+
+</body>
+<script type="text/javascript">
+
+  function choosen(){
+    $.getJSON('/undians/thechoosen',function(data){
+          if( !($.isEmptyObject(data)) ){
+            // $('#luckyname').html('<p>'+data.nama+'<p>'+'<p>'+(data.guest_id)+'<p>');
+            $('#luckyname').html('<p style="font-size: 150px;margin: 5px 10px 5px 10px;"><b>'+(data.nama)+'</b></p><p style="font-size:36px;font-weight:800;">'+(data.guest_id)+'</p>');
+          } else {
+            $('#luckyname').html('<p style="font-size: 36px;margin: 5px 10px 5px 10px;"><b> Belum Ada yang Check In </b></p>');
+          };
+  });
+  $('#loading').html(' ');
+  // $('#luckyname').show();
+  // $('#hadiah').show();
+  // $('#stop').hide();
+  $('#luckyname').fadeIn();
+  $('#hadiah').fadeIn();
+  $('#stop').hide();
+  $('.btn-primary').button('reset');
+  };
+
+  $('.btn-primary').on('click', function(){
+		var $this = $(this);
+		$this.button('loading');
+    $('#jalannya').hide();
+		$('#luckyname').hide();
+    $('#luckyname1').hide();
+    $('#hadiah').hide();
+		$('#loading').html('<%= j image_tag "luckydraw.gif", style:'width:80%;' %><br><br>');
+    $('#stop').show();
+		// setTimeout(function() {
+    });
+    // timer = setTimeout(mulai, 5000);
+
+  $('#stop').click(function() {
+    // clearTimeout(timer);
+    choosen();
+  });
+
+
+
+</script>

@@ -1,0 +1,78 @@
+<div class="row dashboard-header-surya">
+ <div class="col-md-12">
+  <h3 class="debug-surya">DASHBOARD
+  <%= link_to dashboard_absensis_path(notice: true), class: 'btn btn-primary pull-right' do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  <hr>
+  </h3>
+ </div>
+</div>
+
+<div class="flex-container-surya">
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah" style="text-transform: uppercase;">TOTAL</span>
+                <p id="total_souvenir"><%= @total_guest.present? ? @total_guest:"-" %></p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah" style="text-transform: uppercase;">SUDAH CHECK IN</span>
+            <p id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir - @jumlah_souvenir:"-" %></p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah" style="font-size:16px;text-transform: uppercase;">SUDAH CHECK OUT</span>
+            <p id="souvenir_belum"><%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %></p>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <% @jenis_kategori.each do |jenis_kategori| %>
+    <% if jenis_kategori.kategori.present? %>
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users" style="font-size:5vw;vertical-align:middle;"></i>
+          </div>
+            <div class="col-sm-8">
+              <span class="judul-tengah" style="font-size:16px;text-transform: uppercase;">
+              <%= jenis_kategori.kategori %></span>
+              <p id="total_guest"><%= jenis_kategori.hadir %><span class="pull-right">
+              <%= (jenis_kategori.hadir.to_f / (jenis_kategori.tidakhadir + jenis_kategori.hadir).to_f * 100).round(2)%>%</span>
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <% end %>
+
+
+</div>

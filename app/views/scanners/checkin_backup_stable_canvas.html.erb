@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReddOneDigital-Checkin</title>
+    <%= stylesheet_link_tag    'nimiqQR-css/fonts-qr' %>
+    <%= stylesheet_link_tag    'nimiqQR-css/style_debug' %>
+</head>
+<body>
+    <div class="container">
+        <header class="container-padding">
+            <a href="<%= scanners_path %>">
+                <%= image_tag 'reddone-logo-small', class:'navbar-logo'%>
+            </a>
+            <div class="nav-right">
+                <button id="btn-flipCam" onclick="flipCam()">
+                        <%= image_tag 'scanner/flip-camera', class:'navbar-flipCam'%>
+                </button>
+                <a href="#" onclick="searchPerson()">
+                    <%= image_tag 'scanner/search-white', class:'navbar-search'%>
+                </a>
+            </div>
+        </header>
+        <main id="qr-scanner-box">
+            <video id="qr-video" style="visibility:hidden"></video>
+            <%# <video id="qr-video"></video> %>
+            <div id="show-scan-region"></div>
+            <lottie-player id="frameScan" src="../assets/lottie/ScannerRed.json" autoplay loop background="transparent"
+            speed="1.5" style=""></lottie-player>
+        </main>
+        <footer>
+            <div class="guest-footer">
+                <div class="guest-information container-padding-2">
+                    <p id="guest-name">Arahkan QRCode Anda Pada Bingkai</p>
+                    <p id="guest-category"></p>
+                </div>
+                <div class="guest-status">
+                    <lottie-player id="markStatus" src="../assets/lottie/Mark_Initial.json" autoplay loop
+                    background="transparent" speed="0.5"></lottie-player>
+                    <p id="msgStatus">Silahkan Scan</p>
+                </div>
+            </div>
+            <p class="page-status">DigitalGuestBook &copy;2015, ReddOneDigital - Halaman Check In</p>
+        </footer>
+    </div>
+
+    <!--  checkin popup -->
+    <div id="result-popup">
+        <div class="inner-modal" id="result-popup-inner">
+            <h1 id="messageStatusModal">SELAMAT DATANG</h1>
+            <lottie-player id="markStatusModal" src="../assets/lottie/Mark_Check.json" autoplay background="transparent" speed="1"></lottie-player>
+        </div>
+    </div>
+
+    <!-- <%# search popup %> -->
+    <div id="search-popup">
+        <div class="search-top">
+            <input id="myInput" class="border-outline-n" type="text" placeholder="Search..">
+            <button class="border-outline-n"
+                onclick="$('#search-popup').fadeOut();$('#myInput').val('');">X</button>
+        </div>
+            <%= image_tag 'scanner/loader-loading.gif', id: "content-loader" %>
+        <div id="search-table" style="position:relative">
+        </div>
+    </div>
+
+    <%# search popup confirm %>
+    <div id="search-popup-confirm">
+    <div class="confirm-outter" onclick="$('#search-popup-confirm').fadeOut();"></div>
+        <div class="confirm-inner">
+            <div class="confirm-title">
+                <p>Lakukan Check In Untuk</p>
+            </div>
+            <div class="confirm-content">
+                <h1 id="confirm-name"></h1>
+                <h3 id="confirm-id"></h3>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-n" onclick="$('#search-popup-confirm').fadeOut();">TIDAK</button>
+                <button class="confirm-y" onclick="userAns('ansTrue')">YA</button>
+            </div>
+        </div>
+    </div>
+
+    <%= javascript_include_tag 'nimiqQR-js/assets/jquery-3.5.1.min' %>
+    <%= javascript_include_tag 'nimiqQR-js/assets/lottie-player' %>
+    <%= javascript_include_tag 'nimiqQR-js/qr-scanner.umd.min' %>
+    <%= javascript_include_tag 'nimiqQR-js/html5-qrcode.min' %>
+
+    <script>
+    // get how many devices
+    Html5Qrcode.getCameras().then(devices => {
+        if(devices.length > 1){
+            $('#btn-flipCam').css('display','flex');
+        }
+    }).catch(err => {
+        console.log('cant get camera devices')
+    });
+    </script>
+
+        <% i = 0
+            if @settingan.no_undian == TRUE
+                i+=1
+            end
+            if @settingan.nama_meja == TRUE
+                i+=1
+            end
+            if @settingan.nama_angpao == TRUE
+                i+=1
+            end
+            if @settingan.jumlah_souvenir == TRUE
+                i+=1
+            end
+            if @settingan.nama_undangan == TRUE
+                i+=1
+            end
+
+            if i != 0 %>
+        <script>
+            function guestPrint(guestcode) {
+                window.open("/<%= @active_event_type.downcase()%>/print?guest_id=" + guestcode, 'targetWindow',
+                    'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=200,height=120');
+            }
+        </script>
+        <% else%>
+        <script>
+            function guestPrint(guestcode) {
+                console.log('noprint');
+            }
+        </script>
+        <% end %>
+    <script>
+    // qrscanner
+    QrScanner.WORKER_PATH = "<%= asset_path j 'nimiqQR-js/qr-scanner-worker.min.js' %>";
+
+            const video = document.getElementById('qr-video');
+            const camHasCamera = document.getElementById('cam-has-camera');
+            const camHasFlash = document.getElementById('cam-has-flash');
+            const flashToggle = document.getElementById('flash-toggle');
+            const flashState = document.getElementById('flash-state');
+            const camQrResult = document.getElementById('cam-qr-result');
+            const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+            const fileSelector = document.getElementById('file-selector');
+            const fileQrResult = document.getElementById('file-qr-result');
+            // 
+            const box = document.getElementById('qr-scanner-box');
+            const lottieStatus = document.getElementById('markStatus');
+            const lottieStatusModal = document.getElementById('markStatusModal');
+            const lottieCheck = "<%= asset_path j 'lottie/Mark_Check.json' %>";
+            const lottieCross = "<%= asset_path j 'lottie/Mark_Cross.json' %>";
+            const statusCheck = "<%= asset_path j 'scanner/Status_Check.png' %>";
+            const statusCross = "<%= asset_path j 'scanner/Status_Cross.png' %>";
+            // 
+            const audio = new Audio('../assets/success.mp3');
+
+            // ####### Web Cam Scanning #######
+            // get inner width and height for vid properties scanner_scanRegion: xy is vid position
+            let scanner = new QrScanner(video, result => sentGuest(result), error => {}, 500, 'user');
+            scanner.start().then(() => {
+                appendCanvas('front');
+            });
+
+            // for debugging
+            window.scanner = scanner;
+            function appendCanvas(params){
+                if(scanner.$canvas){
+                    $(scanner.$canvas).remove();
+                };
+                box.append(scanner.$canvas);
+                scanner.$canvas.style.display = 'block';
+                scanner.$canvas.style.width = '100%';
+                scanner.$canvas.style.height = '100%';
+                scanner.setInversionMode('both');
+                scanner.$canvas.autofocus = true;
+                scanner.$video.autofocus = true;
+                (params === 'front' ?  scanner.$canvas.classList.add('cam-front') : scanner.$canvas.classList.remove('cam-front'));
+            }
+
+            
+            var state = 1;
+
+            function sentGuest(guestcode) {
+                if (guestcode && state) {
+                    state = 0;
+                    $.ajax({
+                        type: 'GET',
+                        url: '/<%= @active_event_type.downcase%>/update_presence_mobile',
+                        data: {
+                            guest_code: guestcode,
+                            name: "<%= @active_event_type %>"
+                        },
+                        success: function (result) {
+                            audio.play();
+                            var data = result;
+                            if (data['nama']) {
+                                $('#guest-name').html(data['nama']);
+                                $('#guest-category').html(data['guest_id']);
+                            } else {
+                                $('#guest-name').html('ID Tidak Terdaftar');
+                                $('#guest-category').html('Silahkan Hubungi Teknisi / Helpdesk');
+                            }
+                            // add popup
+                            if (data['hasil']) {
+                                // console.log('masuk');
+                                lottieStatus.load(lottieCheck);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCheck);
+                            } else {
+                                // console.log('already');
+                                lottieStatus.load(lottieCross);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCross);
+                            } 
+                            <%if i != 0 %>
+                                if (data['message'] === 'Selamat Datang' || data['message'] === 'Already') {
+                                    $('#markStatus').attr('onClick', 'guestPrint("' + guestcode + '")');
+                                } else {
+                                    let printStat = $('#markStatus').attr('onClick');
+                                    if (printStat) {
+                                        $('#markStatus').removeAttr('onClick');
+                                    }
+                                } 
+                                <% end %>
+                                setTimeout(() => {
+                                    $("#result-popup").fadeOut();
+                                    setTimeout(() => {
+                                        state = 1;
+                                    }, 150);
+                                }, 2500); 
+                                <% if i != 0 %>
+                                if (data['hasil']) {
+                                    guestPrint(guestcode);
+                                } 
+                                <% end %>
+                        },
+                        fail: function (result) {
+                            // console.log('failed');
+                        },
+                        error: function (result) {
+                            // console.log(result);
+                        }
+                    });
+                }
+            }
+
+    // getallperson
+        function searchPerson() {
+            $('#myInput').val('');
+            $('#search-table').html('');
+            $('#search-popup').css('display', 'block');
+            $.ajax({
+                type: 'GET',
+                url: '/type_of_events/getalldata',
+                beforeSend: function(){
+                    $('#content-loader').fadeIn('fast');
+                },
+                success: function (result) {
+                    // console.log(result['data']);
+                    $.each(result['data'], function (index, val) {
+                        $('#search-table').append("<div class='guest'><h2>" +
+                            val['nama'] + "</h2><p>" + val['guest_id'] +
+                            "</p><div class='guest-masking' data-qr='" + val['guest_id'] +
+                            "' data-name='" + val['nama'] + "'></div></div>")
+                    });
+                    $('#myInput').focus();
+                    setTimeout(() => {
+                        $('#content-loader').fadeOut('slow');
+                        $('#search-table').css('display','block');
+                    }, 250);
+                }
+            })
+        }
+        // typing search person
+        $("#myInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#search-table div").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+        // click on search person name
+        $('#search-table').on('click', function (e) {
+            let guestid = $(e.target).data('qr');
+            let guestname = $(e.target).data('name');
+            if (guestid) {
+                $('#confirm-name').html(guestname);
+                $('#confirm-id').html(guestid);
+                $('#search-popup-confirm').css('display', 'flex');
+                $('#search-popup-confirm').fadeIn();
+            }
+        })
+        // search person confirmation box
+        function userAns(answer) {
+            if (answer) {
+                let guestID = $('#confirm-id').html();
+                $('#search-popup-confirm').fadeOut('fast');
+                setTimeout(() => {
+                    $('#search-popup').fadeOut('fast');
+                    sentGuest(guestID);
+                }, 500);
+            }
+        }
+
+        function flipCam(){
+            let camEnv = scanner._preferredFacingMode;
+            scanner.stop();
+            scanner.destroy();
+            scanner = null;
+            let newCamEnv = (camEnv === "user") ? "environment" : "user";
+            setTimeout(() => {
+                // scanner.start();
+                scanner = new QrScanner(video, result => sentGuest(result), error => {}, undefined, newCamEnv);
+                scanner.start().then(() => {
+                    appendCanvas('env');
+                });
+            }, 500);
+        }
+    </script>
+</body>
+</html>

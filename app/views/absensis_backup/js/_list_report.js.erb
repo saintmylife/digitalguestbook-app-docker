@@ -1,0 +1,13 @@
+$(function(){
+  $(".pagination a").click(function(){
+    $.get(this.href, null, null, "script")
+    return false;
+  });
+
+  $('#export_wedding').click(function(){
+    var name_event = $("#event_event_id option:selected").val();
+    var jenis_kategori = $("#jenis_kategori_jenis_kategori_id option:selected").val();
+    var extendtion = $("#extendtion_jenis_kategori option:selected").val();
+    $(this).attr("href","/weddings/export_excel.xls?event="+name_event+"&jenis_kategori="+jenis_kategori+"&extendtion="+extendtion);
+  });
+});

@@ -1,0 +1,16 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          Detail Peserta <h4 style="text-align:center;vertical-align:middle;"><b><%= @moving.nama %></b>
+          <button type="button" class="btn btn-danger pull-right" data-dismiss="modal">Close</button></h4>
+        </h5>
+      </div>
+      <div class="modal-body">
+        <%= render 'detail' %>
+      </div>
+    </div>
+  </div>
+</div>

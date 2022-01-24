@@ -1,0 +1,11 @@
+$("#extendtion_jenis_kategori").hide();
+$("#jenis_kategori").change(function(){
+  var select = $("#jenis_kategori option:selected").val();
+  if(select != "" && select != "all"  ){
+    $("#extendtion_jenis_kategori").show();
+    $("#jenis_kategori").attr("class","col-sm-6");
+  }else{
+    $("#extendtion_jenis_kategori").hide();
+    $("#jenis_kategori").attr("class","col-sm-10");
+  }
+});

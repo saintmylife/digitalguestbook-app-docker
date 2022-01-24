@@ -1,0 +1,64 @@
+<div class="panel panel-default" id="master-data-concert">
+  <div class="panel-heading">
+    <h3 class="panel-title">Master Data</h3><br>
+  </div>
+
+  <div class="panel-body" >
+    <h4><div class="alert alert-info">Data Absensi yang sedang aktif : <b><u><%= active_wedding_name %></u></b></div></h4>
+    <hr>
+    <div class="row">
+      <%= form_tag master_absensis_path, :method => 'GET' do %>
+      <div class="col-sm-5">
+      <%= text_field_tag :search ,params[:search], class: "form-control form-control-sm", placeholder: "Search" %>
+      <input id="name" name="name" type="hidden" value="Absensis">
+      <div class="checkbox col-sm">
+        Pencarian :
+        <label>
+          <%= radio_button_tag 'checkbox',0,true%> Nama</label>
+        <label>
+          <%= radio_button_tag 'checkbox',1,false %> Guest ID</label>
+        <label>
+          <%= radio_button_tag 'checkbox',2,false %> Instansi</label>
+        <label>
+          <%= radio_button_tag 'checkbox',3,false %> Jabatan</label>
+        <label>
+          <%= radio_button_tag 'checkbox',4,false %> Unit Kerja</label>
+      </div>
+      </div>
+      <%= submit_tag "Search",class:'btn btn-success col-sm-0' %>
+      <%= submit_tag "Reset", :name => "reset_button", class:'btn btn-danger col-sm-0' %>
+      <%= link_to "Back", masterdata_absensis_path, class:'btn btn-primary waves-effect' %>
+
+      <% end %>
+    </div>
+
+
+    <table class="table table-hovered table-bordered margin10 pretty">
+      <thead>
+        <tr>
+          <th style="text-align:center;line-height: 40px;vertical-align:middle;"><%= sortable "guest_id", "ID" %></th>
+          <th style="text-align:center;line-height: 40px;vertical-align:middle;"><%= sortable "nama", "Nama"%></th>
+          <th style="text-align:center;line-height: 40px;vertical-align:middle;"><%= sortable "instansi", "Instansi"%></th>
+          <th style="text-align:center;line-height: 40px;vertical-align:middle;"><%= sortable "jabatan", "Jabatan"%></th>
+          <th style="text-align:center;line-height: 40px;vertical-align:middle;"><%= sortable "unit_kerja", "Unit Kerja"%></th>
+          <th style="text-align:center;line-height: 40px;vertical-align:middle;"><%= sortable "kategori", "Kategori"%></th>
+          <th style="text-align:center;vertical-align:middle;"><%= sortable "presence", "Status Check In" %></th>
+          <th style="text-align:center;vertical-align:middle;"><%= sortable "souvenir", "Status Check Out" %></th>
+          <th style="text-align:center;vertical-align:middle;">Print QR</th>
+          <th colspan="3" style="text-align:center;vertical-align:middle;">Action</th>
+        </tr>
+      </thead>
+      <tbody id='list_wedding'>
+        <%= render 'list_absensi' %>
+      </tbody>
+    </table>
+    <div class="pull-right">
+          <%= paginate @absensis %>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+</script>

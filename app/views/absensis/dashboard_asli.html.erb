@@ -1,0 +1,97 @@
+<section class="scanning2">
+<div class="row dashboard-header"  style="padding-left:50px;padding-top:30px;">
+ <div class="col-md-12">
+  <h3>DASHBOARD
+  <%= link_to dashboard_absensis_path(notice: true), class: 'btn btn-primary pull-right' do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  </h3>
+  <hr/>
+ </div>
+</div>
+
+<!-- ROW 1 -->
+  <div class="row" style="padding-left:50px;padding-right:50px;">
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard biru">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-users fa-5x"></i>
+          </div>
+          <div class="col-sm-8">
+            <small>TOTAL</small>
+            <p id="total_souvenir"><%= @total_guest.present? ? @total_guest:"-" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard kuning">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-american-sign-language-interpreting fa-5x"></i>
+          </div>
+          <div class="col-sm-8">
+            <small>SUDAH CHECK IN</small>
+            <p id="souvenir_sudah"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard merah">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-times fa-5x"></i>
+          </div>
+          <div class="col-sm-8">
+            <small>BELUM CHECK IN</small>
+            <p id="souvenir_belum"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+      <div class="panel-dashboard merah">
+        <div class="row">
+          <div class="col-sm-4">
+            <i class="fa fa-times fa-5x"></i>
+          </div>
+          <div class="col-sm-8">
+            <small>SUDAH CHECK OUT</small>
+            <p id="souvenir_belum"><%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<br>
+  <div class="row" style="padding-left:50px;padding-right:50px;">
+    <% @jenis_kategori.each do |jenis_kategori| %>
+      <% if jenis_kategori.kategori.present? %>
+
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard biru">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div class="col-sm-8">
+
+                  <span style="font-size:24px;"><%= jenis_kategori.kategori %></span>
+                  <p id="total_guest"><%= jenis_kategori.hadir %><span class="pull-right">
+                  <%= (jenis_kategori.hadir.to_f / (jenis_kategori.tidakhadir + jenis_kategori.hadir).to_f * 100).round(2)%>%</span>
+                  </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>

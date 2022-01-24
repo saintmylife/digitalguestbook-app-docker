@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Event
+      <%= link_to 'Export Excel',  '' ,id:'export_wedding', class:"btn btn-primary btn-sm pull-right"%>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <% if @report.present? %>
+      <div class="col-sm-2">
+        <h4>
+          <div class="alert alert-info">
+            Total Undagan: <%= @report[:data_hadir].to_i + @report[:tidak_hadir].to_i %>
+          </div>
+        </h4>
+      </div>
+      <div class="col-sm-2">
+        <h4>
+          <div class="alert alert-success">
+            Hadir: <%= @report[:data_hadir].to_i  %>
+          </div>
+        </h4>
+      </div>
+      <div class="col-sm-2">
+        <h4>
+          <div class="alert alert-danger">
+            Tidak Hadir: <%= @report[:tidak_hadir].to_i  %>
+          </div>
+        </h4>
+      </div>
+      <hr>
+      <%= render 'weddings/list_report/list_report_special_case' %>
+      <%= paginate @report[:report] %>
+    <%else%>
+      <div class="col-sm-12">
+        <h4>
+          <div class="alert alert-info">
+            Data Tidak Ada
+          </div>
+        </h4>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script><%= render "weddings/js/list_report.js"; %></script>

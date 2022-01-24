@@ -1,0 +1,48 @@
+<% @concerts.each do |concert| %>
+  <tr>
+    <td style="text-align:center;vertical-align:middle"><%= concert.guest_id %></td>
+    <td style="text-align:center;vertical-align:middle"><%= concert.kategori %></td>
+    <td align="center"><%= concert.nama %> </td>
+    <td style="text-align:center;vertical-align:middle"><%= concert.jenis_tiket %></td>
+    <td style="text-align:center;vertical-align:middle"><%= concert.class_user %></td>
+    <td style="text-align:center;vertical-align:middle"><%=
+        if concert.no_ktp == nil
+           if concert.no_ponsel == nil
+              concert.email
+           else
+              concert.no_ponsel
+           end
+        else
+            concert.no_ktp
+        end %>
+    </td>
+    <td style="text-align:center;vertical-align:middle"><%=
+        if concert.ticket == true
+          'Sudah Tukar Kwitansi'
+        else
+          'Belum Tukar Kwitansi'
+        end %>
+    </td>
+    <td style="text-align:center;vertical-align:middle"><%= concert.time_of_get_ticket&.strftime('%H:%M:%S %Z') %></td>
+    <td style="text-align:center;vertical-align:middle"><%=
+        if concert.presence == true
+          'Sudah Masuk'
+        else
+          'Belum Masuk'
+        end %>
+        </td>
+    <td style="text-align:center;vertical-align:middle"><%= concert.time_of_entry&.strftime('%H:%M:%S %Z') %></td>
+    <td style="text-align:center;vertical-align:middle">
+    <%= link_to print_qr_master_concerts_path(guest_id: concert.guest_id), remote: true do %>
+        Print
+        <td style="text-align:center;vertical-align:middle">
+          <button type="button" class="btn btn-success btn-sm">
+          <%= link_to "Edit", edit_concert_path(concert), method: :get %></button>
+          </td>
+          <td style="text-align:center;vertical-align:middle">
+          <button type="button" class="btn btn-delete btn-sm">
+          <%= link_to "Delete", concert_path(concert), method: :delete, data: {confirm: 'Data Akan Dihapus '} %></button>
+        </td>
+      <% end %>
+  </tr>
+<% end %>

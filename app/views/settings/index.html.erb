@@ -1,0 +1,181 @@
+<div class="panel panel-default">
+  <div id="infoAlert"></div>
+  <div class="panel-heading" style="height:125px;">
+    <h3 class="panel-title">
+      Settings
+      <span style="position: absolute; right: 0;padding-right:15px;">
+        <%= button_tag 'No Print', class: 'btn btn-primary btn-sm', style:'border: 0.5px solid;border-color:black;',onclick: "handleNoPrint(#{@setting.id})" %>
+        <%= button_tag 'Reset', class: 'btn btn-danger btn-sm', style:'border: 0.5px solid;border-color:black;',id: 'reset', onclick: "handleReset()" %>
+      </span>
+      <br>
+      <span style="position: absolute; right: 0;padding-right:15px;padding-top:10px;">
+        <%= button_tag 'Hapus Log Moving Class', class: 'btn btn-danger btn-sm', style:'border: 0.5px solid;border-color:black;', id: 'reset', onclick: "handleResetMoving()" %>
+        <%= button_tag 'Hapus Log Absensi Class', class: 'btn btn-danger btn-sm', style:'border: 0.5px solid;border-color:black;',id: 'reset', onclick: "handleResetAbsensi()" %>
+      </span>
+      <br>
+      <span style="position: absolute; right: 0;padding-right:15px;padding-top:20px;">
+        <%= button_tag 'All Presence', class: 'btn btn-success btn-sm', style:'border: 0.5px solid;border-color:black;',id: 'reset', onclick: "handleAllPresence()" %>
+        <%= button_tag 'Reset Undian', class: 'btn btn-danger btn-sm', style:'border: 0.5px solid;border-color:black;',id: 'reset', onclick: "handleResetUndian()" %>
+      </span>
+     </h3>
+    </div>
+
+  <div class="panel-body">
+    <h4>Aktifasi Event</h4>
+    <hr>
+    <div class="alert alert-info">
+      <% if @event_active.present? %>
+        Event yang sedang aktif :
+        <strong><%= @event_active.name.present? ? @event_active.name : '' %></strong>
+      <% end %>
+    </div>
+    <table class="table table-hovered table-bordered margin10">
+      <thead class="thead-default">
+        <tr>
+          <th>Nama</th>
+          <th style="text-align:center;vertical-align:middle">Tanggal</th>
+          <th style="text-align:center;vertical-align:middle">Pemilik Event</th>
+          <th style="text-align:center;vertical-align:middle">Jenis Event</th>
+          <th>#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events.each do |event| %>
+          <tr>
+            <td><%= event.name %></td>
+            <td style="text-align:center;vertical-align:middle"><%= event.date&.strftime('%d %B %Y') %></td>
+            <td style="text-align:center;vertical-align:middle"><%= event.event_owner %></td>
+            <td style="text-align:center;vertical-align:middle"><b><%= event.type_of_event.name %></b></td>
+            <td style="text-align:center;vertical-align:middle"><%= link_to 'Aktifkan', aktifasi_setting_path(event.id), method: :put, class:'btn btn-success' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @events %>
+
+    <%= form_for(@setting, remote:true) do |f| %>
+    <div class="form-group">
+      <%#= f.label "Change Title" %>
+        <h4>Event Settings</h4>
+        <h5>Custom Title Row 1: </h5>
+        <%= f.text_field :custom_one_text,{class:"form-control"} %>
+        <h5>Custom Title Row 2:</h5>
+        <%= f.text_field :custom_two_text,{class:"form-control"} %>
+        <table style="width:50%">
+          <thead>
+            <tr>
+              <th><%= f.check_box :no_undian, {class:"form-check-input"}, true, false %>
+                <%= f.label :no_undian, {class:"form-check-label"} %></th>
+              <th><%= f.check_box :nama_meja, {class:"form-check-input"}, true, false %>
+                <%= f.label :nama_meja, {class:"form-check-label"} %></th>
+              <th><%= f.check_box :jumlah_souvenir, {class:"form-check-input"}, true, false %>
+                <%= f.label :jumlah_souvenir, {class:"form-check-label"} %></th>
+              <th><%= f.check_box :nama_angpao, {class:"form-check-input"}, true, false %>
+                <%= f.label :nama_angpao,{class:"form-check-label"} %></th>
+              <th><%= f.check_box :jumlah_undangan, {class:"form-check-input"}, true, false %>
+                <%= f.label :jumlah_undangan,{class:"form-check-label"} %></th>
+            </tr>
+            <tr>
+              <td><%= f.submit "Submit", class: "btn btn-primary" %></td>
+            </tr>
+          </thead>
+        </table>
+        </div>
+      <% end %>
+      
+
+
+    </div>
+  </div>
+  <script>
+
+    let handleNoPrint = (id) => {
+      $.ajax({
+        url: '/settings/' + id,
+        method: 'PUT',
+        data: {
+          no_print: true
+        }
+      })
+    }
+
+    $(".one .tile .text").click(function () {
+      let data = {};
+      $(this).find("p").each(function () {
+        handleStructureObjectData($(this).attr("id"), data)
+      });
+
+      $.ajax({
+        url: '/settings/' + $(".one").find("input").val(),
+        method: 'PUT',
+        data: {
+          data
+        }
+      })
+    });
+
+    $(".two .tile .text").click(function () {
+      let data = {};
+
+      $(this).find("p").each(function () {
+        handleStructureObjectData($(this).attr("id"), data)
+      });
+
+      $.ajax({
+        url: '/settings/' + $(".one").find("input").val(),
+        method: 'PUT',
+        data: {
+          data
+        }
+      })
+
+    });
+
+    let handleReset = () => {
+      if (confirm('Are u sure want to reset?')) {
+      $.ajax({url: '/settings/reset', method: 'GET'});//.done(() => toastr['info']('Reset Successfull'));
+      }
+    }
+
+    let handleResetUndian = () => {
+      if (confirm('Are u sure want to reset?')) {
+      $.ajax({url: '/settings/resetundian', method: 'GET'});//.done(() => toastr['info']('Reset Successfull'));
+      }
+    }
+
+    let handleAllPresence = () => {
+      if (confirm('Are u sure want to all presence?')) {
+      $.ajax({url: '/settings/allpresence', method: 'GET'});//.done(() => toastr['info']('Reset Successfull'));
+      }
+    }
+
+    let handleResetAbsensi = () => {
+      if (confirm('Are u sure want to delete active log absensi event ?')) {
+      $.ajax({url: '/settings/resetlogabsensi', method: 'GET'});//.done(() => toastr['info']('Reset Successfull'));
+      }
+    }
+
+    let handleResetMoving = () => {
+      if (confirm('Are u sure want to delete active log moving class event ?')) {
+      $.ajax({url: '/settings/resetlogmoving', method: 'GET'});//.done(() => toastr['info']('Reset Successfull'));
+      }
+    }
+
+    function handleStructureObjectData(obj, data) {
+      if (obj == 1) {
+        data.no_undian = true
+      }
+      if (obj == 2) {
+        data.nama_meja = true
+      }
+      if (obj == 3) {
+        data.nama_undangan = true
+      }
+      if (obj == 4) {
+        data.jumlah_souvenir = true
+      }
+      if (obj == 5) {
+        data.nama_angpao = true
+      }
+    }
+  </script>

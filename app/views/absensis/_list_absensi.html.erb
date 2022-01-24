@@ -1,0 +1,44 @@
+<% @absensis.each do |absensi| %>
+    <tr>
+      <td style="text-align:center;vertical-align:middle"><%= absensi.guest_id %></td>
+      <td style="vertical-align:middle"><%= absensi.nama %> </td>
+      <td style="text-align:center;vertical-align:middle"><%= absensi.instansi %></td>
+      <td style="text-align:center;vertical-align:middle"><%= absensi.jabatan %></td>
+      <td style="text-align:center;vertical-align:middle"><%= absensi.unit_kerja %></td>
+      <td style="text-align:center;vertical-align:middle"><%= absensi.kategori %></td>
+      <td style="text-align:center;vertical-align:middle"><%=
+        if absensi.presence == true
+          'Sudah Masuk'
+        else
+          'Belum Masuk'
+        end
+        %></td>
+      <td style="text-align:center;vertical-align:middle"><%=
+        if absensi.souvenir == true
+          'Sudah Keluar'
+        else
+          'Belum Keluar'
+        end
+         %></td>
+      <td style="text-align:center;vertical-align:middle">
+      <%= link_to print_qr_master_absensis_path(guest_id: absensi.guest_id), remote: true do %>
+          Print
+          </td>
+     <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#show-data">
+        <%= link_to "Detail", absensi_path(absensi), remote: true %>
+        </button>
+       </td>
+     <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-success btn-sm">
+       <%= link_to "Edit", edit_absensi_path(absensi), method: :get %></button>
+       </td>
+       <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-delete btn-sm">
+       <%= link_to "Delete", absensi_path(absensi), method: :delete, data: {confirm: 'Data Akan Dihapus '} %></button>
+     </td>
+        <% end %>
+    </tr>
+<% end %>
+<div id="show-data" stlye="display:none;">
+</div>

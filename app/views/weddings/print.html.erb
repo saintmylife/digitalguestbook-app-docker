@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: auto;
+    }
+
+    .container {
+      width: 4.7cm;
+      height: 2.7cm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      /* padding:5px; */
+      flex-wrap: wrap;
+    }
+
+    .pagebreak {
+      page-break-before: always;
+    }
+  </style>
+</head>
+
+<body>
+  <%
+  guest = Guest.joins(event: :type_of_event).where("type_of_events.name ilike  '%Wedding%'")
+                      .where("events.status = TRUE").where(guest_id: params[:guest_id]).first
+  setting = Setting.first
+%>
+<%# 1, Angpao %>
+  <% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == false && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <div class="container">
+    <div style="font-size:14px;margin-bottom:10px">G I F T</div>
+    <hr style="border:.1px solid black;width:100%">
+    <p style="font-size:18px;margin-top:15px"><b><%= guest.guest_id %></b></p>
+  </div>
+  <% end %>
+  <%# 3 %>
+  <% if setting.no_undian == false && setting.nama_angpao == false && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <div class="container">
+    <div style="font-size:14px;margin-bottom:10px">T A B L E</div>
+    <hr style="border:.1px solid black;width:100%">
+    <p style="font-size:18px;margin-top:15px"><b><%= guest.nama_meja %></b></p>
+  </div>
+  <% end %>
+
+  <%# 5 %>
+  <% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <div class="container">
+    <div style="font-size:14px;margin-bottom:10px">G I F T</div>
+    <hr style="border:.1px solid black;width:100%">
+    <p style="font-size:14px;margin-top:15px"><b><%= guest.nama %></b></p>
+  </div>
+  <div class="pagebreak"></div>
+  <div class="container">
+    <div style="font-size:14px;margin-bottom:10px">T A B L E</div>
+    <hr style="border:.1px solid black;width:100%">
+    <p style="font-size:18px;margin-top:15px"><b><%= guest.nama_meja %></b></p>
+  </div>
+  <% end %>
+
+  <script>
+    // setTimeout(function () {
+    //   window.print();
+    // }, 1000);
+    // window.onfocus = function () {
+    //   setTimeout(function () {
+    //     window.close();
+    //   }, 1000);
+    // }
+    // window.print();
+    // window.onfocus = function () {
+    //   setTimeout(function () {
+    //     window.close();
+    //   }, 3000);
+    // }
+    setTimeout(() => {
+      window.print()
+    }, 500);
+    window.addEventListener('afterprint', (event) => {
+      window.onfocus = function () {
+      setTimeout(function () {
+        window.close();
+      }, 500);
+    }
+    });
+  </script>
+</body>
+
+</html>

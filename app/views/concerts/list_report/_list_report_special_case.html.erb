@@ -1,0 +1,71 @@
+<table class="table table-hovered table-bordered margin10">
+  <thead class="thead-default">
+    <tr style="<%= @report[:color] %>">
+      <th>NO</th>
+      <th>ID</th>
+      <th>NAMA</th>
+      <th>ALAMAT</th>
+      <th>KATEGORI</th>
+      <th>NAMA MEJA</th>
+      <th>KEHADIRAN</th>
+      <th>JAM</th>
+      <% if @report[:header_custom][:custom_one_text].present? %>
+        <th><%= @report[:header_custom][:custom_one_text] %></th>
+      <% end %>
+      <% if @report[:header_custom][:custom_two_text].present? %>
+        <th><%= @report[:header_custom][:custom_two_text] %></th>
+      <% end %>
+      <% if @report[:header_custom][:custom_three_text].present? %>
+        <th><%= @report[:header_custom][:custom_three_text] %></th>
+      <% end %>
+      <% if @report[:header_custom][:custom_four_text].present? %>
+        <th><%= @report[:header_custom][:custom_four_text] %></th>
+      <% end %>
+      <% if @report[:header_custom][:custom_five_text].present?  %>
+        <th><%= @report[:header_custom][:custom_five_text] %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @report[:report].each do |rw| %>
+      <tr>
+        <td><%= @no %></td>
+        <td><%= rw.guest_id %></td>
+        <td><strong><%= rw.name %></strong></td>
+        <td><%= rw.city.split.map(&:capitalize).join(' ') %>, <%= rw.address %></td>
+        <td><%= rw.category %></td>
+        <td><%= rw.nama_meja %></td>
+
+        <% if rw.presence ==  true && rw.souvenir == true  %>
+          <td><font color="green">Hadir&/Check In -Terima Souvenir</td>
+        <% elsif rw.presence ==  true && rw.souvenir == nil %>
+          <td><font color="blue">Hadir&/Check In-Belum Terima Souvenir</td>
+        <% else %>
+          <td><font color="red">Tidak Hadir dan Belum Terima Souvenir</td>
+        <% end %>
+
+        <% if rw.time_of_entry.present? || rw.time_of_entry != nil %>
+          <td><font color="green"><%= rw.time_of_entry.hour %>:<%= rw.time_of_entry.min %>:<%= rw.time_of_entry.sec %></td>
+        <%else%>
+          <td><font color="red">00:00:00</td>
+        <%end%>
+
+        <% @report[:header_custom].each do |key,value| %>
+          <% if key.to_s[7..9] == "one" %>
+            <td><%= rw.custom_one_text %></td>
+          <% elsif key.to_s[7..9] == "two" %>
+            <td><%= rw.custom_two_text %></td>
+          <% elsif key.to_s[7..9] == "thr" %>
+            <td><%= rw.custom_three_text %></td>
+          <% elsif key.to_s[7..9] == "fou" %>
+            <td><%= rw.custom_four_text %></td>
+          <% elsif key.to_s[7..9] == "five" %>
+            <td><%= rw.custom_five_text %></td>
+          <% end %>
+        <% end %>
+
+      </tr>
+      <% @no+=1 %>
+    <% end %>
+  </tbody>
+</table>

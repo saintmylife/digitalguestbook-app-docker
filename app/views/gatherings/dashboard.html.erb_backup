@@ -1,0 +1,82 @@
+<div class="row dashboard-header">
+ <div class="col-md-12">
+  <h3>DASHBOARD
+  <%= link_to dashboard_gatherings_path, class: 'btn btn-primary pull-right',remote: true do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  </h3>
+<hr/>
+ </div>
+</div>
+
+<div class="row">
+
+  <div class="col-md-4 col-sm-6">
+    <div class="panel-dashboard hijau">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-users fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL</small>
+          <p id="total_guest"><%= @total_guest.present? ? @total_guest:"-" %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-dashboard hijau margin10">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-check-square fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>HADIR</small>
+          <p id="guest_sudah_hadir"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 col-sm-6">
+    <div class="panel-dashboard merah">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-times fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>BELUM HADIR</small>
+          <p id="guest_belum_hadir"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 col-sm-6">
+     <div class="panel panel-default panel-table">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Unit Kerja</div>
+      <!-- Table -->
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Total</th>
+            <th>Hadir</th>
+            <th>Belum Hadir</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @units.each do |unit| %>
+            <tr>
+              <td><%= unit.unit_kerja %></td>
+              <td><%= unit.total %></td>
+              <td><%= unit.hadir %></td>
+              <td><%= unit.tidakhadir %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

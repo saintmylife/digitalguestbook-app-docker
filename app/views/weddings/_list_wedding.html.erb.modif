@@ -1,0 +1,34 @@
+<% @weddings.each do |wedding| %>
+    <tr>
+      <td style="text-align:center;vertical-align:middle"><%= wedding.guest_id %></td>
+      <td style="vertical-align:middle"><%= wedding.kategori %> </td>
+      <td style="vertical-align:middle"><%= wedding.nama %> </td>
+      <td style="vertical-align:middle"><%= wedding.alamat %></td>
+      <td style="vertical-align:middle"><%= wedding.nomor_ponsel %></td>
+      <td style="text-align:center;vertical-align:middle"><%= wedding.custom_one_text %></td>
+      <td style="text-align:center;vertical-align:middle"><%= wedding.custom_two_text %></td>
+      <td style="text-align:center;vertical-align:middle"><%=
+        if wedding.presence == true
+          'Sudah Masuk'
+        else
+          'Belum Masuk'
+        end
+        %></td>
+      <td style="text-align:center;vertical-align:middle"><%= wedding.time_of_entry&.strftime('%H:%M:%S %Z') %></td>
+      <td style="text-align:center;vertical-align:middle">
+      <%= link_to print_qr_master_weddings_path(guest_id: wedding.guest_id), remote: true do %>
+          Print
+          </td>
+     <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-success btn-sm">
+       <%= link_to "Edit", edit_wedding_path(wedding), method: :get %></button>
+       </td>
+       <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-delete btn-sm">
+       <%= link_to "Delete", wedding_path(wedding), method: :delete, data: {confirm: 'Data Akan Dihapus '} %></button>
+     </td>
+        <% end %>
+
+
+    </tr>
+<% end %>

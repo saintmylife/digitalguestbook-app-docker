@@ -1,0 +1,8 @@
+<div style="padding-top:100px;">
+  <%= render 'already-svg' %>
+  <div class="result-text">
+  <% if @find_guest[0].nama_peserta != nil %><p><span class="category" style="font-size: 48px !important;">
+    <%= @find_guest[0].nama_peserta %></span></p><% end %>
+      <span class="name"><%= @find_guest[0].guest_id %><br/> Sudah Hadir </span>
+  </div>
+</div>

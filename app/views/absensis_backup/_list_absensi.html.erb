@@ -1,0 +1,31 @@
+<% @absensis.each do |absensi| %>
+    <tr>
+      <td><%= absensi.guest_id %></td>
+      <td><%= absensi.nama %> </td>
+      <td><%= absensi.alamat %></td>
+      <td><%= absensi.kategori %></td>
+      <td><%= absensi.nama_meja %></td>
+      <td><%=
+        if absensi.presence == true
+          'Sudah Masuk'
+        else
+          'Belum Masuk'
+        end
+        %></td>
+      <td style="text-align:center"><%= absensi.time_of_entry&.strftime('%H:%M:%S %Z') %></td>
+      <td><%=
+        if absensi.souvenir == true
+          'Sudah Tukar'
+        else
+          'Belum Tukar'
+        end
+         %></td>
+      <td style="text-align:center"><%= absensi.time_of_get_souvenir&.strftime('%H:%M:%S %Z') %></td>
+      <td>
+      <%= link_to print_qr_master_absensis_path(guest_id: absensi.guest_id), remote: true do %>
+          Print
+        <% end %>
+
+      </td>
+    </tr>
+<% end %>
