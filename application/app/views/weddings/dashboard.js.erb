@@ -1,0 +1,13 @@
+$("#total_guest").html("<%= @total_guest.present? ? @total_guest:"-" %>");
+$("#guest_sudah_hadir").html("<%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %>");
+$("#guest_sudah_hadir_jumlah").html("<%= @total_orang%>");
+$("#guest_belum_hadir").html("<%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %>");
+$("#jumlah_souvenir").html("<%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %>");
+
+$("#total_vendor").html("<%= @total_vendor.present? ? @total_vendor:"-" %>");
+$("#vendor_sudah_hadir").html("<%= @vendor_sudah_hadir.present? ? @vendor_sudah_hadir:"-" %>");
+$("#vendor_belum_hadir").html("<%= @vendor_belum_hadir.present? ? @vendor_belum_hadir:"-" %>");
+$("#guest_kategori").html("<% @units.each do |unit| %><tr><td><%= unit.kategori %></td><td><%= unit.total %></td><td><%= unit.hadir %></td><td><%= unit.tidakhadir %></td></tr><% end %>");
+
+$("#list_kategori").html("<%= j (render 'list_kategori', units: @units)%>");
+toastr['info']('Refresh data berhasil');
