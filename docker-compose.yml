@@ -1,54 +1,61 @@
-version: '3.8'
+version: '3.9'
+
+volumes:
+  app_data:
+  bundle_volume:
+  db_data:
 
 services:
   app:
+    env_file: .env
+    container_name: ${PROJECT_NAME}-app
     build:
       context: .
-      dockerfile: ./docker/app/Dockerfile
-    entrypoint: ./entrypoints/app-entrypoint.sh
+      dockerfile: docker/app/Dockerfile
     volumes:
-      - ./application:/application
+      - app_data:/app
+      - bundle_volume:/usr/local/bundle
+    command: bundle exec rails s -p 9000 -b 0.0.0.0
+    ports:
+      - 9000:9000
     depends_on:
       - db
-    ports:
-      - "9000:9000"
-    env_file: .env
-
-  db:
-    image: postgres:12.1
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5433:5432"
-    env_file: .env
-
-  redis:
-    image: redis:alpine
 
   sidekiq:
+    env_file: .env
+    container_name: ${PROJECT_NAME}-sidekiq
     build:
       context: .
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - app_data:/app
+      - bundle_volume:/usr/local/bundle
+    command: bundle exec sidekiq
     depends_on:
       - app
       - db
       - redis
-    volumes:
-      - ./application:/application
+
+  db:
     env_file: .env
-    entrypoint: ./entrypoints/sidekiq-entrypoint.sh
+    container_name: ${PROJECT_NAME}-db
+    image: postgres:12-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
 
   web:
-    build:
-      context: .
-      dockerfile: ./docker/webserver/Dockerfile
+    container_name: ${PROJECT_NAME}-nginx
+    working_dir: /app
+    build: docker/webserver
+    volumes:
+      - app_data:/app
+    ports:
+      - "3000:80"
     depends_on:
       - app
       - db
-    ports:
-      - "3000:3000"
 
-volumes:
-  db_data:
-  application:
+  redis:
+    image: redis:alpine

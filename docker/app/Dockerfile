@@ -1,14 +1,31 @@
-FROM ruby:2.7.5
+FROM ruby:2.7.5-alpine
 
-RUN apt-get update -qq \
-    && apt-get install -y nodejs postgresql-client openssl
+#install depedencies
+RUN apk add --update-cache \
+    build-base \
+    busybox \
+    ca-certificates \
+    curl \
+    git \
+    gnupg1 \
+    graphicsmagick \
+    libffi-dev \
+    libsodium-dev \
+    nodejs \
+    openssh-client \
+    postgresql-client \
+    postgresql-dev \
+    rsync \
+    shared-mime-info \
+    tzdata
 
+#install gem bundler
 RUN gem install bundler
 
-ADD ./application /application
-WORKDIR /application
+WORKDIR /app
+COPY ./application .
 
-RUN bundle install
-RUN bundle exec rails assets:clobber assets:precompile
+COPY ./docker/entrypoints/* ./entrypoints/
+RUN chmod +x ./entrypoints/*
 
-CMD [ "bash" ]
+ENTRYPOINT [ "/app/entrypoints/app-entrypoint.sh"]
