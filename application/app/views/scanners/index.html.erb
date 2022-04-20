@@ -183,10 +183,9 @@
 <body>
     <div class="container">
         <picture>
-            <source media="(max-width:600px)" srcset="/assets/bg-scanner-menu-new-600.jpg" class="img-scanner-bg">
-            <source media="(min-width:600px)" srcset="/assets/bg-scanner-menu-new-768.jpg" class="img-scanner-bg">
-            <%# <source media="(min-width:800px)" srcset="/assets/bg-scanner-menu-new-768p.jpg" class="img-scanner-bg"> %>
-            <img src="/assets/bg-scanner-menu-new-768p.jpg" class="img-scanner-bg">
+            <source media="(max-width:600px)" srcset="<%= asset_path('bg-scanner-menu-new-600.jpg') %>" class="img-scanner-bg">
+            <source media="(min-width:600px)" srcset="<%= asset_path('bg-scanner-menu-new-768.jpg') %>" class="img-scanner-bg">
+            <img src="<%= asset_path('bg-scanner-menu-new-768p.jpg') %>" class="img-scanner-bg">
         </picture>
         <header>
             <a href="<%= root_path %>" class="header-a">

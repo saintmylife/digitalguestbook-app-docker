@@ -41,7 +41,7 @@ services:
     container_name: ${PROJECT_NAME}-db
     image: postgres:12-alpine
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - ./docker/db:/var/lib/postgresql/data
     ports:
       - "5433:5432"
 
@@ -51,8 +51,10 @@ services:
     build: docker/webserver
     volumes:
       - app_data:/app
+      - ./docker/webserver/log:/var/log/nginx/
     ports:
       - "3000:80"
+      - "3001:443"
     depends_on:
       - app
       - db
