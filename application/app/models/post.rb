@@ -5,7 +5,7 @@ class Post < ApplicationRecord
 
   def save_path
     # ":rails_root/public/images/#{event_type}/#{event_name}/:normalize_basename.:extension"
-    ":rails_root/public/images/#{event_type}/#{event_name}/:normalize_basename.:extension"
+    ":rails_root/public/images/#{event_type}/#{event_name}/:normalize_basename:extension"
   end
 
   Paperclip.interpolates :normalize_basename do |attachment, style|
@@ -13,7 +13,7 @@ class Post < ApplicationRecord
   end
 
   def normalize_basename
-    "#{guest_id}-:id"
+    "#{guest_id}-:id.jpg"
   end
 
 end

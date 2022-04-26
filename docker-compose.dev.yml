@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+    app:
+        volumes:
+            - application-unison-sync:/application:nocopy
+
+    sidekiq:
+      volumes:
+          - application-unison-sync:/application:nocopy
+
+    web:
+      volumes:
+          - application-unison-sync:/application:nocopy
+
+volumes:
+    application-unison-sync:
+        external: true

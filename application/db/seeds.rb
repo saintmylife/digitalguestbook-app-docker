@@ -5,9 +5,16 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-Setting.create(no_undian: false, nama_meja:true, nama_undangan:false, nama_angpao:true, jumlah_souvenir:false, jumlah_undangan:false)
+Setting.create(no_undian: false, nama_meja:true, nama_undangan:false, nama_angpao:true, jumlah_souvenir:false, jumlah_undangan:false, count_person:true)
 typeEvent = ['Weddings','Concert','Gatherings','Moving']
 typeEvent.each do |type|
     TypeOfEvent.create(name: type)
 end
-Event.create(name: 'Testing Event',event_owner: 'System',status: true,type_of_event_id: 1,code:'TST')
+event = Event.create(name: 'Testing Event',event_owner: 'System',status: true,type_of_event_id: 1,code:'TST')
+Guest.create({
+    event_id:event.id,
+    guest_id:'TSY0001',
+    nama:'System Test',
+    kategori:'Keluarga',
+    jumlah_undangan: '2'
+    })

@@ -1,0 +1,39 @@
+{
+  "name": "rails-assets-bootstrap",
+  "downloads": null,
+  "version": "3.3.6",
+  "version_downloads": null,
+  "platform": "ruby",
+  "authors": "rails-assets.org",
+  "info": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+  
+  "licenses": "MIT",
+  
+  "metadata": {
+
+  },
+  "sha": null,
+  "project_uri": "http://getbootstrap.com/",
+  "gem_uri": null,
+  "homepage_uri": "http://getbootstrap.com/",
+  "wiki_uri": null,
+  "documentation_uri": null,
+  "mailing_list_uri": null,
+  "source_code_uri": "http://getbootstrap.com/",
+  "bug_tracker_uri": null,
+  "dependencies": {
+    "development": [
+    
+    
+    {
+      "name": "rails-assets-jquery",
+      "requirements": ">= 1.9.1", "< 3"
+    },
+    
+    
+    ],
+    "runtime": [
+
+    ]
+  }
+}

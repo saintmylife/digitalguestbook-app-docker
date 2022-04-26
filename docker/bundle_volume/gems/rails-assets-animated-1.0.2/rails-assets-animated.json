@@ -1,0 +1,46 @@
+{
+  "name": "rails-assets-animated",
+  "downloads": null,
+  "version": "1.0.2",
+  "version_downloads": null,
+  "platform": "ruby",
+  "authors": "rails-assets.org",
+  "info": "an animation framework built on animate.css",
+  
+  "licenses": "MIT",
+  
+  "metadata": {
+
+  },
+  "sha": null,
+  "project_uri": "https://github.com/shri/animated",
+  "gem_uri": null,
+  "homepage_uri": "https://github.com/shri/animated",
+  "wiki_uri": null,
+  "documentation_uri": null,
+  "mailing_list_uri": null,
+  "source_code_uri": "https://github.com/shri/animated",
+  "bug_tracker_uri": null,
+  "dependencies": {
+    "development": [
+    
+    
+    {
+      "name": "rails-assets-animate.css",
+      "requirements": "~> 3.2.0"
+    },
+    
+    
+    
+    {
+      "name": "rails-assets-jquery",
+      "requirements": "~> 2.1.1"
+    },
+    
+    
+    ],
+    "runtime": [
+
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+current directory: /usr/local/bundle/gems/thin-1.8.1/ext/thin_parser
+/usr/local/bin/ruby -I /usr/local/lib/ruby/2.7.0 -r ./siteconf20220420-9-1o5pxsw.rb extconf.rb
+checking for main() in -lc... yes
+creating Makefile
+
+current directory: /usr/local/bundle/gems/thin-1.8.1/ext/thin_parser
+make "DESTDIR=" clean
+
+current directory: /usr/local/bundle/gems/thin-1.8.1/ext/thin_parser
+make "DESTDIR="
+compiling parser.c
+compiling thin.c
+linking shared-object thin_parser.so
+
+current directory: /usr/local/bundle/gems/thin-1.8.1/ext/thin_parser
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 thin_parser.so ./.gem.20220420-9-ke3002

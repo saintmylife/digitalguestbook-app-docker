@@ -1,23 +1,13 @@
-# digitalguestbook-docker
+# digitalguestbook_try
 
-## Project setup
+- ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin17]
+- Rails 6.0.2.1
+- Postgresql 12.3
+- brew install imagemagick for using paperclip gem
 
-```
-1. Copy .env.example to .env
-2. docker-compose up -d
-```
+## update 19 Jan 2021
 
-### The Output
-
-```
-Creating rails-docker_database_1 ... done
-Creating rails-docker_redis_1    ... done
-Creating rails-docker_app_1      ... done
-Creating rails-docker_sidekiq_1  ... done
-```
-
-### Setup db
-
-```
-docker-compose exec app bundle exec rake db:setup db:migrate
-```
+- Version 3.12.6 (ruby 2.6.6-p146), codename: Llamas in Pajamas
+- Rails 5.1.7
+- Postgresql 12.5
+- bundle exec thin start -p (port) --ssl (use for https)

@@ -1,0 +1,12 @@
+version: "2"
+
+options:
+  verbose: true
+  max_attempt: 30
+
+syncs:
+  application-unison-sync:
+    sync_strategy: "unison"
+    sync_userid: 82
+    src: "./application"
+    sync_excludes: [".git", ".idea", "node_modules"]

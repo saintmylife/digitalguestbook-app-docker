@@ -17,7 +17,7 @@ services:
       - bundle_volume:/usr/local/bundle
     command: bundle exec rails s -p 9000 -b 0.0.0.0
     ports:
-      - 9000:9000
+      - "9000:9000"
     depends_on:
       - db
 
@@ -29,7 +29,7 @@ services:
       dockerfile: docker/app/Dockerfile
     volumes:
       - app_data:/app
-      - bundle_volume:/usr/local/bundle
+      -  bundle_volume:/usr/local/bundle
     command: bundle exec sidekiq
     depends_on:
       - app

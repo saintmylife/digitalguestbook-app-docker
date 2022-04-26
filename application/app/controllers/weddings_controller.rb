@@ -173,7 +173,7 @@ end
                         .where("type_of_events.name ilike '%Wedding%'")
                         .where("events.status = TRUE")
                         .where(guest_id: params[:guest_code])
-    @settingan = Setting.select('id,nama_meja AS table, nama_angpao AS gift').last
+    @settingan = Setting.select('id,nama_meja AS table, nama_angpao AS gift', 'count_person').last
     # logger.debug @settingan.gift
     if @find_guest.present? && @find_guest.first.presence != true
       setting = Setting.where(id:@find_guest.first.event_id)
@@ -183,12 +183,12 @@ end
       respond_to do |format|
         format.json { render json:{
           message: "Selamat Datang", #data yang mau ditampilkan di app
-          guest_id: "#{@find_guest[0].guest_id} \n#{@find_guest[0].kategori} #{@find_guest[0].status}",
+          guest_id: @find_guest[0].guest_id,
           # guest_id: "#{@find_guest[0].nama} \n \n#{@find_guest[0].kategori} #{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
           # guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori} #{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
           # guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].custom_one_text ? @find_guest[0].custom_one_text : ''}",
           nama: @find_guest[0].nama,
-          alamat: "#{@find_guest[0].kategori} \n #{@find_guest[0].status}",
+          alamat: @find_guest[0].alamat,
           jumlah_undangan: @find_guest[0].jumlah_undangan,
           other1: @find_guest[0].nama_meja,
           other2: @find_guest[0].kategori,
@@ -204,13 +204,13 @@ end
         respond_to do |format|
           format.json { render json:{
             message: "Already", #data yang mau ditampilkan di app
-            guest_id: "#{@find_guest[0].guest_id} \n#{@find_guest[0].kategori} #{@find_guest[0].status}",
+            guest_id: @find_guest[0].guest_id,
             #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori}#{@find_guest[0].nama_meja ? ', '+@find_guest[0].nama_meja : ''}",
             #  guest_id: "#{@find_guest[0].nama} \n \n#{@find_guest[0].kategori}#{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
             #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori}#{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
              #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].custom_one_text ? @find_guest[0].custom_one_text : ''}",
              nama: @find_guest[0].nama,
-             alamat: "#{@find_guest[0].kategori} \n #{@find_guest[0].status}",
+             alamat: @find_guest[0].kategori,
              jumlah_undangan: @find_guest[0].jumlah_undangan,
              other1: @find_guest[0].nama_meja,
              other2: @find_guest[0].kategori,
@@ -606,6 +606,38 @@ end
 
   def update_test
     logger.debug('tes')
+  end
+
+  def update_real_person
+    @find_guest = Guest.joins(event: :type_of_event)
+                    .where("type_of_events.name ilike '%Wedding%'")
+                    .where("events.status = TRUE")
+                    .where(guest_id: params[:guest_code])
+    if params[:real_person].present?
+      if @find_guest.present?
+        @find_guest.update(real_person: params[:real_person])
+        respond_to do |format|
+          format.json { render json:{
+            message: "Success",
+            guest: @find_guest
+            },status:200}
+        end
+      else
+          respond_to do |format|
+            format.json { render json:{
+              message: "Not Found",
+              },status:404}
+          end
+      end
+    else
+      respond_to do |format|
+        format.json { 
+          render json:{
+            message: "Guest Count is Required",
+          },
+          status:422}
+      end
+    end
   end
 
   private
