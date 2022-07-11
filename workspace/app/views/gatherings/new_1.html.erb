@@ -1,0 +1,33 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Pilih Event</h3><br>
+        Untuk memasukan data guest pilih event mana
+        yang mau ditambah guestnya
+    </div>
+
+    <div class="panel-body">
+    	<%# form_tag import_gatherings_path, multipart: true do %>
+
+        <div class="col-sm-6">
+          <div class="form-group form-group--select">
+              <div class="select">
+                  <%= collection_select( :gathering,:event_id, Event.all, :id, :name,{:include_blank => false},{:class=> "form-control" }) %>
+              </div>
+          </div>
+
+          <div class="form-group">
+            <%# submit_tag "Import", class: "btn btn-primary waves-effect" %>
+            <%# link_to 'Back', gatherings_path, class:"btn btn-danger btn--icon-text waves-effect" %>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+        	<div class="form-group">
+      			<%= file_field_tag :file, class: "btn btn-primary waves-effect" %>
+        	</div>
+        </div>
+      <% end %>
+    </div>
+</div>
+
+

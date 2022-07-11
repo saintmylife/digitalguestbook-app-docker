@@ -1,0 +1,65 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  wb.add_worksheet(name: "Semua") do |sheet|
+    sheet.add_row [
+      "ID",
+      "Category",
+      "Name",
+      "Jenis Tiket",
+      "Class",
+      "Status",
+      "No Ktp",
+      "Email",
+      "Address",
+      "No Ponsel",
+      "Jumlah Tiket",
+      "Kehadiran",
+      "Waktu Tukar Tiket",
+      "Waktu Masuk"
+      ]
+    @guests.each do |concert|
+      if concert.presence == true
+        kehadiran = 'Hadir'
+      else
+        kehadiran = 'Tidak Hadir'
+      end
+      if concert.ticket == true
+        tiket = 'Tukar Tiket'
+      else
+        tiket = 'Tidak Tukar Tiket'
+      end
+
+      sheet.add_row [
+                      "'"+concert.guest_id.to_s,
+                      concert.kategori,
+                      concert.nama,
+                      concert.jenis_tiket,
+                      concert.class_user,
+                      concert.status,
+                      concert.no_ktp,
+                      concert.email,
+                      concert.alamat,
+                      concert.no_ponsel.present? ? "'"+concert.no_ponsel : '-',
+                      concert.jumlah_tiket,
+                      kehadiran+' - '+tiket,
+                      concert.time_of_get_ticket.present? ? concert.time_of_get_ticket.strftime("%H:%M:%S") : '-',
+                      concert.time_of_entry.present? ? concert.time_of_entry.strftime("%H:%M:%S") : '-'
+                    ],
+                    style: [
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil]
+    end
+  end
+end

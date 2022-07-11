@@ -1,0 +1,21 @@
+<%= render 'hadir-svg' %>
+<%#= image_tag("#{@find_guest[0].guest_id}.JPG") %>
+<br>
+    <span class="active-wedding-name">Welcome</span>
+      <div class="result-text" style="padding-top:10px;">
+
+              <% if @find_guest[0].nama != nil %><p><span class="active-wedding-name" style="font-size: 42px !important;">
+              <%= @find_guest[0].nama %></span></p><% end %>
+
+              <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+              <% if @find_guest[0].kategori != nil %><p><span class="address"><%= @find_guest[0].kategori %></span></p><% end %>
+
+              <% if @find_guest[0].alamat.present? %><p><span class="address"><%= @find_guest[0].alamat %></span></p><% end %>
+              <% if @find_guest[0].status.present? %><p><span class="address">Kelas : <%= @find_guest[0].status %></span></p><% end %>
+
+              <% if @find_guest[0].nama_meja != nil %><p><span class="address">
+                Nama Meja : <%= @find_guest[0].nama_meja %></span></p><% end %>
+              <% if @find_guest[0].jumlah_undangan != nil %><p><span class="address">
+                Jumlah Undangan : <%= @find_guest[0].jumlah_undangan %></span></p><% end %>
+
+      </div>

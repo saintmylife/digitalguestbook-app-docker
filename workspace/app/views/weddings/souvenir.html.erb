@@ -1,0 +1,84 @@
+<section class="scanning">
+  <div class="input-qr col-sm-12 cfix" style="float: none;">
+    <%= form_tag print_qr_weddings_path, method: "GET" do %>
+    <%#text_field_tag "guest_qr",nil, class:"form-control", autofocus:"true" %>
+      <%#= collection_select(:guest_qr, :id, Guest.joins(event: :type_of_event).where("type_of_events.name ilike '%Wedding%'").where("events.status = TRUE"), :guest_id, :nama, {:prompt => ''}) %>
+      <select id="guest_qr_id">
+      </select>
+    <% end %>
+  </div>
+  <div class="input-guest col-sm-12">
+    <%= form_tag update_souvenir_weddings_path, method: "GET", id: "form_souvenir",remote: true do %>
+    <%= text_field_tag "souvenir",nil, class:"form-control", autofocus:"true" %>
+    <input id="name" name="name" type="hidden" value="Weddings">
+    <% end %>
+  </div>
+
+  <div class="active-wedding">
+    <h4><span class="bg-black">Penukaran Souvenir</span></h4>
+    <span class="active-wedding-name">
+      <%= @settingwedd.custom_one_text.present? ? @settingwedd.custom_one_text : active_wedding_name %>
+    </span><br>
+    <% if @settingwedd.custom_two_text !=nil %>
+    <span class="active-wedding-name">
+      <%= @settingwedd.custom_two_text %>
+    </span>
+    <% end %>
+
+
+  </div>
+  <br>
+  <div id="notice"></div>
+</section>
+
+<script>
+    $("#guest_qr_id").on('select2:select',function (e) {
+      $.ajax({
+        type: 'GET',
+        url: '/weddings/update_souvenir',
+        data: {
+          souvenir: $("#guest_qr_id").val(),
+          name: "Weddings"
+        },
+        success: function () {
+          setTimeout(() => {
+            $('#result').empty();
+            $('#souvenir').get(0).focus();
+            $("#guest_qr_id").val('').trigger('change');
+          }, 500);
+        }
+      });
+    });
+  $(document).ready(function () {
+      $('#guest_qr_id').select2({
+        ajax: {
+          url: '/type_of_events/getalldata',
+          cache: false,
+          dataType: 'JSON',
+          processResults: function (data) {
+            let temp = {};
+            temp = data.data;
+            temp = $.map(temp, function(obj){
+                    obj.id = obj.guest_id;
+                    if(obj.kategori){
+                      obj.text = obj.nama + ', Kategori : ' + obj.kategori;
+                    }else{
+                      obj.text = obj.nama;
+                    }
+                    return obj;
+                    });
+            return {
+              results: temp
+            };
+          }
+        }
+      });
+    $("#form_souvenir").bind("ajax:complete", function (event, xhr, status) {
+      $('#souvenir').val('');
+    });
+    // $("#souvenir").blur(function () {
+    //   $('#souvenir').get(0).focus();
+    // })
+    $('#souvenir').get(0).focus();
+  });
+</script>

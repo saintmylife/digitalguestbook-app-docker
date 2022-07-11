@@ -1,0 +1,102 @@
+<% content_for :title, "Dashboard | Reddonedigital" %>
+<div class="row dashboard-header" style="width:100%;">
+ <div class="col-md-12">
+  <h3>DASHBOARD
+  <%= link_to dashboard_weddings_path, class: 'btn btn-primary pull-right',id:'btn-refresh',remote: true do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  </h3>
+  <hr/>
+ </div>
+</div>
+<div class="row" style="padding:20px;">
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard biru">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-users fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL</small>
+          <p id="total_guest"><%= @total_guest.present? ? @total_guest:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard hijau">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-check-square fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>HADIR</small>
+          <div class="row">
+            <div class="col-md-3">  
+                <p id="guest_sudah_hadir"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %>
+                </p>
+            </div>
+            <div class="col-md-2">
+            <p style="margin: 0 16px"> / </p>
+            </div>
+            <div class="col-md-3">
+              <p id="guest_sudah_hadir_jumlah" style="color:red">
+              <%= @total_orang%>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard merah">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-times fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>BELUM HADIR</small>
+          <p id="guest_belum_hadir"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard kuning">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-american-sign-language-interpreting fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>SOUVENIR TERAMBIL</small>
+          <p id="jumlah_souvenir"><%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="row" style="display:flex;margin-top:10px;justify-content:center;align-items:center;">
+    <div class="col-md-3 col-sm-6">
+     <div class="panel panel-default panel-table" style="max-height:300px">
+      <div class="panel-heading" style="text-align:center;font-weight:bold;">KATEGORI</div>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Total</th>
+            <th>Hadir</th>
+            <th>Belum</th>
+          </tr>
+        </thead>
+        <tbody id="list_kategori">
+          <%= render 'list_kategori', remote: true %>
+        </tbody>
+      </table>
+    </div>
+  </div>  

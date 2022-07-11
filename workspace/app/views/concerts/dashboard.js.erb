@@ -1,0 +1,7 @@
+$("#total_guest").html("<%= @total_guest.present? ? @total_guest:"-" %>");
+$("#total_souvenir").html("<%= @total_souvenir.present? ? @total_souvenir:"-" %>");
+$("#guest_sudah_hadir").html("<%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %>");
+$("#guest_belum_hadir").html("<%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %>");
+$("#souvenir_sudah").html("<%= @souvenir_sudah.present? ? @souvenir_sudah:"-" %>");
+$("#souvenir_belum").html("<%= @souvenir_belum.present? ? @souvenir_belum:"-" %>");
+toastr['info']('Refresh data berhasil');

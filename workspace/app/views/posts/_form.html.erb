@@ -1,0 +1,8 @@
+
+<%= simple_form_for @post, html: { multipart: true } do |form| %>
+  <%= form.input :event_type, label:false, as: :hidden, input_html: { :value => @eventtype, class: 'form-control form-control-sm' ,style:'margin-bottom:10px;' }  %>
+  <%= form.input :event_name, label:false, as: :hidden, input_html: { :value => @namaevent, class: 'form-control form-control-sm' ,style:'margin-bottom:10px;' }  %>
+  <%= form.input :guest_id, label:"Guest_ID", placeholder: "required", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' } %>
+  <%= form.input :image, as: :file %>
+  <%= form.submit %>
+<% end %>

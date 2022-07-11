@@ -1,0 +1,65 @@
+version: "3.9"
+
+volumes:
+  bundle_volume:
+networks:
+    infra_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.27.0.0/16
+
+services:
+  redis:
+    image: redis:alpine
+    
+  db:
+    container_name: ${PROJECT_NAME}-db
+    env_file: .env
+    image: postgres:12-alpine
+    volumes:
+      - ./docker/db/data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+          infra_net:
+              ipv4_address: ${POSTGRES_HOST}
+
+  app:
+    extends:
+      file: base.yml
+      service: railsapp
+    container_name: ${PROJECT_NAME}-app
+    command: bundle exec rails s -p 9000 -b 0.0.0.0
+    depends_on:
+      - db
+    networks:
+      infra_net:
+        ipv4_address: 172.27.1.2
+
+  sidekiq:
+    extends:
+      file: base.yml
+      service: railsapp
+    container_name: ${PROJECT_NAME}-sidekiq
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+      - app
+
+  web:
+    container_name: ${PROJECT_NAME}-nginx
+    working_dir: /app
+    build: docker/nginx
+    volumes:
+      - ./workspace:/app
+      - ./log/nginx:/var/log/nginx/
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
+      - db
+    networks:
+      infra_net:
+        ipv4_address: 172.27.1.3

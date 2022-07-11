@@ -1,0 +1,190 @@
+<div class="panel panel-default">
+  
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Settings
+      <%= button_tag 'Reset', class: 'btn btn-danger btn-sm pull-right', id: 'reset' %>
+    </h3>    
+  </div>
+
+  <div class="panel-body">
+    
+    <h4>Aktifasi Event</h4>
+    <hr>
+    <div class="alert alert-info">
+      <% if @event_active.present? %>
+        Event yang sedang aktif : <strong><%= @event_active.name.present? ? @event_active.name : '' %></strong>
+      <% end %>
+    </div>
+
+    <table class="table table-hovered table-bordered margin10">
+      <thead class="thead-default">
+        <tr>
+          <th>Nama</th>
+          <th>Tanggal</th>
+          <th>Pemilik Event</th>
+          <th>Jenis</th>
+          <th>#</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @events.each do |event| %>
+          <tr>
+            <td><%= event.name %></td>
+            <td><%= event.date %></td>
+            <td><%= event.event_owner %></td>
+            <td><%= event.type_of_event.name %></td>
+            <td><%= link_to 'Aktifkan', aktifasi_setting_path(event.id), method: :put, class:'btn btn-success' %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-lg-3 col-sm-4 col-6">
+        <div class="groups__item">
+          <h4>Pengaturan Cetak</h4>
+          <hr>
+            <%= form_for(@setting) do |f| %>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :no_undian %> No Undian
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :nama_meja %> Nama Meja
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :nama_undangan %> Nama Undangan / Angpau
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :custom_one %> <%= @setting.custom_one_text if @setting.custom_one_text.present? %> (Custom One)
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :custom_two %> <%= @setting.custom_two_text if @setting.custom_two_text.present? %> (Custom Two)</strong>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :custom_three %> <%= @setting.custom_three_text if @setting.custom_three_text.present? %> (Custom Three)</strong>
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :custom_four %> <%= @setting.custom_four_text if @setting.custom_four_text.present? %> (Custom Four)
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <%= f.check_box :custom_five %> <%= @setting.custom_five_text if @setting.custom_five_text.present? %> (Custom Five)
+                </label>
+              </div>
+              <%= f.submit 'Simpan', class: 'btn btn-primary' %>
+            <% end %>
+        </div>
+      </div>
+
+      <div class="col-lg-9 col-sm-12">
+        <%= render 'form_custom_text.html.erb' %>    
+      </div>
+    </div>
+
+    <div class="row">
+
+
+      <div class="wrap">
+        
+        <input type="hidden" value="<%= @setting.id %>" />
+        <div class="tile"> 
+          <img src='https://images.unsplash.com/photo-1464054313797-e27fb58e90a9?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=996&q=80'/>
+          <div class="text">
+            
+            <h1>PAKET CETAK 1</h1>
+            <p class="animate-text"> NO UNDIAN </p>
+            <p class="animate-text"> NAMA MEJA </p>
+            <p class="animate-text"> NAMA UNDANGAN </p>
+            <p class="animate-text"> JUMLAH SOUVENIR </p>
+            <p class="animate-text"> NAMA ANGPAO </p>
+          </div>
+        </div>
+
+        <div class="tile"> 
+          <img src='https://images.unsplash.com/photo-1458668383970-8ddd3927deed?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1004&q=80'/>
+          <div class="text">
+            <h1>PAKET CETAK 2</h1>
+            <p class="animate-text"> NAMA MEJA </p>
+            <p class="animate-text"> JUMLAH SOUVENIR </p>
+            <p class="animate-text"> NAMA ANGPAO </p>
+          </div>
+        </div>
+        
+        <div class="tile"> 
+          <img src='https://images.unsplash.com/photo-1422393462206-207b0fbd8d6b?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1000&q=80'/>
+          <div class="text">
+            <h1>PAKET CETAK 3</h1>
+            <p class="animate-text">NAMA MEJA</p>
+            <p class="animate-text">JUMLAH SOUVENIR</p>
+          </div>
+        </div>
+
+        <div class="tile"> 
+          <img src='https://images.unsplash.com/photo-1422393462206-207b0fbd8d6b?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1000&q=80'/>
+          <div class="text">
+            <h1>PAKET CETAK 3</h1>
+            <p class="animate-text">NAMA MEJA</p>
+          </div>
+        </div>
+
+        <div class="tile"> 
+          <img src='https://images.unsplash.com/photo-1422393462206-207b0fbd8d6b?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1000&q=80'/>
+          <div class="text">
+            <h1>PAKET CETAK 3</h1>
+            <p class="animate-text">NAMA ANGPAO</p>
+          </div>
+        </div>
+
+        <div class="tile"> 
+          <img src='https://images.unsplash.com/photo-1422393462206-207b0fbd8d6b?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1000&q=80'/>
+          <div class="text">
+            <h1>PAKET CETAK 3</h1>
+            <p class="animate-text">NAMA SOUVENIR</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+  
+</div>
+
+<script>
+  $(".wrap .tile .text").click(function(){
+    console.log($(this).find("p"));
+  //  $.ajax({
+  //    url: '/settings/'+$(".wrap input").val(),
+  //    method: 'PUT',
+  //    data:{ setting:
+  //     {
+  //       no_undian:  ,
+  //       nama_meja,
+  //       nama_undangan,
+  //       custom_one,
+  //       custom_two,
+  //       custom_three,
+  //       custom_four,
+  //       custom_five
+  //     } 
+  //    }
+  //  });
+  });
+</script>
+

@@ -1,0 +1,24 @@
+
+<% if @con %>
+	<%# alert('Tambah Data Berhasil !!!') %>
+	toastr['info']('Tambah data berhasil');
+	$('input').each(function(index){
+		let thisID = $(this).attr('id');
+		if(thisID !== 'guest_event_id' && thisID !== 'guest_jumlah_undangan' && thisID !== 'autoID' && thisID !== 'autoPresence' && thisID !== 'autoPrint'){
+			console.log(thisID);
+			$(this).val('');
+		};
+	});
+	$('#guest_nomor_ponsel').val('');
+	$('#guest_custom_one_text').val('');
+	$('#guest_custom_two_text').val('P');
+	<% if @printQR %>
+		window.open('/weddings/template_qr?qr_code='+ '<%= j @guestID %>', "mywindow","menubar=1,resizable=1,width=200,height=120");
+	<% end %>
+
+<% else %>
+	<%# alert('Gagal Tambah Data, Mohon Cek Form') %>
+	toastr['error']('Gagal Tambah Data');
+<% end %>
+$('#guest_nama').focus();
+

@@ -1,0 +1,33 @@
+<section class="scanning">
+  <div class="input-qr col-sm-12">
+    <%= form_tag print_qr_absensis_path, method: "GET", remote: true do %>
+      <%#text_field_tag "guest_qr",nil, class:"form-control", autofocus:"true" %>
+      <%= collection_select(:guest_qr, :id, Guest.joins(event: :type_of_event).where("type_of_events.id = 1").where("type_of_events.name ilike '%Absensi%'").where("events.status = TRUE"),
+                  :name, :name,
+                 {:prompt => ''}) %>
+    <% end %>
+  </div>
+
+  <div class="active-wedding">
+    <h4><span class="bg-black">THE WEDDING OF</span></h4>
+    <p><span class="active-wedding-name"><%= active_wedding_name %></span></p>
+    <p><span class="active-wedding-name">Print Qr Code</span></p>
+    <br/>
+  </div>
+  <div id="notice"></div>
+</section>
+
+
+<script>
+  $("#guest_qr_id").change(function(){
+    $.ajax({
+      type: 'GET',
+      url: '/absensis/print_qr',
+      data: {guest_qr: $(this).val()},
+    });
+  });
+  $(document).ready(function(){
+    $('#guest_qr_id').select2();
+  });
+
+</script>

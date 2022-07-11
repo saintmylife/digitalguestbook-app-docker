@@ -1,0 +1,12 @@
+
+<% @winners.each_with_index do |winner,index| %>
+  <tr>
+    <td style="text-align:center"> <%= index+1 %> </td>
+    <td style="text-align:center"> <%= winner.guest_id %> </td>
+    <% if @type_event_id != "Gatherings" %>
+    <td style="text-align:center"> <%= winner.nama %> </td>
+    <% else %>
+    <td style="text-align:center"> <%= winner.nama_peserta %> </td>
+    <% end %>
+  </tr>
+  <% end %>

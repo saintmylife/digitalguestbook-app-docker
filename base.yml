@@ -1,0 +1,11 @@
+services:
+  railsapp:
+    env_file: .env
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    working_dir: /app
+    volumes:
+      - ./workspace:/app
+      - bundle_volume:/usr/local/bundle
+      - ./log/app:/app/log

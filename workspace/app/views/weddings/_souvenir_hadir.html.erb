@@ -1,0 +1,15 @@
+<%= render 'hadir-svg' %>
+<div class="result-text">
+  <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+
+  <% if @find_guest[0].nama != nil %><p><span class="category" style="font-size: 48px !important;">
+  <%= @find_guest[0].nama %></span></p><% end %>
+
+  <% if @find_guest[0].kategori != nil %><p><span class="address">Kategori :
+  <%= @find_guest[0].kategori %></span></p><% end %>
+
+  <% if @find_guest[0].nama_meja != nil %><p><span class="address">Zona :
+  <%= @find_guest[0].custom_one_text %>, Nama Meja : <%= @find_guest[0].nama_meja %></span></p><% end %>
+
+  <% if @find_guest[0].status != nil %><p><span class="address"><%= @find_guest[0].status %></span></p><% end %>
+</div>

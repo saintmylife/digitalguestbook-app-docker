@@ -1,0 +1,69 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Tambah Undangan Baru : <b><u><%= active_wedding_name %></u></b></h3>
+  </div>
+    <div class="panel-body">
+<%= simple_form_for @absensi do |f| %>
+
+        <%= f.input :event_id, label:false, as: :hidden, input_html: { :value => @eventid, class: 'form-control form-control-sm' ,style:'margin-bottom:10px;' }  %>
+
+
+<%# <div class="form-group">
+  <label class="col-sm-2 control-label">Guest ID</label>
+    <div class="col-sm-10"> %>
+      <%#= f.input :guest_id, label:false, placeholder: "required", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' } %>
+    <%# </div>
+  </div> %>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label">Nama</label>
+    <div class="col-sm-10">
+      <%= f.input :nama, label:false, placeholder: "required", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+    </div>
+  </div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label">Alamat</label>
+    <div class="col-sm-10">
+      <%= f.input :alamat, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+    </div>
+  </div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label">Kategori</label>
+    <div class="col-sm-10">
+      <%= f.input :kategori, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+    </div>
+  </div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label">Instansi</label>
+    <div class="col-sm-10">
+      <%= f.input :instansi, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+    </div>
+  </div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label">Jabatan</label>
+    <div class="col-sm-10">
+      <%= f.input :jabatan, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+    </div>
+  </div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label">Unit Kerja</label>
+    <div class="col-sm-10">
+      <%= f.input :unit_kerja, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+    </div>
+  </div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label"></label>
+    <div class="col-sm-10">
+      <%= link_to "Back", masterdata_absensis_path, class:"btn btn-danger"%>
+      <%= f.button :submit, "Tambah Data", class:"btn btn-success" %>
+    </div>
+</div>
+<% end %>
+</div>
+</div>

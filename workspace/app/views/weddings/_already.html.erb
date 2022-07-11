@@ -1,0 +1,10 @@
+<%= render 'already-svg' %>
+<div class="result-text">
+    <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+    <% if @find_guest[0].nama != nil %><p><span class="category" style="font-size: 48px !important;">
+    <%= @find_guest[0].nama %></span></p><% end %>
+  <p><span class="name">Sudah Hadir</span></p>
+  <%= link_to reprint_weddings_path(guest_code: @find_guest[0].guest_id), remote: true do %>
+    <%= image_tag('print.ico', style: 'width:70px; height: auto;', title: 'Print Ulang') %>
+  <% end %>
+</div>

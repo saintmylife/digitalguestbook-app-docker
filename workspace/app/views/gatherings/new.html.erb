@@ -1,0 +1,105 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Tambah Peserta Baru : <b><u><%= active_wedding_name %></u></b></h3>
+    </div>
+  <div class="panel-body">
+    <%= simple_form_for @gathering do |f| %>
+
+    <%= f.input :event_id, label:false, as: :hidden, input_html: { :value => @eventid, class: 'form-control form-control-sm' ,style:'margin-bottom:10px;' }  %>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Guest ID</label>
+        <div class="col-sm-10">
+          <%= f.input :guest_id, label:false, placeholder: "required", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Nama Peserta</label>
+          <div class="col-sm-10">
+            <%= f.input :nama_peserta, label:false, placeholder: "required", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Alamat</label>
+            <div class="col-sm-10">
+              <%= f.input :address, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Instansi/Sekolah</label>
+              <div class="col-sm-10">
+                <%= f.input :instansi, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+              </div>
+            </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Jabatan/Kelas</label>
+              <div class="col-sm-10">
+                <%= f.input :jabatan, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+              </div>
+            </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Unit Kerja</label>
+              <div class="col-sm-10">
+                <%= f.input :unit_kerja, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+              </div>
+            </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label">NIP</label>
+              <div class="col-sm-10">
+                <%= f.input :nip, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">E-Mail</label>
+                <div class="col-sm-10">
+                  <%= f.input :email, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Kategori</label>
+                  <div class="col-sm-10">
+                    <%= f.input :category, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                  </div>
+                </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Nomor Ponsel</label>
+                <div class="col-sm-10">
+                  <%= f.input :no_ponsel, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                </div>
+              </div>
+
+                <div class="form-group" id="jumlah_tiket">
+                  <label class="col-sm-2 control-label">Jumlah Orang</label>
+                    <div class="col-sm-10">
+                      <%= f.input :jumlah_orang, label:false, input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Jadwal</label>
+                      <div class="col-sm-10">
+                        <%= f.input :kelas, label:false, placeholder: "DAY 1 / DAY 2", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+                      </div>
+                    </div>
+
+
+
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+              <%= link_to "Back", masterdata_gatherings_path, class:"btn btn-danger"%>
+              <%= f.button :submit, "Tambah Data", class:"btn btn-success" %>
+            </div>
+        </div>
+          <% end %>
+</div>

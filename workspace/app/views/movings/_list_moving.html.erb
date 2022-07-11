@@ -1,0 +1,44 @@
+<% @movings.each do |moving| %>
+    <tr>
+      <td style="text-align:center;vertical-align:middle"><%= moving.guest_id %></td>
+      <td style="vertical-align:middle"><%= moving.nama %> </td>
+      <td style="text-align:center;vertical-align:middle"><%= moving.instansi %></td>
+      <td style="text-align:center;vertical-align:middle"><%= moving.jabatan %></td>
+      <td style="text-align:center;vertical-align:middle"><%= moving.unit_kerja %></td>
+      <td style="text-align:center;vertical-align:middle"><%= moving.kategori %></td>
+      <td style="text-align:center;vertical-align:middle"><%=
+        if moving.presence == true
+          'Sudah Masuk'
+        else
+          'Belum Masuk'
+        end
+        %></td>
+      <td style="text-align:center;vertical-align:middle"><%=
+        if moving.souvenir == true
+          'Sudah Keluar'
+        else
+          'Belum Keluar'
+        end
+         %></td>
+      <td style="text-align:center;vertical-align:middle">
+      <%= link_to print_qr_master_movings_path(guest_id: moving.guest_id), remote: true do %>
+          Print
+          </td>
+     <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#show-data">
+        <%= link_to "Detail", moving_path(moving), remote: true %>
+        </button>
+       </td>
+     <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-success btn-sm">
+       <%= link_to "Edit", edit_moving_path(moving), method: :get %></button>
+       </td>
+       <td style="text-align:center;vertical-align:middle">
+       <button type="button" class="btn btn-delete btn-sm">
+       <%= link_to "Delete", moving_path(moving), method: :delete, data: {confirm: 'Data Akan Dihapus '} %></button>
+     </td>
+        <% end %>
+    </tr>
+<% end %>
+<div id="show-data" stlye="display:none;">
+</div>

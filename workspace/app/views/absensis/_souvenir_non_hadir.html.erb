@@ -1,0 +1,14 @@
+<div style="padding-top:80px;" >
+ <div class="active-wedding" style="padding-top: 10px !important;">
+         <span class="active-wedding-name">Mohon Maaf
+           </span>
+     </div>
+<br>
+<%= render 'already-svg' %>
+<div class="result-text">
+  <% if @find_guest[0].guest_id != nil %><p><span class="name"><%= @find_guest[0].guest_id %></span></p><% end %>
+  <p><span class="name">Anda telah Check Out,</span> <br>
+  <span class="name">Silahkan Masuk Lewat Pintu Check In</span></p>
+  <% if @find_guest[0].guest_id != nil %><p><span class="address">Waktu Terakhir Check Out : <%= @cekterakhir.waktu.strftime("%H:%M:%S") %></span></p><% end %>
+</div>
+</div>

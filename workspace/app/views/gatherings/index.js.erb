@@ -1,0 +1,11 @@
+<% if @presence == TRUE %>
+  $("#notice").html("<%= escape_javascript(render 'already') %>")
+<% elsif @presence == FALSE %>
+  $("#notice").html("<%= escape_javascript(render 'tolak') %>")
+<% elsif @souvenir == 'Sukses'  %>
+  $("#notice").html("<%= escape_javascript(render 'souvenir_hadir') %>")
+<% elsif @souvenir == 'Sudah' %>
+  $("#notice").html("<%= escape_javascript(render 'souvenir_non_hadir') %>")
+<% elsif @souvenir == 'Gagal' %>
+  $("#notice").html("<%= escape_javascript(render 'souvenir_not_found') %>")
+<% end %>

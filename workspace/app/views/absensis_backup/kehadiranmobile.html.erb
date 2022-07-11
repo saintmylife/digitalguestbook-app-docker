@@ -1,0 +1,45 @@
+<section class="scanning">
+  <div>
+    <div class="active-wedding" style="padding-top: 10px !important;">
+  <h4><span class="bg-black">(mobile)THE WEDDING OF</span></h4>
+            <span class="active-wedding-name">
+              <%= @settingwedd.custom_one_text.present? ? @settingwedd.custom_one_text : active_wedding_name %>
+              </span><br>
+              <span class="active-wedding-name">
+              <%= @settingwedd.custom_two_text.present? ? @settingwedd.custom_two_text : "" %>
+              <%#  active_wedding_name %>
+              </span>
+        </div>
+        <br>
+        <div id="notice" style="padding-top: 23px;"></div>
+      </div>
+      <div class="input-guest col-sm-12">
+        <%= form_tag update_presence_mobile_absensis_path, method: "GET", id: 'form_scanning', remote: true do %>
+        <%= text_field_tag "guest_code",nil, class:"form-control", autofocus:"true" %>
+        <input id="name" name="name" type="hidden" value="absensis">
+      <% end %>
+    </div>
+  </section>
+  <script>
+    $("#submit_presence").click(function () {
+      if ($("#guest_code").val() == "" || $("#guest_code").val() == undefined) {
+        alert("Input cannot be null");
+      }
+    });
+    $("#guest_qr_id").change(function () {
+      $.ajax({
+        type: 'GET',
+        url: '/absensis/print_qr',
+        data: {
+          guest_qr: $(this).val()
+        }
+      });
+    });
+    $(document).ready(function () {
+      $('#guest_qr_id').select2();
+
+      $("#form_scanning").bind("ajax:complete", function (event, xhr, status) {
+        $('#guest_code').val('');
+      });
+    });
+  </script>

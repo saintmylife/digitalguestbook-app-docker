@@ -1,0 +1,54 @@
+<%= form_with(model: guest, local: true) do |f| %>
+  <% if guest.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(guest.errors.count, "error") %> prohibited this guest from being saved:</h2>
+
+      <ul>
+      <% guest.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </p>
+  </div>
+
+  <div>
+    <p>
+      <%= f.label :address %>
+      <%= f.text_field :address %>
+    </p>
+  </div>
+
+  <div>
+    <p>
+      <%= f.label :telephone %>
+      <%= f.text_field :telephone %>
+    </p>
+  </div>
+
+  <div>
+    <p>
+      <%= f.label :presence, "Hadir", value:true %>
+      <%= f.radio_button :presence,true,:checked => true,:value => true %>
+      <%= f.label :presence, "Tidak Hadir", value:true %>
+      <%= f.radio_button :presence,false,:checked => false,:value => false %>
+    </p>
+  </div>
+
+  <div>
+    <p>
+      <%= f.label :time_of_entry %>
+      <%= select_time(Time.now)  %>
+    </p>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

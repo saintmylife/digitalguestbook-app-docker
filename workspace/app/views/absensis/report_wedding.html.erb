@@ -1,0 +1,47 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Report Wedding
+    </h3>
+  </div>
+  <div class="panel-body">
+    <%= form_tag  report_wedding_weddings_path, method: "GET", remote: true, class: 'form-horizontal', remote:true do %>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Pilih Event</label>
+        <div class="col-sm-10">
+          <%= collection_select( :event,:event_id, TypeOfEvent.joins(:events).where(name:"Wedding").select("events.name,events.id"),
+          :name, :name, {:include_blank => true}, {:class => 'form-control select2'}) %>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Jenis Laporan</label>
+        <div class="col-sm-10" id="jenis_kategori">
+          <select class="form-control select2" name="jenis_kategori">
+            <option value="all">Semua</option>
+            <% @jenis_kategori.each do |jk| %>
+              
+              <option value="<%= jk %>"><%= jk %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="col-sm-4" id="extendtion_jenis_kategori">
+          <select class="form-control select2" name="presence_kategori">
+            <option value="semua">Semua</option>
+            <option value="hadir">Hadir</option>
+            <option value="tidak_hadir">Tidak Hadir</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+          <%= submit_tag 'Submit', class: 'btn btn-success' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div id="list_report"></div>
+<script>
+  <%= render 'weddings/js/lib_report_wedding.js' %>
+</script>

@@ -1,0 +1,225 @@
+<style>
+.options{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 0;
+}
+.options label{
+  margin:0;
+}
+.slider {
+  border: none;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 125px;
+  margin-right:10px;
+}
+
+.slider-checkbox {
+  display: none;
+}
+
+.slider-label {
+  border: 2px solid #666;
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+}
+
+.slider-inner {
+  display: block;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+  width: 200%;
+}
+
+.slider-inner:before,
+.slider-inner:after {
+  box-sizing: border-box;
+  display: block;
+  float: left;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+  width: 50%;
+}
+
+.slider-inner:before, .slider-inner:after {
+  background-color: #eee;
+  color: #666;
+  content: "ACCEPTED";
+  padding-left: .75em;
+}
+
+.slider-inner:after {
+  /* background-color: #eee;
+  color: #666;
+  content: "DECLINED"; */
+  padding-left: 25px;
+  text-align: center;
+}
+
+.slider-inner-autoID::after,.slider-inner-autoID::before{
+  content: 'Generate ID';
+}
+.slider-inner-autoPrint::after,.slider-inner-autoPrint::before{
+  content: 'Print QR';
+}
+.slider-inner-autoPresence::after,.slider-inner-autoPresence::before{
+  content: 'Auto Hadir';
+}
+
+.slider-circle {
+  /* background-color: #66bb6a; */
+  background-color: rgb(169,0,0);
+  border: 2px solid #666;
+  border-radius: 20px;
+  bottom: 0;
+  display: block;
+  margin: 5px;
+  position: absolute;
+  right: 91px;
+  top: 0;
+  transition: all 0.3s ease-in 0s; 
+  width: 20px;
+}
+
+.slider-checkbox:checked + .slider-label .slider-inner {
+  margin-left: 0;
+}
+
+.slider-checkbox:checked + .slider-label .slider-circle {
+  background-color: #66bb6a;
+  right: 0; 
+}
+</style>  
+
+<% content_for :title, "Tambah Orang | Reddonedigital" %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Tambah Undangan Baru : <b><u><%= active_wedding_name %></u></b></h3>
+  </div>
+    <div class="panel-body">
+      <%= simple_form_for @wedding, remote: true do |f| %>
+        <div class="options">
+          <div class="slider">
+            <input type="checkbox" name="autoID" class="slider-checkbox" id="autoID" value="on" checked>
+            <label class="slider-label" for="autoID">
+              <span class="slider-inner slider-inner-autoID"></span>
+              <span class="slider-circle"></span>
+            </label>
+          </div>
+          <div class="slider">
+            <input type="checkbox" name="autoPresence" class="slider-checkbox" id="autoPresence" value="on" checked>
+            <label class="slider-label" for="autoPresence">
+              <span class="slider-inner slider-inner-autoPresence"></span>
+              <span class="slider-circle"></span>
+            </label>
+          </div>
+          <div class="slider">
+            <input type="checkbox" name="autoPrint" class="slider-checkbox" id="autoPrint" value="on" checked>
+            <label class="slider-label" for="autoPrint">
+              <span class="slider-inner slider-inner-autoPrint"></span>
+              <span class="slider-circle"></span>
+            </label>
+          </div>
+        </div>
+        <%= f.input :event_id, label:false, as: :hidden, input_html: { :value => @eventid, class: 'form-control form-control-sm' ,style:'margin-bottom:10px;' }  %>
+        <div class="form-group" id="inputGuestID">
+          <label class="col-sm-2 control-label">ID QRCode</label>
+            <div class="col-sm-10">
+              <%= f.input :guest_id, label:false, placeholder: "Masukkan ID QRCode", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' } %>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Nama</label>
+            <div class="col-sm-10">
+              <%= f.input :nama, label:false, placeholder: "Masukkan Nama", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Alamat</label>
+            <div class="col-sm-10">
+              <%= f.input :alamat, label:false, placeholder: "Masukkan Alamat", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Kategori</label>
+            <div class="col-sm-10">
+              <%= f.input :kategori, label:false, placeholder: "Kosongkan Jika Tambahan", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+          </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Nama Meja</label>
+            <div class="col-sm-10">
+              <%= f.input :nama_meja, label:false, placeholder: "Masukkan Nama Meja", input_html: { class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+          </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Jumlah Undangan</label>
+            <div class="col-sm-10">
+              <%= f.input :jumlah_undangan, label:false, input_html: { :value => "2",class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Status</label>
+            <div class="col-sm-10">
+              <%= f.input :status, label:false, placeholder: "VIP/VVIP", input_html: {class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Pria / Wanita</label>
+            <div class="col-sm-10">
+              <%= f.input :custom_two_text, label:false, placeholder: "P/W", input_html: { :value => "P",class: 'form-control form-control-sm',style:'margin-bottom:10px;' }  %>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+              <%= link_to "Back", masterdata_weddings_path, class:"btn btn-danger"%>
+              <%= f.button :submit, "Tambah Data", class:"btn btn-success" %>
+            </div>
+        </div>
+      <% end %>
+
+    </div>
+</div>
+
+<script>
+  const autoID = document.getElementById('autoID');
+  const inputID = document.getElementById('inputGuestID');
+  const autoPresence = document.getElementById('autoPresence');
+  const autoPrint = document.getElementById('autoPrint');
+  // inputID.style.display = autoID.checked ? 'autoID' : 'none';
+  $('#guest_nama').get(0).focus();
+  inputID.style.display = 'none';
+  autoID.addEventListener('change', (e) => {
+        inputID.style.display = autoID.checked ? 'none' : 'block';
+        const autoIDVal =  autoID.checked ? 'on' : 'off';
+        autoID.setAttribute('value',autoIDVal);
+        if(!autoID.checked){
+          $('#guest_nama').get(0).blur();
+          $('#guest_guest_id').get(0).focus();
+        }else{
+          $('#guest_nama').get(0).focus();
+        }
+  });
+  autoPresence.addEventListener('change', (e) => {
+        const autoPresenceVal =  autoPresence.checked ? 'on' : 'off';
+        autoPresence.setAttribute('value',autoPresenceVal);
+  });
+  autoPrint.addEventListener('change', (e) => {
+        const autoPrintVal =  autoPrint.checked ? 'on' : 'off';
+        autoPrint.setAttribute('value',autoPrintVal);
+  });
+
+</script>

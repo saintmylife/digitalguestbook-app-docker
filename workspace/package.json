@@ -1,0 +1,7 @@
+{
+  "name": "digitalguestbook",
+  "private": true,
+  "dependencies": {
+    "html5-qrcode": "^1.2.4"
+  }
+}
