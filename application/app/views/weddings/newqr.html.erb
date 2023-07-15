@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <%= stylesheet_link_tag    'nimiqQR-css/fonts-qr' %>
+    <%= stylesheet_link_tag    'nimiqQR-css/style' %>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <button style="width:100px;height:50%;border:none;outline:none;background:none" onclick="searchPerson()">
+                <!-- <%= image_tag("scanner/search-white.png", height:'100%',width:'50%')  %> -->
+                <img src="../assets/scanner/search-white.png" style="height:50px;width:50px;">
+            </button>
+        </div>
+        <div class="qr-scanner" id="qr-scanner-box">
+            <video id="qr-video" style="visibility:hidden"></video>
+            <div id="show-scan-region"></div>
+            <!-- <img src="../assets/img/FrameBarcode.png" style="position: absolute;z-index:5"> -->
+            <lottie-player id="frameScan" src="../assets/lottie/ScannerRed.json" autoplay loop background="transparent"
+                speed="1.5" style="width: 300px; height: 300px;position:absolute;z-index:5;"></lottie-player>
+        </div>
+        <div class="result" id="result">
+            <div class="guest-information">
+                <h1 class="guest-name" id="guest-name">Arahkan QRCode Anda Pada Bingkai</h1>
+                <h3 class="guest-category" id="guest-category">
+                    <small>
+                        DigitalGuestBook&copy;2019, ReddOneDigital
+                    </small>
+                </h3>
+            </div>
+            <div class="guest-status" id="guest-status">
+                <lottie-player id="markStatus" src="../assets/lottie/Mark_Initial.json" autoplay loop
+                    background="transparent" speed="0.5" style="width: 200px; height: 200px;"></lottie-player>
+                <h2 id="msgStatus"></h2>
+            </div>
+        </div>
+
+        <!--  cam-permission popup  -->
+
+        <div id=" cam-permission-modal" style="display:none;">
+            <div class="inner-modal">
+                <div class="modal-top">
+                    <h3>GRANT PERMISSION</h3>
+                    <button class="cam-grant" onclick="camPermission()"></button>
+                </div>
+            </div>
+        </div>
+
+        <!--  checkin popup -->
+        <div id="result-popup">
+            <div class="inner-modal" id="result-popup-inner">
+                <h1 id="messageStatusModal"></h1>
+                <lottie-player id="markStatusModal" autoplay background="transparent" speed="1"
+                    style="width: 250px; height: 250px;"></lottie-player>
+            </div>
+        </div>
+
+        <!-- <%# search popup %> -->
+        <div id="search-popup">
+            <div class="search-top">
+                <input id="myInput" class="border-outline-n" type="text" placeholder="Search..">
+                <button class="border-outline-n" onclick="$('#search-popup').fadeOut()">X</button>
+            </div>
+            <div id="search-table" style="position:relative">
+            </div>
+        </div>
+
+        <%= javascript_include_tag 'nimiqQR-js/assets/jquery-3.5.1.min' %>
+        <%= javascript_include_tag 'nimiqQR-js/assets/lottie-player' %>
+        <%= javascript_include_tag 'nimiqQR-js/assets/jquery.longpress' %>
+
+        <%= javascript_include_tag 'nimiqQR-js/qr-scanner.umd.min' %>
+
+        <script>
+            QrScanner.WORKER_PATH = "<%= asset_path j 'nimiqQR-js/qr-scanner-worker.min.js' %>";
+
+            const video = document.getElementById('qr-video');
+            const camHasCamera = document.getElementById('cam-has-camera');
+            const camHasFlash = document.getElementById('cam-has-flash');
+            const flashToggle = document.getElementById('flash-toggle');
+            const flashState = document.getElementById('flash-state');
+            const camQrResult = document.getElementById('cam-qr-result');
+            const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+            const fileSelector = document.getElementById('file-selector');
+            const fileQrResult = document.getElementById('file-qr-result');
+            // 
+            const box = document.getElementById('qr-scanner-box');
+            const lottieStatus = document.getElementById('markStatus');
+            const lottieStatusModal = document.getElementById('markStatusModal');
+            const lottieCheck = "<%= asset_path j 'lottie/Mark_Check.json' %>";
+            const lottieCross = "<%= asset_path j 'lottie/Mark_Cross.json' %>";
+            const statusCheck = "<%= asset_path j 'scanner/Status_Check.png' %>";
+            const statusCross = "<%= asset_path j 'scanner/Status_Cross.png' %>";
+            // 
+            const audio = new Audio('../assets/success.mp3');
+
+            function setResult(result) {
+                box.append(scanner.$canvas);
+                // scanner.stop();
+                // audio.load();
+
+                sentGuest(result);
+
+            }
+
+            // ####### Web Cam Scanning #######
+
+            const scanner = new QrScanner(video, result => setResult(result), error => {}, undefined, 'environment');
+            scanner.start().then(() => {
+                console.log('start');
+            });
+
+            // for debugging
+            window.scanner = scanner;
+            // label.parentNode.insertBefore(scanner.$canvas, label.nextSibling);
+            box.append(scanner.$canvas);
+            scanner.$canvas.style.display = 'block';
+            scanner.$canvas.style.width = '100%';
+            scanner.$canvas.style.height = '100%';
+
+
+            scanner.setInversionMode('both');
+            var state = 1;
+
+            function sentGuest(guestcode) {
+                if (guestcode && state) {
+                    state = 0;
+                    $.ajax({
+                        type: 'GET',
+                        url: '/weddings/update_presence_mobile',
+                        data: {
+                            guest_code: guestcode,
+                            name: "Weddings"
+                        },
+                        success: function (result) {
+                            audio.play();
+                            console.log(result);
+                            var data = result;
+                            console.log("ngajax");
+                            if (data['nama']) {
+                                $('#guest-name').html(data['nama']);
+                                $('#guest-category').html(data['guest_id']);
+                            } else {
+                                $('#guest-name').html('ID Tidak Terdaftar');
+                                $('#guest-category').html('Silahkan Hubungi Teknisi / Helpdesk');
+                            }
+                            // add popup
+                            console.log(data['hasil']);
+                            if (data['hasil'] === true) {
+                                console.log('masuk');
+                                lottieStatus.load(lottieCheck);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                // scanner.$canvas.style.display = 'block';
+                                $(scanner.$canvas).fadeIn();
+                                // $('#RentalOwnersState').val($('#RentalOwnersState').val().toUpperCase());
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCheck);
+                            } else {
+                                console.log('already');
+                                lottieStatus.load(lottieCross);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                // scanner.$canvas.style.display = 'block';
+                                $(scanner.$canvas).fadeIn();
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCross);
+                            }
+                            setTimeout(() => {
+                                // lottieSuccess.load();
+                                $("#result-popup").fadeOut();
+                                $('#frameScan').trigger('play');
+                                setTimeout(() => {
+                                    state = 1;
+                                    console.log('ganti state1')
+                                    // scanner.$canvas.style.display = 'none';
+                                    // $(scanner.$canvas).fadeOut();
+                                }, 150);
+                            }, 2500);
+                        },
+                        fail: function (result) {
+                            console.log('failed');
+                        },
+                        error: function (result) {
+                            console.log(result);
+                        }
+                    });
+                }
+            }
+            // $('#search-table').longpress(function (e) {
+            //     // var tes = $(e.target.getAttribute('guest-qr'));
+            //     $("#search-popup").fadeOut();
+            //     var qr = $(e.target).data('qr');
+            //     sentGuest(qr);
+            // });
+        </script>
+
+        <script>
+            function searchPerson() {
+                $('#search-popup').css('display', 'block');
+                $.ajax({
+                    type: 'GET',
+                    url: '/type_of_events/getalldata',
+                    success: function (result) {
+                        // console.log(result['data']);
+                        $.each(result['data'], function (index, val) {
+                            $('#search-table').append("<div class='guest'><h2>" +
+                                val['nama'] + "</h2><p>" + val['guest_id'] +
+                                "</p><div class='guest-masking' data-qr='" + val['guest_id'] +
+                                "' data-name='" + val['nama'] + "'></div></div>")
+                        })
+                    }
+                })
+            }
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#search-table div").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            $('#search-table').on('click', function (e) {
+                const guestid = $(e.target).data('qr');
+                const guestname = $(e.target).data('name');
+                if (guestid) {
+                    console.log(guestid + '-' + guestname);
+                }
+            })
+        </script>
+
+
+</body>
+
+</html>

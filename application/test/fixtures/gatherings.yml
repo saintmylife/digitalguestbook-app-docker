@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  guest_id: MyString
+  unit_kerja: MyString
+  nip: MyString
+  nama_peserta: MyString
+  status_pegawai: MyString
+
+two:
+  guest_id: MyString
+  unit_kerja: MyString
+  nip: MyString
+  nama_peserta: MyString
+  status_pegawai: MyString

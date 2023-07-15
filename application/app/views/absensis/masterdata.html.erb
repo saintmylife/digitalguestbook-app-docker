@@ -1,0 +1,206 @@
+<div class="panel panel-default" id="upload-gathering">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pilih Event</h3><br>
+Pilih Nama Event, beserta file
+  </div>
+
+  <div class="panel-body">
+  	<%= form_tag import_absensis_path, multipart: true do %>
+    <div class="col-sm-6">
+      <div class="form-group form-group--select">
+        <div class="select">
+          <%= collection_select( :absensi,:event_id, Event.joins(:type_of_event).where("type_of_events.name ilike 'Absensi%'"), :id, :name,{:include_blank => false},{:class=> "form-control" }) %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Import", class: "btn btn-primary waves-effect" %>
+        <%= link_to 'Back', masterdata_absensis_path, class:"btn btn-danger btn--icon-text waves-effect" %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+    	<div class="form-group">
+  			<%= file_field_tag :file, class: "btn btn-primary waves-effect" %>
+    	</div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="panel panel-default" id="master-data-gathering">
+  <div class="panel-heading">
+    <h3 class="panel-title">Master Event</h3><br>
+  </div>
+
+  <div class="panel-body">
+    <h4><div class="alert alert-info">Data Absensi yang sedang aktif: <b><u><%= active_wedding_name %></u></b></div></h4>
+    <hr>
+
+    <div class="row">
+      <div class="col-lg-4 col-sm-4 col-6">
+        <div class="groups__item">
+          <%= form_tag  search_absensis_path, method:'GET', class:'form-horizontal', id:'form-search', remote: true do  %>
+            <div class="form-group" id="Name">
+              <label class="col-sm-2 control-label">Name</label>
+              <div class="col-sm-8">
+                <%= text_field_tag 'name_search',nil,{class:"form-control form-control-sm", placeholder:"Input name"} %>
+              </div>
+            </div>
+            <div class="form-group" id="Alamat">
+              <label class="col-sm-2 control-label">Alamat</label>
+              <div class="col-sm-8">
+                <%= text_field_tag 'alamat_search',nil,{class:"form-control form-control-sm", placeholder:"Input alamat"} %>
+              </div>
+              <div class="checkbox col-sm-2">
+                <label>
+                  <%= check_box_tag 'check_alamat',1,true %>
+                </label>
+              </div>
+            </div>
+            <div class="form-group" id="Kategori">
+              <label class="col-sm-2 control-label">Kategori</label>
+              <div class="col-sm-8">
+                <%= text_field_tag 'kategori_search',nil,{class:"form-control form-control-sm", placeholder:"Input kategori"} %>
+              </div>
+              <div class="checkbox col-sm-2">
+                <label>
+                  <%= check_box_tag 'check_kategori',1,true %>
+                </label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class="col-lg-4 col-sm-4 col-6">
+        <%= button_tag 'Apply', class:'btn btn-success', id: 'search_master_gathering' %>
+          <%= link_to 'Back', dashboard_absensis_path, class:"btn btn-danger btn--icon-text waves-effect" %>
+      </div>
+    </div>
+    <table class="table table-hovered table-bordered margin10">
+      <thead class="thead-default">
+        <tr>
+          <th>Id</th>
+          <th>NIP</th>
+          <th>Nama</th>
+          <th>Alamat</th>
+          <th>Instansi</th>
+          <th>Kategori</th>
+          <th>Unit Kerja</th>
+          <th>Kehadiran</th>
+          <th>Souvenir</th>
+          <th>Nama Event</th>
+          <th>Print QR</th>
+        </tr>
+      </thead>
+      <tbody id='list_wedding'>
+        <%= render 'list_absensi' %>
+      </tbody>
+    </table>
+    <%= paginate @absensis, :remote=>true %>
+  </div>
+</div>
+
+
+<div class="panel panel-default" id="choose-panel">
+  <div class="panel-heading">
+    <h3 class="panel-title"> Event</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-3 col-sm-6"></div>
+      <!-- Menu Data Manual-->
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <p id="total_guest">
+                <%= link_to 'Data Manual', new_absensi_path(@absensi), :style=>"text-decoration:none; color:#5F6366; " %>
+            </div>
+          </div>
+        </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer" onclick="handleClickChoose('upload');">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div class="col-sm-8">
+              <p id="total_guest">Upload Data</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div class="col-sm-8">
+              <p id="total_guest">
+                <%= link_to 'Master Event', master_absensis_path,:style=>"text-decoration:none; color:#5F6366; " %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  let handleClickChoose = (params) =>{
+    if(params === 'upload'){
+      $("#master-data-gathering").hide();
+      $("#upload-gathering").show();
+      $("#choose-panel").hide();
+    }else{
+      $("#master-data-gathering").show();
+      $("#upload-gathering").hide();
+      $("#choose-panel").hide();
+    }
+  }
+
+  $(function(){
+    $("#choose-panel").show();
+    $("#upload-gathering").hide();
+    $("#master-data-gathering").hide();
+  });
+
+
+  $('#search_master_gathering').on('click',function(event){
+    var val_alamat = $('#alamat_search').val(), val_name = $('#name_search').val(), val_kategori = $('#kategori_search').val();
+    var data = '{'
+      +'"data_search" :'+'{'
+        +'"name" :'+'"'+val_name+'"'+','
+        +'"alamat" :'+'"'+val_alamat+'"'+','
+        +'"kategori" :'+'"'+val_kategori+'"'
+      +'}'
+    +'}'
+    var all_data = '{'
+      +'"data_search" :'+'{'
+        +'"data" :'+'"all"'
+      +'}'
+    +'}'
+    if(val_alamat == '' && val_name == '' && val_kategori == ''){
+      $.get('/absensis/new',{ search: all_data  }).done(function(){
+        $('#alamat_search').val('');
+        $('#name_search').val('');
+        $('#kategori_search').val('');
+      });
+    }else{
+      $.get('/absensis/new',{ search: data }).done(function(){
+        $('#alamat_search').val('');
+        $('#name_search').val('');
+        $('#kategori_search').val('');
+      });
+    }
+  });
+
+
+</script>

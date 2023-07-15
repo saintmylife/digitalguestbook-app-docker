@@ -1,0 +1,9 @@
+$('#reload').click(function(){
+        $.ajax({
+        type: 'GET',
+        url: '/weddings/dashboard_vip',
+        success: function(data) {
+        console.log(data)
+        }
+      });
+})

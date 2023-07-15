@@ -1,0 +1,68 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  wb.add_worksheet(name: "Semua") do |sheet|
+    sheet.add_row [
+      "ID",
+      "Nama",
+      "Alamat",
+      "Kategori",
+      "Instansi",
+      "Jabatan",
+      "Unit Kerja",
+      "Kelas",
+      "Keterangan",
+      "Waktu",
+      ]
+
+    @guests.each do |moving|
+      sheet.add_row [
+                      moving.guest_id,
+                      moving.nama,
+                      moving.alamat,
+                      moving.kategori,
+                      moving.instansi,
+                      moving.jabatan,
+                      moving.unit_kerja,
+                      moving.kelas,
+                      moving.keterangan,
+                      moving.waktu? ? moving.waktu.strftime("%H:%M:%S") : '-'
+                    ], :types => [:string],
+                    style: [
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil]
+    end
+
+    @guestsfalse.each do |guests|
+      sheet.add_row [
+                      guests.guest_id,
+                      guests.nama,
+                      guests.alamat,
+                      guests.kategori,
+                      guests.instansi,
+                      guests.jabatan,
+                      guests.unit_kerja,
+                      'Belum Masuk',
+                      '-'
+                    ], :types => [:string],
+                    style: [
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            nil]
+    end
+
+  end
+end

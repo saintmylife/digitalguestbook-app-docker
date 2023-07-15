@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html,
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      overflow: auto;
+    }
+
+    .container {
+      width: 5cm;
+      height: 3cm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      /* padding:5px; */
+      flex-wrap: wrap;
+    }
+
+    .pagebreak {
+      page-break-before: always;
+    }
+  </style>
+</head>
+
+<body>
+  <%
+  guest = Guest.where(guest_id: params[:guest_id]).first
+  setting = Setting.first
+%>
+
+
+  <%# 3 %>
+  <% if setting.no_undian == false && setting.nama_angpao == false && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <div class="container">
+    <div style="font-size:14px;margin-bottom:10px">T A B L E</div>
+    <hr style="border:.1px solid black;width:100%">
+    <p style="font-size:18px;margin-top:15px"><b><%= guest.nama_meja %></b></p>
+  </div>
+  <% end %>
+
+  <%# 5 %>
+  <% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
+  <div class="container">
+    <div style="font-size;10px;">
+      <b><%= guest.nama %></b>
+    </div>
+    <div style="margin-top:5px;font-size;8px">
+      <%= guest.nama_meja %>
+    </div>
+  </div>
+  <div class="pagebreak"></div>
+  <div class="container">
+    <div style="font-size;10px;">
+      <b><%= guest.nama %></b>
+    </div>
+    <div style="margin-top:5px;font-size;8px">
+      <%= guest.nama_meja %>
+    </div>
+  </div>
+  <% end %>
+
+  <script>
+    setTimeout(function () {
+      window.print();
+    }, 500);
+    window.onfocus = function () {
+      setTimeout(function () {
+        window.close();
+      }, 500);
+    }
+  </script>
+</body>
+
+</html>

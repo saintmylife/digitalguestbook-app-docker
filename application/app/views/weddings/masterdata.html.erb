@@ -1,0 +1,191 @@
+<div class="panel panel-default" id="upload-data-wedding">
+  <div class="panel-heading">
+      <h3 class="panel-title">Pilih Event</h3><br>
+      Pilih Nama Event, beserta file
+  </div>
+  <div class="panel-body">
+    <%= form_tag import_weddings_path, multipart: true, remote:true do %>
+      <div class="col-sm-6">
+        <div class="form-group form-group--select">
+          <div class="select">
+            <%= collection_select( :guest,:event_id, Event.joins(:type_of_event).where("type_of_events.name ilike 'Wedding%'").order("events.id DESC"), :id, :name,{:include_blank => false},{:class=> "form-control" }) %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= submit_tag "Import", class: "btn btn-primary waves-effect",id: "import_id" %>
+          <div id="loading_id">
+            <%= image_tag('loading.gif', style: 'width:70px; height: auto;', title: 'Print Ulang') %> Please wait.....
+          </div>
+          <a id="back_id" onclick="handleClickBack();" class="btn btn-danger btn--icon-text waves-effect">Back</a>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <%= file_field_tag :file, class: "btn btn-primary waves-effect" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="panel panel-default" id="master-data-wedding">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Event
+    </h3>
+  </div>
+  <div class="panel-body">
+    <h4><div class="alert alert-info">Data Wedding yang sedang aktif :<b> <u><%= active_wedding_name %></u></b></div></h4>
+    <hr>
+    <div class="row">
+      <div class="col-lg-4 col-sm-4 col-6">
+        <div class="groups__item">
+          <%= form_tag  search_weddings_path, method:'GET', class:'form-horizontal', id:'form-search', remote: true do  %>
+            <div class="form-group" id="Name">
+              <label class="col-sm-2 control-label">Name</label>
+              <div class="col-sm-8">
+                <%= text_field_tag 'name_search',nil,{class:"form-control form-control-sm", placeholder:"Masukkan Nama"} %>
+              </div>
+            </div>
+            <div class="form-group" id="Alamat">
+              <label class="col-sm-2 control-label">Alamat</label>
+              <div class="col-sm-8">
+                <%= text_field_tag 'alamat_search',nil,{class:"form-control form-control-sm", placeholder:"Input alamat"} %>
+              </div>
+              <div class="checkbox col-sm-2">
+                <label>
+                  <%= check_box_tag 'check_alamat',1,true %>
+                </label>
+              </div>
+            </div>
+            <div class="form-group" id="Kategori">
+              <label class="col-sm-2 control-label">Kategori</label>
+              <div class="col-sm-8">
+                <%= text_field_tag 'kategori_search',nil,{class:"form-control form-control-sm", placeholder:"Input kategori"} %>
+              </div>
+              <div class="checkbox col-sm-2">
+                <label>
+                  <%= check_box_tag 'check_kategori',1,true %>
+                </label>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class="col-lg-4 col-sm-4 col-6">
+        <%= button_tag 'Apply', class:'btn btn-success', id: 'search_master_wedding' %>
+        <button class="btn btn-primary btn" onclick="handleClickBack();">Back</button>
+      </div>
+    </div>
+    <table class="table table-hovered table-bordered margin10">
+      <thead class="thead-default">
+        <tr>
+          <th>Id</th>
+          <th>Nama</th>
+          <th>Alamat</th>
+          <th>Kota</th>
+          <th>Kategori</th>
+          <th>Status</th>
+          <th>Nama Meja</th>
+          <th>Kehadiran</th>
+          <th>Souvenir</th>
+          <th>Nama Event</th>
+          <th>Print QR</th>
+        </tr>
+      </thead>
+      <tbody id='list_wedding'>
+        <%= render 'list_wedding' %>
+      </tbody>
+    </table>
+    <%= paginate @weddings, :remote=>true %>
+
+  </div>
+</div>
+<div class="panel panel-default" id="choose-panel">
+  <div class="panel-heading">
+    <h3 class="panel-title"> Event</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-3 col-sm-6"></div>
+<!-- Menu Data Manual-->
+<div class="col-md-3 col-sm-6">
+  <div class="panel-dashboard the-pointer">
+    <div class="row">
+      <div class="col-sm-4">
+        <i class="fa fa-users fa-5x"></i>
+      </div>
+      <p id="total_guest">
+          <%= link_to 'Data Manual', new_wedding_path(@buatbaru),:style=>"text-decoration:none; color:#5F6366; " %>
+      </div>
+    </div>
+  </div>
+<!-- Menu Upload Data  -->
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer" onclick="handleClickChoose('upload');">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div class="col-sm-8">
+              <p id="total_guest">Upload Data</p>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- Menu Master Data  -->
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <p id="total_guest">
+                <%= link_to 'Master Event', master_weddings_path,:style=>"text-decoration:none; color:#5F6366; " %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .the-pointer{
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  let handleClickChoose = (params) =>{
+    if(params === 'upload'){
+      $("#master-data-wedding").hide();
+      $("#upload-data-wedding").show();
+      $("#choose-panel").hide();
+    }else{
+      $("#master-data-wedding").show();
+      $("#upload-data-wedding").hide();
+      $("#choose-panel").hide();
+    }
+  }
+
+  let handleClickBack = () =>{
+    $("#master-data-wedding").hide();
+    $("#upload-data-wedding").hide();
+    $("#choose-panel").show();
+  }
+
+  $(function(){
+    $("#master-data-wedding").hide();
+    $("#upload-data-wedding").hide();
+    $("#choose-panel").show();
+    $("#loading_id").hide();
+  });
+
+  $("form").submit(function( ) {
+    $("#import_id").hide();
+    $("#back_id").hide();
+    $("#loading_id").show();
+  });
+</script>

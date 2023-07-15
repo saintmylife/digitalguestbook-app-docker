@@ -1,0 +1,139 @@
+<div class="panel panel-default" id="upload-concert">
+  <div class="panel-heading">
+    <h3 class="panel-title">Pilih Event</h3><br>
+    Pilih Nama Event, beserta file
+  </div>
+
+  <div class="panel-body">
+  	<%= form_tag import_concerts_path, multipart: true do %>
+    <div class="col-sm-6">
+      <div class="form-group form-group--select">
+        <div class="select">
+          <%= collection_select( :concert,:event_id, Event.joins(:type_of_event).where("type_of_events.name ilike 'Concert%'"), :id, :name,{:include_blank => false},{:class=> "form-control" }) %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Import", class: "btn btn-primary waves-effect" %>
+        <%= link_to 'Back', masterdata_concerts_path, class:"btn btn-danger btn--icon-text waves-effect" %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+    	<div class="form-group">
+  			<%= file_field_tag :file, class: "btn btn-primary waves-effect" %>
+    	</div>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="panel panel-default" id="master-data-concert">
+  <div class="panel-heading">
+    <h3 class="panel-title">Master Event</h3><br>
+  </div>
+
+  <div class="panel-body">
+    <h4><div class="alert alert-info">Data Concert yang sedang aktif : <b><u><%= active_wedding_name %></u></b></div></h4>
+    <hr>
+    <div class="row">
+      <%= form_tag new_concert_path, :method => 'GET', remote: true do %>
+      <div class="col-sm-4">
+      <%= text_field_tag "name_search",params[:name_search], class: "form-control form-control-sm", placeholder: "Search" %>
+      <input id="name" name="name" type="hidden" value="Concerts">
+      </div>
+      <%= submit_tag "Cari",class:'btn btn-success' %>
+      <% end %>
+    </div>
+    <table class="table table-hovered table-bordered margin10">
+      <thead class="thead-default">
+        <tr>
+          <th style="text-align:center">ID</th>
+          <th style="text-align:center">Kategori</th>
+          <th style="text-align:center">Nama</th>
+          <th style="text-align:center">Jenis Tiket</th>
+          <th style="text-align:center">Kelas</th>
+          <th style="text-align:center">Kehadiran / Tukar Kwitansi</th>
+          <th style="text-align:center">Jam Tukar Kwitansi</th>
+          <th style="text-align:center">Jam Tukar Tiket</th>
+          <th style="text-align:center">Nama Event</th>
+          <th style="text-align:center">Print QR</th>
+        </tr>
+      </thead>
+      <tbody id='list_wedding'>
+        <%= render 'list_concert' %>
+      </tbody>
+    </table>
+    <%= paginate @concerts, :remote=>true %>
+  </div>
+</div>
+
+
+<div class="panel panel-default" id="choose-panel">
+  <div class="panel-heading">
+    <h3 class="panel-title"> Event</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-3 col-sm-6"></div>
+      <!-- Menu Data Manual-->
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <p id="total_guest">
+                <%= link_to 'Data Manual', new_concert_path(@concert),:style=>"text-decoration:none; color:#5F6366; " %>
+            </div>
+          </div>
+        </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer" onclick="handleClickChoose('upload');">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div class="col-sm-8">
+              <p id="total_guest">Upload Data</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="panel-dashboard the-pointer">
+          <div class="row">
+            <div class="col-sm-4">
+              <i class="fa fa-users fa-5x"></i>
+            </div>
+            <div >
+              <p id="total_guest">
+                <%= link_to 'Master Event', master_concerts_path,:style=>"text-decoration:none; color:#5F6366; " %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  let handleClickChoose = (params) =>{
+    if(params === 'upload'){
+      $("#master-data-concert").hide();
+      $("#upload-concert").show();
+      $("#choose-panel").hide();
+    }else{
+      $("#master-data-concert").show();
+      $("#upload-concert").hide();
+      $("#choose-panel").hide();
+    }
+  }
+
+  $(function(){
+    $("#choose-panel").show();
+    $("#upload-concert").hide();
+    $("#master-data-concert").hide();
+  });
+</script>

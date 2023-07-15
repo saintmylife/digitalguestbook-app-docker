@@ -1,0 +1,69 @@
+<Table>
+  <Row>
+    <Cell><Data ss:Type="String" ss:StyleID="simple">NO</Data></Cell>
+    <Cell><Data ss:Type="String">ID</Data></Cell>
+    <Cell><Data ss:Type="String">NAMA</Data></Cell>
+    <Cell><Data ss:Type="String">ALAMAT</Data></Cell>
+    <Cell><Data ss:Type="String">KATEGORI</Data></Cell>
+    <Cell><Data ss:Type="String">NAMA MEJA</Data></Cell>
+    <Cell><Data ss:Type="String">KEHADIRAN</Data></Cell>
+    <Cell><Data ss:Type="String">JAM</Data></Cell>
+    <% if @custom_header.first.custom_one_text != nil %>
+      <Cell><Data ss:Type="String"><%= @custom_header.first.custom_one_text %></Data></Cell>
+    <% end %>
+    <% if @custom_header.first.custom_two_text != nil %>
+      <Cell><Data ss:Type="String"><%= @custom_header.first.custom_two_text %></Data></Cell>
+    <% end %>
+    <% if @custom_header.first.custom_three_text != nil %>
+      <Cell><Data ss:Type="String"><%= @custom_header.first.custom_three_text %></Data></Cell>
+    <% end %>
+    <% if @custom_header.first.custom_four_text != nil %>
+      <Cell><Data ss:Type="String"><%= @custom_header.first.custom_four_text %></Data></Cell>
+    <% end %>
+    <% if @custom_header.first.custom_five_text != nil %>
+      <Cell><Data ss:Type="String"><%= @custom_header.first.custom_five_text %></Data></Cell>
+    <% end %>
+  </Row>
+  <% no=1 %>
+  <% @exports.each do |export| %>
+    <Row>
+      <Cell><Data ss:Type="Number"><%= no %></Data></Cell>
+      <Cell><Data ss:Type="String"><%= export.guest_id %></Data></Cell>
+      <Cell><Data ss:Type="String"><%= export.name %></Data></Cell>
+      <Cell><Data ss:Type="String"><%= export.city %>,<%= export.address %></Data></Cell>
+      <Cell><Data ss:Type="String"><%= export.category %></Data></Cell>
+      <Cell><Data ss:Type="String"><%= export.nama_meja %></Data></Cell>
+      <% if export.presence ==  true && export.souvenir == true  %>
+        <Cell><Data ss:Type="String">Hadir/Check In - Terima Souvenir</Data></Cell>
+      <% elsif export.presence ==  true && export.souvenir == false %>
+        <Cell><Data ss:Type="String">Hadir/Check In - Belum Terima Souvenir</Data></Cell>
+      <% else %>
+        <Cell><Data ss:Type="String">Tidak Hadir dan Belum Terima Souvenir</Data></Cell>
+      <% end %>
+
+      <% if export.time_of_entry.present? == true %>
+        <Cell><Data ss:Type="String"><%= export.time_of_entry.hour %>:<%= export.time_of_entry.min %>:<%= export.time_of_entry.sec %></Data></Cell>
+      <%else%>
+        <Cell><Data ss:Type="String">-</Data></Cell>
+      <%end%>
+
+      <% if @custom_header.first.custom_one_text != nil %>
+        <Cell><Data ss:Type="String"><%= export.custom_one_text %></Data></Cell>
+      <% end %>
+      <% if @custom_header.first.custom_two_text != nil %>
+        <Cell><Data ss:Type="String"><%= export.custom_two_text %></Data></Cell>
+      <% end %>
+      <% if @custom_header.first.custom_three_text != nil %>
+        <Cell><Data ss:Type="String"><%= export.custom_three_text %></Data></Cell>
+      <% end %>
+      <% if @custom_header.first.custom_four_text != nil %>
+        <Cell><Data ss:Type="String"><%= export.custom_four_text %></Data></Cell>
+      <% end %>
+      <% if @custom_header.first.custom_five_text != nil %>
+        <Cell><Data ss:Type="String"><%= export.custom_five_text %></Data></Cell>
+      <% end %>
+
+    </Row>
+    <% no+=1 %>
+  <% end %>
+</Table>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="id-ID" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
+    <title>ReddOneDigital-Checkin</title>
+    <%= stylesheet_link_tag    'nimiqQR-css/fonts-qr' %>
+    <%= stylesheet_link_tag    'nimiqQR-css/style_debug' %>
+    <style>
+        hr.guest-hr {
+        position: absolute;
+        border: none;
+        background: black;
+        background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 50%);
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="navbar-container">
+            <div class="navbar-grid navbar-title"></div>
+            <div class="navbar-grid navbar-logo">
+                <a href="<%= scanners_path %>">
+                    <%= image_tag 'reddone-logo-small', class:'navbar-logo'%>
+                </a>
+            </div>
+            <div class="navbar-grid navbar-function">
+                <button id="btn-flipCam" onclick="flipCam()">
+                    <%= image_tag 'scanner/flip-camera-icon', class:'navbar-flipCam'%>
+                </button>
+                <a href="#" onclick="searchPerson()">
+                    <%= image_tag 'scanner/search-white', class:'navbar-search'%>
+                </a>
+                <button id="options" onclick="options()">
+                    <%= image_tag 'scanner/settings-white', class:'navbar-settings'%>
+                </button>
+            </div>
+        </header>
+        <main id="qr-scanner-box">
+            <video id="qr-video" style=""></video>
+            <%# <video id="qr-video"></video> %>
+            <div id="show-scan-region"></div>
+            <lottie-player id="frameScan" src="../assets/lottie/ScannerRed.json" autoplay loop background="transparent"
+            speed="1.5" style=""></lottie-player>
+            <div id="counter-guest-form-sign">
+                <p>Masukkan Jumlah Orang : <span id="counter-guest-form-sign-name">Silahkan Lakukan Check In</span></p>
+            </div>
+        </main>
+        <footer>
+            <div class="guest-footer">
+                <div class="guest-information container-padding-2">
+                    <p id="guest-name">Arahkan QRCode Anda Pada Bingkai</p>
+                    <p id="guest-category"></p>
+                    <p id="guest-total"></p>
+                    <div id="guest-information-masking"></div>
+                </div>
+                <div class="guest-status">
+                    <lottie-player id="markStatus" src="../assets/lottie/Mark_Initial.json" autoplay loop
+                    background="transparent" speed="0.5"></lottie-player>
+                    <p id="msgStatus">Silahkan Scan</p>
+                </div>
+            </div>
+            <div class="counter-guest-modal" id="counter-guest-modal">
+                <div class="counter-guest-form">
+                    <div class="guest-form">
+                        <button id="guest-counter-minus" class="counter-disabled" onclick="guestCounter('minus')" disabled>-</button>
+                        <input id="guest-counter-input" type="number" value="1" readonly>
+                        <button id="guest-counter-plus" onclick="guestCounter('plus')">+</button>
+                    </div>
+                    <div class="guest-submit">
+                    <button id="btn-counter-skip" onclick="cancelGuestCounter()">Lewati</button>
+                    <button id="btn-counter-submit" disabled>Kirimkan</button>
+                    </div>
+                </div>
+                <div class="counter-guest-status">
+                    <lottie-player id="counterStatus" src="../assets/lottie/Dots_Preloader.json" autoplay loop
+                    background="transparent" speed="2"></lottie-player>
+                </div>
+            </div>
+            <p class="page-status">DigitalGuestBook &copy;2015, ReddOneDigital - Halaman Check In</p>
+        </footer>
+    </div>
+
+    <!--  checkin popup -->
+    <div id="result-popup">
+        <div class="inner-modal" id="result-popup-inner">
+            <h1 id="messageStatusModal">SELAMAT DATANG</h1>
+            <lottie-player id="markStatusModal" src="../assets/lottie/Mark_Check.json" autoplay background="transparent" speed="1"></lottie-player>
+        </div>
+    </div>
+
+    <!-- <%# search popup %> -->
+    <div id="search-popup">
+        <div class="search-top">
+            <input id="myInput" class="border-outline-n" type="text" autocomplete="off" placeholder="Tuliskan Nama Atau Kode..">
+            <button class="border-outline-n"
+                onclick="$('#search-popup').fadeOut();$('#myInput').val('');">X</button>
+        </div>
+            <%= image_tag 'scanner/loader-loading.gif', id: "content-loader" %>
+        <div id="search-table" style="position:relative">
+        </div>
+    </div>
+
+    <%# search popup confirm %>
+    <div id="search-popup-confirm">
+        <div class="confirm-outter" onclick="$('#search-popup-confirm').fadeOut();"></div>
+        <div class="confirm-inner">
+            <div class="confirm-title">
+                <p>Lakukan Check In Untuk</p>
+            </div>
+            <div class="confirm-content">
+                <h1 id="confirm-name"></h1>
+                <h3 id="confirm-id"></h3>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-n" onclick="$('#search-popup-confirm').fadeOut();">TIDAK</button>
+                <button class="confirm-y" onclick="userAns('ansTrue')">YA</button>
+            </div>
+        </div>
+    </div>
+
+    <%# options nav %>
+    <div id="options-modal">
+        <div id="options-modal-inner">
+            <div class="opt disable-cam">
+                <h6>Kamera</h6>
+                <div class="slider">
+                    <input type="checkbox" name="disableCam" class="slider-checkbox" id="disableCam" value="on" checked>
+                    <label class="slider-label" for="disableCam">
+                        <span class="slider-inner slider-inner-disableCam"></span>
+                        <span class="slider-circle"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="opt guest-counter">
+                <h6>Jumlah Orang</h6>
+                <div class="slider">
+                    <input type="checkbox" name="counterPerson" class="slider-checkbox" id="counterPerson" <%= @settingan.jumlah_undangan ? 'checked':'' %> >
+                    <label class="slider-label" for="counterPerson">
+                        <span class="slider-inner slider-inner-counterPerson"></span>
+                        <span class="slider-circle"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="opt guest-debugScanner">
+                <h6>Debug Scanner</h6>
+                <div class="slider">
+                    <input type="checkbox" name="debugScanner" class="slider-checkbox" id="debugScanner">
+                    <label class="slider-label" for="debugScanner">
+                        <span class="slider-inner slider-inner-debugScanner"></span>
+                        <span class="slider-circle"></span>
+                    </label>
+                </div>
+            </div>
+            <button id="options-modal-close">X</button>
+        </div>
+    </div>
+
+    <%= javascript_include_tag 'nimiqQR-js/assets/jquery-3.5.1.min' %>
+    <%= javascript_include_tag 'nimiqQR-js/assets/lottie-player' %>
+    <%= javascript_include_tag 'nimiqQR-js/qr-scanner.umd.min' %>
+    <%= javascript_include_tag 'nimiqQR-js/html5-qrcode.min' %>
+
+    <script>
+    // get how many devices
+    let manyCam;
+    Html5Qrcode.getCameras().then(devices => {
+        if(devices.length > 1){
+            $('#btn-flipCam').css('display','flex');
+            $('#btn-flipCam').css('visibility','unset');
+            manyCam = true; 
+        }else{
+            $('#btn-flipCam').css('visibility','hidden');
+            manyCam = false;
+        }
+        $('#disableCam').prop('checked');
+    }).catch(err => {
+        $('#frameScan').css('display','none');
+        $('#disableCam').removeAttr('checked');
+        console.log('cant get camera devices');
+    });
+    </script>
+
+        <% i = 0
+            if @settingan.no_undian == TRUE
+                i+=1
+            end
+            if @settingan.nama_meja == TRUE
+                i+=1
+            end
+            if @settingan.nama_angpao == TRUE
+                i+=1
+            end
+            if @settingan.jumlah_souvenir == TRUE
+                i+=1
+            end
+            if @settingan.nama_undangan == TRUE
+                i+=1
+            end
+
+            if i != 0 %>
+        <script>
+            function guestPrint(guestcode) {
+                window.open("/<%= @active_event_type.downcase()%>/print?guest_id=" + guestcode, 'targetWindow',
+                    'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=200,height=120');
+            }
+        </script>
+        <% else%>
+        <script>
+            function guestPrint(guestcode) {
+                console.log('noprint');
+            }
+        </script>
+        <% end %>
+    <script>
+    // qrscanner
+    QrScanner.WORKER_PATH = "<%= asset_path j 'nimiqQR-js/qr-scanner-worker.min.js' %>";
+
+            const video = document.getElementById('qr-video');
+            const camHasCamera = document.getElementById('cam-has-camera');
+            const camHasFlash = document.getElementById('cam-has-flash');
+            const flashToggle = document.getElementById('flash-toggle');
+            const flashState = document.getElementById('flash-state');
+            const camQrResult = document.getElementById('cam-qr-result');
+            const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
+            const fileSelector = document.getElementById('file-selector');
+            const fileQrResult = document.getElementById('file-qr-result');
+            // const box = document.getElementById('qr-scanner-box');
+            const lottieStatus = document.getElementById('markStatus');
+            const lottieStatusModal = document.getElementById('markStatusModal');
+            const lottieCheck = "<%= asset_path j 'lottie/Mark_Check.json' %>";
+            const lottieCross = "<%= asset_path j 'lottie/Mark_Cross.json' %>";
+            const statusCheck = "<%= asset_path j 'scanner/Status_Check.png' %>";
+            const statusCross = "<%= asset_path j 'scanner/Status_Cross.png' %>";
+            // 
+            const audio = new Audio('../assets/success.mp3');
+
+            // ####### Web Cam Scanning #######
+            let scanner = new QrScanner(video, result => sentGuest(result), error => {}, 720, 'user');
+            scanner.start().then(() => {
+                setupCam('front');
+            });
+
+            // for aditional cam setup
+            function setupCam(params){
+                window.scanner = scanner;
+                scanner.setInversionMode('both');
+                scanner.$video.setAttribute('muted','true');
+            };
+            function scannerDebug(params){
+                $('#qr-video').css('visibility','hidden');
+                $('#qr-scanner-box').append(scanner.$canvas);
+                $('#qr-scanner-box canvas').css('display','block');
+                if(params == 'user'){
+                    $('#qr-scanner-box canvas').css('transform','scaleX(-1)');
+                }else{
+                    $('#qr-scanner-box canvas').css('transform','scaleX(1)');
+                }
+            };
+            var state = 1;
+            function sentGuest(guestcode) {
+                if (guestcode && state) {
+                    state = 0;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/<%= @active_event_type.downcase%>/update_presence_mobile',
+                        data: {
+                            guest_code: guestcode,
+                            name: "<%= @active_event_type %>"
+                        },
+                        beforeSend: function(){
+                            // reset first
+                            $('#counter-guest-form-sign').fadeOut('fast');
+                            $('#counter-guest-modal').fadeOut('fast');
+                            $('#btn-counter-submit').removeAttr('onclick');
+                            $('#btn-counter-skip').removeAttr('onclick');
+                            $('#guest-counter-minus').addClass('counter-disabled');
+                            $('#guest-counter-minus').prop('disabled');
+                            $('#guest-counter-input').val('1');
+                        },
+                        success: function (result) {
+                            let counterPerson = document.getElementById('counterPerson').checked;
+                            console.log('setingan->' + counterPerson);
+                            const counterPersonName = document.getElementById('counter-guest-form-sign-name');
+                            const btnCounterSubmit = document.getElementById('btn-counter-submit');
+                            const btnCounterSkip = document.getElementById('btn-counter-skip');
+                            const guestInformationMask = document.getElementById('guest-information-masking');
+                            audio.play();
+                            var data = result;
+                            if (data['nama']) {
+                                $('#guest-name').html(data['nama']);
+                                $('#guest-category').html(data['guest_id']);
+                            } else {
+                                $('#guest-name').html('ID Tidak Terdaftar');
+                                $('#guest-category').html('Silahkan Hubungi Teknisi / Helpdesk');
+                            }
+                            // add person
+                            counterPersonName.innerHTML = '';
+                            if(data['nama'] && counterPerson && data['hasil']){
+                                counterPersonName.innerHTML = data['nama'];
+                                $('#counter-guest-modal').fadeIn('fast');
+                                $('#counter-guest-modal').css('display','grid');
+                                if(data['jumlah_undangan'] > 1){
+                                    $('#guest-counter-input').val(data['jumlah_undangan'].toString());
+                                    $('#guest-counter-minus').removeClass('counter-disabled');
+                                    $('#guest-counter-minus').removeAttr('disabled');
+                                }else{
+                                    $('#guest-counter-input').val('1');
+                                    $('#guest-counter-minus').addClass('counter-disabled');
+                                    $('#guest-counter-minus').prop('disabled');
+                                };
+                                $('#counter-guest-form-sign').fadeIn('slow');
+                                btnCounterSubmit.setAttribute('onclick','submitGuestCounter(`'+guestcode.toString()+'`)');
+                                btnCounterSkip.setAttribute('onclick','cancelGuestCounter(`'+guestcode.toString()+'`)');
+                                btnCounterSubmit.removeAttribute('disabled');
+                            };
+                            // add popup
+                            if (data['hasil']) {
+                                // console.log('masuk');
+                                lottieStatus.load(lottieCheck);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCheck);
+                            } else {
+                                // console.log('already');
+                                lottieStatus.load(lottieCross);
+                                $('#msgStatus').html(data['message']);
+                                $("#result-popup").fadeIn();
+                                $("#result-popup").css('display', 'flex');
+                                $("#messageStatusModal").html(data['message'].toUpperCase());
+                                lottieStatusModal.load(lottieCross);
+                                if(counterPerson && data['guest_id']){
+                                    $('#guest-counter-input').val(data['jumlah_undangan'].toString());
+                                    guestInformationMask.style.display = 'block';
+                                    guestInformationMask.setAttribute('onclick','maskingGuestInformation(`'+guestcode.toString()+'`)');
+                                    btnCounterSkip.setAttribute('onclick','cancelGuestCounter(`'+guestcode.toString()+'`)');
+                                    if(data['jumlah_undangan'] > 1){
+                                        $('#guest-counter-input').val(data['jumlah_undangan'].toString());
+                                        $('#guest-counter-minus').removeClass('counter-disabled');
+                                        $('#guest-counter-minus').removeAttr('disabled');
+                                    }else{
+                                        $('#guest-counter-input').val('1');
+                                        $('#guest-counter-minus').addClass('counter-disabled');
+                                        $('#guest-counter-minus').prop('disabled');
+                                    };
+                                };
+                            }
+                            if(data['jumlah_undangan'] === null || data['jumlah_undangan'] === 0 || data['jumlah_undangan'] === undefined){
+                                $('#guest-total').html('');
+                            }else{
+                                $('#guest-total').html('Jumlah Orang = '+data['jumlah_undangan']);
+                            }
+                            <%if i != 0 %>
+                                if (data['message'] === 'Selamat Datang' || data['message'] === 'Already') {
+                                    $('#markStatus').attr('onClick', 'guestPrint("' + guestcode + '")');
+                                } else {
+                                    let printStat = $('#markStatus').attr('onClick');
+                                    if (printStat) {
+                                        $('#markStatus').removeAttr('onClick');
+                                    }
+                                } 
+                                <% end %>
+                                setTimeout(() => {
+                                    $("#result-popup").fadeOut();
+                                    setTimeout(() => {
+                                        state = 1;
+                                    }, 150);
+                                }, 2500); 
+                                <% if i != 0 %>
+                                if (data['hasil']) {
+                                    guestPrint(guestcode);
+                                } 
+                                <% end %>
+                        },
+                        fail: function (result) {
+                            // console.log('failed');
+                        },
+                        error: function (result) {
+                            // console.log(result);
+                        }
+                    });
+                }
+            };
+    // getallperson
+        function searchPerson() {
+            $('#myInput').val('');
+            $('#search-table').html('');
+            $('#search-popup').css('display', 'block');
+            $.ajax({
+                type: 'GET',
+                url: '/type_of_events/getalldata',
+                beforeSend: function(){
+                    $('#content-loader').fadeIn('fast');
+                    if($('#counter-guest-modal').css('display') === 'grid'){
+                        $('#btn-counter-skip').get(0).click();
+                    };
+                },
+                success: function (result) {
+                    // console.log(result['data']);
+                    $.each(result['data'], function (index, val) {
+                        $('#search-table').append("<div class='guest'><h2>" +
+                            val['nama'] + "</h2><p>" + val['guest_id'] + ' - '+ val['kategori'] +
+                            "</p><hr class='guest-hr'><div class='guest-masking' data-qr='" + val['guest_id'] +
+                            "' data-name='" + val['nama'] + "'></div></div>")
+                    });
+
+                    setTimeout(() => {
+                        $('#content-loader').fadeOut('slow');
+                        $('#search-table').css('display','block');
+                    }, 250);
+                }
+            });
+            $('#myInput').get(0).focus();
+        };
+        // typing search person
+        $("#myInput").on("keyup", function () {
+            let value = $(this).val().toLowerCase();
+            $("#search-table div").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+        // click on search person name
+        $('#search-table').on('click', function (e) {
+            let guestid = $(e.target).data('qr');
+            let guestname = $(e.target).data('name');
+            if (guestid) {
+                $('#confirm-name').html(guestname);
+                $('#confirm-id').html(guestid);
+                $('#search-popup-confirm').css('display', 'flex');
+                $('#search-popup-confirm').fadeIn();
+            }
+        })
+        // search person confirmation box
+        function userAns(answer) {
+            if (answer) {
+                let guestID = $('#confirm-id').html();
+                $('#search-popup-confirm').fadeOut('fast');
+                setTimeout(() => {
+                    $('#search-popup').fadeOut('fast');
+                    sentGuest(guestID);
+                }, 500);
+            }
+        }
+        function flipCam(){
+            console.log('pressed');
+            let camEnv = scanner._preferredFacingMode;
+            let camCanvasSize = scanner._legacyCanvasSize;
+            scanner.stop();
+            scanner.destroy();
+            scanner = null;
+            let newCamEnv = (camEnv === "user") ? "environment" : "user";
+            setTimeout(() => {
+                // scanner.start();
+                scanner = new QrScanner(video, result => sentGuest(result), error => {}, camCanvasSize, newCamEnv);
+                scanner.start().then(() => {
+                     setupCam(((newCamEnv === "user") ? "front" : "env"));
+                });
+            }, 500);
+        }
+        function options(){
+            $('#options-modal').css('display','flex');
+            $('#options-modal').animate({
+                right:0
+            });
+            if($('#counter-guest-modal').css('display') === 'grid'){
+                $('#btn-counter-skip').get(0).click();
+            };
+        };
+        $('#options-modal').click(function(e) {
+            if(e.target.id === 'options-modal'){
+                $('#options-modal').animate({
+                    right:'-100%'
+                });
+                $('#options-modal').fadeOut();
+            };
+        });
+        $('#options-modal-close').click(function(){
+            $('#options-modal').animate({
+                right:'-100%'
+            });
+            $('#options-modal').fadeOut();
+        });
+        $('#disableCam').on('change',function(e) {
+            if(!e.target.checked){
+                setTimeout(() => {
+                    scanner.stop();
+                    scanner.destroy();
+                    scanner = null;
+                }, 250);
+                $('#btn-flipCam').css('visibility','hidden');
+                 $('#frameScan').css('display','none');
+            }else{
+                setTimeout(() => {
+                    // checkCamera();
+                    scanner = new QrScanner(video, result => sentGuest(result), error => {}, 720, 'user');
+                    scanner.start().then(() => {
+                        setupCam("user");
+                    });
+                }, 250);
+                if(manyCam){
+                    $('#btn-flipCam').css('visibility','unset');
+                }else{
+                    $('#btn-flipCam').css('visibility','hidden');
+                };
+                 $('#frameScan').css('display','flex');
+            };
+        });
+        $('#counterPerson').on('change',function (e) {
+            if(e.target.checked){
+                $(this).prop('checked');
+            }else{
+                $(this).removeAttr('checked');
+            }
+        })
+        $('#debugScanner').on('change',function (e){
+            let camEnv = scanner._preferredFacingMode;
+            scannerDebug(camEnv);
+        });
+        function guestCounter(counter) {
+            const inputGuest = document.getElementById('guest-counter-input');
+            const inputMin = document.getElementById('guest-counter-minus');
+            const inputPlus = document.getElementById('guest-counter-plus');
+            let guestVal =  inputGuest.value;
+            if(counter === 'minus'){
+                guestVal--;
+                inputMin.classList.add('counter-clicked');
+            }else{
+                guestVal++;
+                inputPlus.classList.add('counter-clicked');
+            }
+            if(guestVal === 1){
+                inputMin.setAttribute('disabled','true');
+                inputMin.classList.add('counter-disabled');
+            }else{
+                inputMin.removeAttribute('disabled');
+                inputMin.classList.remove('counter-disabled');
+            };
+            inputGuest.value = guestVal;
+            setTimeout(() => {
+                inputPlus.classList.remove('counter-clicked');
+                inputMin.classList.remove('counter-clicked');
+            }, 250);
+        };
+        function cancelGuestCounter(guestcode){
+            const guestInformationMask = document.getElementById('guest-information-masking');
+            const inputMin = document.getElementById('guest-counter-minus'); 
+            const counterInput = document.getElementById('guest-counter-input');
+            $('#counter-guest-form-sign').fadeOut('slow');
+            $('#counter-guest-modal').fadeOut('slow');
+            // clear attribute onclick mask
+            guestInformationMask.removeAttribute('onclick');
+            setTimeout(() => {
+                guestInformationMask.style.display = 'block';
+                guestInformationMask.setAttribute('onclick','maskingGuestInformation(`'+guestcode.toString()+'`)');
+            }, 500);
+        };
+        function maskingGuestInformation(guestcode){
+            const counterPersonName = document.getElementById('counter-guest-form-sign-name');
+            const btnCounterSubmit = document.getElementById('btn-counter-submit');
+            const skipBtn = document.getElementById('btn-counter-skip');
+            const guestName = document.getElementById('guest-name');
+            // replace name
+            counterPersonName.innerHTML = guestName.innerHTML;
+            $('#counter-guest-modal').fadeIn('fast');
+            $('#counter-guest-modal').css('display','grid');
+            $('#counter-guest-form-sign').fadeIn('slow');
+            btnCounterSubmit.setAttribute('onclick','submitGuestCounter(`'+guestcode.toString()+'`)');
+            btnCounterSubmit.removeAttribute('disabled');
+            skipBtn.removeAttribute('disabled');
+            
+        };
+        function submitGuestCounter(guestcode) {
+            const submitBtn = document.getElementById('btn-counter-submit');
+            const skipBtn = document.getElementById('btn-counter-skip');
+            const inputMin = document.getElementById('guest-counter-minus');
+            const guestVal = document.getElementById('guest-counter-input');
+            const counterStatus = document.getElementById('counterStatus');
+            const guestTotal = document.getElementById('guest-total');
+            const guestSign = document.getElementById('counter-guest-form-sign');
+            const guestInformationMask = document.getElementById('guest-information-masking');
+            $('#counter-guest-form-sign').fadeOut();
+            submitBtn.setAttribute('disabled','true');
+            skipBtn.setAttribute('disabled','true');
+            // sent API
+            $.ajax({
+                type: 'GET',
+                url: '/<%= @active_event_type.downcase%>/update_guest_brought_api',
+                data: {
+                    type: "<%= @active_event_type %>",
+                    guest_code: guestcode,
+                    guest_brought: guestVal.value
+                },
+                beforeSend: function(){
+                    $('#counterStatus').fadeIn('fast');
+                },
+                success: function (result) {
+                    if(result['message'] === 'Success'){
+                        let guestResult = 'Jumlah Orang = ' + guestVal.value;
+                        guestTotal.innerHTML = guestResult;
+                        setTimeout(() => {
+                            $('#counter-guest-modal').fadeOut('fast');
+                            $('#counterStatus').fadeOut('fast');
+                            submitBtn.removeAttribute('disabled');
+                            skipBtn.removeAttribute('disabled');
+                            inputMin.setAttribute('disabled','true');
+                            inputMin.classList.add('counter-disabled');
+                            guestInformationMask.removeAttribute('onclick');
+                            guestInformationMask.style.display = 'none';
+                        }, 1000);
+                    };
+                }
+            });
+        };
+    </script>
+</body>
+</html>

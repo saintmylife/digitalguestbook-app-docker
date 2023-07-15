@@ -1,0 +1,24 @@
+$("#notice").html("<%= escape_javascript(render 'hadir') %>")
+
+<% i = 0
+  if @settingan.no_undian == TRUE
+    i+=1
+  end
+  if @settingan.nama_meja == TRUE
+    i+=1
+  end
+  if @settingan.nama_angpao == TRUE
+    i+=1
+  end
+  if @settingan.jumlah_souvenir == TRUE
+    i+=1
+  end
+  if @settingan.nama_undangan == TRUE
+    i+=1
+  end
+
+if i != 0
+    %>
+  window.open("<%=print_absensis_path({:guest_id=>@find_guest.first.guest_id})
+  %>", 'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=200,height=120');
+<% end %>

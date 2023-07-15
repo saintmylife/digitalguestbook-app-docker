@@ -1,0 +1,42 @@
+<div class="result" >
+  <% if @display.nama == true %>
+    <p><span class="name"><%# @find_guest[0].nama %></span></p>
+  <% end %>
+  
+  <% if @display.alamat == true %>
+    <p><span class="address"><%# @find_guest[0].alamat %></span></p>
+  <% end %>
+  
+  <% if @display.kategori == true %>
+    <p><span class="category"><%# @find_guest[0].kategori %></span></p>
+  <% end %>
+  
+  <% if @display.guest_id == true %>
+    <p><span class="category"><%# @find_guest[0].guest_id %></span></p>
+  <% end %>
+  
+  <% if @display.jumlah_undangan == true %>
+    <p><span class="category"><%# @find_guest[0].jumlah_undangan %></span></p>
+  <% end %>
+</div>
+<div class="result" >
+  <% if @display.nama == true %>
+    <p><span class="name"><%# @find_guest[0].nama %></span></p>
+  <% end %>
+  
+  <% if @display.alamat == true %>
+    <p><span class="address"><%# @find_guest[0].alamat %></span></p>
+  <% end %>
+  
+  <% if @display.kategori == true %>
+    <p><span class="category"><%# @find_guest[0].kategori %></span></p>
+  <% end %>
+  
+  <% if @display.guest_id == true %>
+    <p><span class="category"><%# @find_guest[0].guest_id %></span></p>
+  <% end %>
+  
+  <% if @display.jumlah_undangan == true %>
+    <p><span class="category"><%# @find_guest[0].jumlah_undangan %></span></p>
+  <% end %>
+</div>

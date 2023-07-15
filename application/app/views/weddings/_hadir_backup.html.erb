@@ -1,0 +1,34 @@
+<%= render 'hadir-svg' %>
+
+<div class="active-wedding">
+  <h4 style="padding-top:18px;">
+    <span class="active-wedding-name">Welcome</span></h4>
+   <p>
+     <span class="active-wedding-name" style="font-size: 58px !important;"><%= @find_guest[0].nama %></span><br/>
+     <span class="address"><%= @find_guest[0].guest_id %></span><br/>
+     <span class="address"><%= @find_guest[0].alamat %></span><br/>
+     <span class="address"><%= @find_guest[0].kategori %></span><br/>
+     <span class="address"><%= @find_guest[0].custom_one_text %></span><br/>
+     <span class="address"><%= @find_guest[0].nama_meja %></span><br/>
+     <span class="address"><%= @find_guest[0].jumlah_undangan %></span><br/>
+   </p>
+  </div>
+
+    <% if @find_guest[0].nama != nil %><p><span class="active-wedding-name" style="font-size: 58px !important;">
+    <%= @find_guest[0].nama %></span></p><% end %>
+
+    <% if @find_guest[0].guest_id != nil %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+
+    <% if @find_guest[0].alamat != nil %><p><span class="address"><%= @find_guest[0].alamat %></span></p><% end %>
+
+    <% if @find_guest[0].kategori != nil %><p><span class="address">Kategori :
+    <%= @find_guest[0].kategori %></span></p><% end %>
+
+    <% if @find_guest[0].custom_one_text != nil %><p><span class="address">Zona :
+    <%= @find_guest[0].custom_one_text %></span></p><% end %>
+
+    <% if @find_guest[0].nama_meja != nil %><p><span class="address">Nama Meja :
+    <%= @find_guest[0].nama_meja %></span></p><% end %>
+
+    <% if @find_guest[0].jumlah_undangan != nil %><p><span class="address">Jumlah Undangan :
+    <%= @find_guest[0].jumlah_undangan %></span></p><% end %>

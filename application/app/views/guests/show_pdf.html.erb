@@ -1,0 +1,13 @@
+<ul>
+<% @guest_undian.each do |order| %>
+  <li><%= link_to "Order \##{order.no_undian}", order %></li>
+<% end %>
+</ul>
+
+<script>
+  function ready() {
+    window.open (<%= guests_url  %>, "mywindow","width=600,height=600");
+  }
+
+  document.addEventListener("DOMContentLoaded", ready)
+</script>

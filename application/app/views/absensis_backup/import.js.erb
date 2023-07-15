@@ -1,0 +1,10 @@
+$("#import_id").show();
+$("#back_id").show();
+$("#loading_id").hide();
+$("#file").val('');
+
+<% if @r.present? || @r == 0 %>
+	alert('Import anda tidak berhasil !!!')
+<% else %>
+	alert('Import anda berhasil')
+<% end %>

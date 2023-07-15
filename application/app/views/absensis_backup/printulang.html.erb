@@ -1,0 +1,38 @@
+<section class="scanning">
+  <div class="active-wedding">
+    <br/>
+    <h4><span class="bg-black">PRINT ULANG</span></h4>
+    <br/>
+  </div>
+  <div id="notice"></div>
+
+  <div class="input-guest col-sm-12">
+    <%= form_tag reprint_absensis_path, method: "GET", remote: true do %>
+      <%= text_field_tag "guest_code",nil, class:"form-control", autofocus:"true" %>
+    <% end %>
+  </div>
+</section>
+
+
+<script>
+  $("#submit_presence").click(function(){
+    if($("#guest_code").val() == "" || $("#guest_code").val() == undefined ){
+      alert("Input cannot be null");
+    }else{
+      $(this).attr('href','/absensis/print_no_undian?guest_code='+$("#guest_code").val());
+      window.open($(this).attr('href'),'targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=350,height=250');
+    }
+  });
+
+  $("#guest_qr_id").change(function(){
+    $.ajax({
+      type: 'GET',
+      url: '/absensis/print_qr',
+      data: {guest_qr: $(this).val()},
+    });
+  });
+  $(document).ready(function(){
+    $('#guest_qr_id').select2();
+  });
+
+</script>

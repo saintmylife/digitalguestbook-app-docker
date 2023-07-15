@@ -1,0 +1,112 @@
+<%= render 'hadir-svg' %>
+
+  <div class="active-wedding">
+    <h4 style="padding-top:18px;"><span class="active-wedding-name">Welcome</span></h4>
+    <p><span class="active-wedding-name" style="font-size: 58px !important;"><%= @find_guest[0].nama %></span><br/>
+    <span class="display-guest-id" style=" font-size: 25px !important;"><%= @find_guest[0].guest_id %></span><br/>
+    <span class="display-guest-id" style=" font-size: 25px !important;"><%= @find_guest[0].alamat %></span><br/>
+    <span class="display-guest-id" style=" font-size: 25px !important;"><%= @find_guest[0].jabatan %></span><br/>
+  </div>
+  
+  <div> 
+    <% if @display.nomor_ponsel == true &&
+          @display.alamat == true &&
+          @display.kategori == true &&
+          @display.status == true &&
+          @display.nama_meja == true &&
+          @display.souvenir == true &&
+          @display.jumlah_souvenir == true &&
+          @display.nama_angpao == true &&
+          @display.no_undian == true &&
+          @display.guest_id == true &&
+          @display.jabatan == true &&
+          @display.jumlah_undangan == true            
+    %>
+    <% else %>
+
+      <div class="result" >
+        <% if @dis_array.count > 5 %>
+            <% j = 0 %>
+
+            <% for i in 1..@dis_array.count do %>
+              <% if i % 4 == 0 %>
+                  <% if j == 0 %>
+                    <span class="display-guest-id"><%= @find_guest[0].guest_id %></span> <br />
+                  <% end %> 
+
+                  <% if j == 1 %>
+                    <span class="display-kategori"><%= @find_guest[0].kategori %></span> <br />
+                  <% end %>
+                  
+                  <% if j == 2 %>
+                    <span class="display-nomor-undian"><%= @find_guest[0].no_undian %></span> <br /> 
+                  <% end %>
+
+                <% j+=1 %>
+              <% else %>
+
+                  <% if j == 0 %>
+                    <span class="display-guest-id"><%= @find_guest[0].guest_id %></span>
+                  <% end %> 
+
+                  <% if j == 1 %>
+                    <span class="display-kategori"><%= @find_guest[0].kategori %></span>
+                  <% end %>
+                  
+                  <% if j == 2 %>
+                    <span class="display-nomor-undian"><%= @find_guest[0].no_undian %></span>
+                  <% end %>
+                  
+              <% end %>
+            <% end %>
+
+           
+        <% else %>
+
+          <% if @display.nomor_ponsel == true %>
+            <p><span class="category"><%= @find_guest[0].nomor_ponsel %></span></p>
+          <% end %>
+          
+          <% if @display.alamat == true %>
+            <p><span class="category"><%= @find_guest[0].alamat %></span></p>
+          <% end %>
+          
+          <% if @display.kategori == true %>
+            <p><span class="category"><%= @find_guest[0].kategori %></span></p>
+          <% end %>
+
+          <% if @display.status == true %>
+            <p><span class="category"><%= @find_guest[0].status %></span></p>
+          <% end %>
+          
+          <% if @display.nama_meja == true %>
+            <p><span class="category"><%= @find_guest[0].nama_meja%></span></p>
+          <% end %>
+          
+          <% if @display.nama_angpao == true %>
+            <p><span class="category"><%= @find_guest[0].nama_angpao %></span></p>
+          <% end %>
+
+           <% if @display.no_undian == true %>
+            <p><span class="category"><%= @find_guest[0].no_undian %></span></p>
+          <% end %>
+
+           <% if @display.guest_id == true %>
+            <p><span class="category"><%= @find_guest[0].guest_id %></span></p>
+          <% end %>
+
+           <% if @display.jabatan == true %>
+            <p><span class="category"><%= @find_guest[0].jabatan %></span></p>
+          <% end %>
+
+           <% if @display.jumlah_undangan == true %>
+            <p><span class="category"><%= @find_guest[0].jumlah_undangan %></span></p>
+          <% end %>        
+
+        <% end  %>
+
+      </div>
+
+    <% end %>
+  </div>
+  

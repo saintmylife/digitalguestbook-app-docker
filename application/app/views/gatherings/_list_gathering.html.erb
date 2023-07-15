@@ -1,0 +1,38 @@
+<% @gatherings.each do |gathering| %>
+  <tr>
+    <td style="text-align:center;vertical-align:middle"><%= gathering.guest_id %></td>
+    <td style="text-align:center;vertical-align:middle"><%= gathering.category %></td>
+    <td style="vertical-align:middle"><%= gathering.nama_peserta %> </td>
+    <td style="vertical-align:middle"><%= gathering.address %></td>
+    <td style="text-align:center;vertical-align:middle"><%= gathering.email %></td>
+    <td style="text-align:center;vertical-align:middle"><%= gathering.nip %></td>
+    <td style="text-align:center;vertical-align:middle"><%=
+        if gathering.presence == true
+          'Sudah Masuk'
+        else
+          'Belum Masuk'
+        end %>
+    </td>
+    <td><%= gathering.time_of_entry&.strftime('%H:%M:%S %Z') %></td>
+    <td style="text-align:center;vertical-align:middle"><%=
+        if gathering.souvenir == true
+          'Sudah Ambil'
+        else
+          'Belum Ambil'
+        end %>
+    </td>
+    <td style="text-align:center;vertical-align:middle"><%= gathering.time_of_get_souvenir&.strftime('%H:%M:%S %Z') %></td>
+    <td style="text-align:center;vertical-align:middle">
+    <%= link_to print_qr_master_gatherings_path(guest_id: gathering.guest_id), remote: true do %>
+        Print
+        <td style="text-align:center;vertical-align:middle">
+          <button type="button" class="btn btn-success btn-sm">
+          <%= link_to "Edit", edit_gathering_path(gathering), method: :get %></button>
+          </td>
+          <td style="text-align:center;vertical-align:middle">
+          <button type="button" class="btn btn-delete btn-sm">
+          <%= link_to "Delete", gathering_path(gathering), method: :delete, data: {confirm: 'Data Akan Dihapus '} %></button>
+        </td>
+      <% end %>
+  </tr>
+<% end %>

@@ -1,0 +1,46 @@
+<section class="scanning">
+   <div class="input-qr col-sm-12">
+    <%= form_tag update_presence_movings_path, method: "GET", remote: true do %>
+      <%text_field_tag "guest_qr",nil, class:"form-control", autofocus:"true" %>
+      <%= collection_select(:guest_qr, :id, Moving.joins(event: :type_of_event).where("type_of_events.name ilike '%Moving%'").where("events.status = TRUE"),
+                  :guest_id, :guest_id,
+                 {:prompt => ''}) %>
+    <% end %>
+  </div>
+
+ <h4><span class="bg-black">CHECK IN CLASS II</span></h4>
+  <div id="notice"></div>
+
+  <div class="input-guest col-sm-12">
+    <%= form_tag update_presence_movings_path, method: "GET", id: 'form_scanning', remote: true do %>
+      <%= text_field_tag "guest_code",nil, class:"form-control", autofocus:"true" %>
+      <input id="eventid" name="eventid" type="hidden" value="<%= @eventid %>">
+      <input id="classname" name="classname" type="hidden" value="Class02">
+    <% end %>
+  </div>
+</section>
+
+
+<script>
+
+  $("#submit_presence").click(function(){
+    if($("#guest_code").val() == "" || $("#guest_code").val() == undefined ){
+      alert("Input cannot be null");
+    }
+  });
+
+  $("#guest_qr_id").change(function(){
+    $('#guest_code').val($(this).val());
+    $('#guest_code').focus();
+  });
+
+  $(document).ready(function(){
+    $('#guest_qr_id').select2();
+
+    $("#form_scanning").bind("ajax:complete", function(event,xhr,status){
+      $('#guest_code').val('');
+    });
+
+  });
+
+</script>

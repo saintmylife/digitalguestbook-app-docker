@@ -1,0 +1,30 @@
+<table class="table table-hovered table-bordered margin10 pretty">
+  <thead>
+    <tr>
+      <th style="text-align:center;line-height: 40px;">Masuk</th>
+      <th style="text-align:center;line-height: 40px;">Keluar</th>
+    </tr>
+  </thead>
+  <tbody id='list_wedding'>
+    <% @searchid.each do |search| %>
+    <tr>
+      <td><%=
+        if search.keterangan == "Masuk"
+          search.waktu&.strftime('%H:%M:%S %Z')
+        else
+          '-'
+        end
+        %></td>
+      <td><%=
+            if search.keterangan == "Keluar"
+              search.waktu&.strftime('%H:%M:%S %Z')
+            else
+              '-'
+            end
+            %></td>
+    </tr>
+    <% end %>
+
+  </tbody>
+</table>
+  <%= link_to "Back", master_absensis_path, class:'btn btn-primary waves-effect pull-right' %>

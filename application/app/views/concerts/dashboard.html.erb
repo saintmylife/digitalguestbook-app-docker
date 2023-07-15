@@ -1,0 +1,174 @@
+<div class="row dashboard-header">
+ <div class="col-md-12">
+  <h3>DASHBOARD
+  <%= link_to dashboard_concerts_path, class: 'btn btn-primary pull-right',remote: true do %>
+    <i class="fa fa-refresh"></i> Refresh
+  <% end %>
+  </h3>
+<hr/>
+ </div>
+</div>
+
+<!-- ROW 1 KWITANSI-->
+<div class="row">
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard biru">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-users fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL KWITANSI</small>
+          <p id="total_souvenir"><%= @total_souvenir .present? ? @total_souvenir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard kuning">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-american-sign-language-interpreting fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL TUKAR KWITANSI</small>
+          <p id="souvenir_sudah"><%= @souvenir_sudah.present? ? @souvenir_sudah:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard merah">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-times fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL BELUM TUKAR KWITANSI</small>
+          <p id="souvenir_belum"><%= @souvenir_belum.present? ? @souvenir_belum:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+ <br>
+<!-- ROW 2 KELAS KWITANSI -->
+ <div class="row">
+
+   <div class="col-md-3 col-sm-6" style="left: 25%">
+     <div class="panel panel-default panel-table">
+       <!-- Default panel contents
+       <div class="panel-heading"></div>
+       -->
+       <!-- Table -->
+       <table class="table table-bordered table-hover panel-dashboard" style="font-family:"Helvetica-Neue" ">
+         <thead style="font-size:12px; text-align:center">
+           <tr>
+             <td>KELAS</td>
+             <td>HADIR</td>
+             <td>BELUM HADIR</td>
+           </tr>
+         </thead>
+         <tbody style="text-align:center">
+           <% @jenis_tiket.each do |jenis_tiket| %>
+             <tr>
+               <td><b><%= jenis_tiket.class_user %></b></td>
+               <td><b><%= jenis_tiket.hadir %></b></td>
+               <td><b><%= jenis_tiket.tidakhadir %></b></td>
+             </tr>
+           <% end %>
+         </tbody>
+       </table>
+     </div>
+   </div>
+
+ </div>
+
+ <br>
+
+<!-- ROW 3 KEHADIRAN-->
+<div class="row">
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard biru">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-users fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>TOTAL TIKET</small>
+          <p id="total_guest"><%= @total_guest.present? ? @total_guest:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard hijau">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-check-square fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>HADIR</small>
+          <p id="guest_sudah_hadir"><%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %></p>
+          <div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="panel-dashboard merah">
+      <div class="row">
+        <div class="col-sm-4">
+          <i class="fa fa-times fa-5x"></i>
+        </div>
+        <div class="col-sm-8">
+          <small>BELUM HADIR</small>
+          <p id="guest_belum_hadir"><%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<br>
+
+<!-- ROW 4 KELAS TIKET -->
+<div class="row">
+
+  <div class="col-md-3 col-sm-6" style="left: 25%">
+    <div class="panel panel-default panel-table">
+      <!-- Default panel contents
+      <div class="panel-heading"></div>
+      -->
+      <!-- Table -->
+      <table class="table table-bordered table-hover panel-dashboard" style="font-family:"Helvetica-Neue" ">
+        <thead style="font-size:12px; text-align:center">
+          <tr>
+            <td>KELAS</td>
+            <td>HADIR</td>
+            <td>BELUM HADIR</td>
+          </tr>
+        </thead>
+        <tbody style="text-align:center">
+          <% @kelas.each do |kelas| %>
+            <tr>
+              <td><b><%= kelas.class_user %></b></td>
+              <td><b><%= kelas.hadir %></b></td>
+              <td><b><%= kelas.tidakhadir %></b></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

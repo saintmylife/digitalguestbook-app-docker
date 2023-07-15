@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="manifest" href="/manifest-scan.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Redd One Digital">
+    <meta name="apple-mobile-web-app-title" content="Redd One Digital">
+    <%# <meta name="apple-mobile-web-app-status-bar-style" content="default"> %>
+    <meta name="msapplication-starturl" content="/scanners">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red One Digital Scanner</title>
+
+    <style>
+        html,
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* background: rgb(217, 178, 167) url('/assets/bg-scanner-menu-new.jpg'); */
+            color: rgb(237, 230, 223);
+            overflow: hidden;
+
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            flex-basis: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5%;
+        }
+
+        .header-a {
+            width: 25%;
+        }
+
+        .header-logo {
+            width: 100%;
+        }
+
+        footer {
+            flex-basis: 10%;
+        }
+
+        .content {
+            flex-basis: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            /* padding: 5%; */
+            box-sizing: border-box;
+            /* color: rgb(180, 83, 67); */
+        }
+
+        .content-main {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* color: rgb(217, 178, 167); */
+            text-shadow: 1px 1px 8px rgb(0 0 0 / 35%);
+        }
+
+        .content-header {
+            text-align: center;
+            text-shadow: 1px 1px 8px rgb(0 0 0 / 35%);
+        }
+
+        .content-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        #content-loader {
+            width: 100px;
+            height: 100px;
+        }
+
+        .event-type {
+            font-size: 2.5em;
+        }
+
+        .event-name {
+            font-size: 5em;
+            text-shadow: 0 0 5px 3px rgba(0, 0, 0, .24);
+            padding: 5px;
+            box-sizing: border-box;
+
+        }
+
+        .checkin,
+        .checkout {
+            padding: 10px 15px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-size: 32px;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+            /* color: rgb(254, 203, 146); */
+        }
+
+        .checkin {
+            background: rgb(237, 230, 233);
+            color: rgb(159, 154, 164);
+        }
+
+        .checkout {
+            /* color: white; */
+            background: rgb(217, 178, 167);
+        }
+
+        .page-status {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20px;
+            width: 100%;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(182, 83, 63, 0.35);
+            text-align: center;
+            /* color: rgb(254, 203, 146); */
+            font-weight: 800;
+            font-size: 1em;
+        }
+
+        .img-scanner-bg {
+            position: absolute;
+            z-index: -1;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .checkin, .checkout{
+                font-size:5vw;
+            }
+            .event-type {
+                font-size: 1.5em;
+            }
+
+            .event-name {
+                font-size: 2em;
+            }
+
+            .checkin .checkout {
+                font-size: 18px;
+            }
+
+            .page-status {
+                font-size: 0.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <picture>
+            <source media="(max-width:600px)" srcset="/assets/bg-scanner-menu-new-600.jpg" class="img-scanner-bg">
+            <source media="(min-width:600px)" srcset="/assets/bg-scanner-menu-new-768.jpg" class="img-scanner-bg">
+            <%# <source media="(min-width:800px)" srcset="/assets/bg-scanner-menu-new-768p.jpg" class="img-scanner-bg"> %>
+            <img src="/assets/bg-scanner-menu-new-768p.jpg" class="img-scanner-bg">
+        </picture>
+        <header>
+            <a href="<%= root_path %>" class="header-a">
+                <%= image_tag 'reddone-logo-white.png', class:"header-logo"%>
+            </a>
+        </header>
+        <div class="content">
+            <div class="content-header" style="display:none">
+                <h1>
+                    Selamat Datang,
+                </h1>
+                <%# <h4>Event yang sedang aktif:</h4> %>
+            </div>
+            <div class="content-main" id="content-main">
+                <%= image_tag 'scanner/loader-loading.gif', id: "content-loader" %>
+                <p>
+                    Sedang Mengambil Data
+                </p>
+            </div>
+            <div class="content-footer" style="display:none;">
+                <a href="<%= checkin_scanners_path %>" class="checkin">Check In</a>
+                <a href="<%= checkout_scanners_path %>" class="checkout">Check Out</a>
+            </div>
+        </div>
+        <footer>
+            <small class="page-status">
+                DigitalGuestBook &copy;2015, ReddOneDigital
+            </small>
+        </footer>
+        <%= javascript_include_tag 'nimiqQR-js/assets/jquery-3.5.1.min' %>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const eventName = '<%= @active_event %>';
+            const eventType = '<%= @active_event_type %>';
+            setTimeout(() => {
+                $('#content-loader').fadeOut();
+                $('.content-header').fadeIn();
+                $('#content-main').html('<h2 class="event-type">' + eventType +
+                    '</h2><h1 class="event-name">' +
+                    eventName + '</h1>').fadeIn();
+                $('.content-footer').fadeIn();
+            }, 500);
+            $('a').on('click', function (e) {
+                if(e.currentTarget.attributes[0].nodeValue !== '/'){
+                    if (window.location.protocol != 'https:') {
+                        e.preventDefault();
+                        alert('Protokol Yang Anda kenakan bukan HTTPS, silahkan cek kembali');
+                    };
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

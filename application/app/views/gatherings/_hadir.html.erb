@@ -1,0 +1,33 @@
+<%#= render 'hadir-svg' %>
+
+<br>
+
+<!--
+INSERT PHOTO CODE
+ -->
+
+ <div style="padding-top:40px;">
+       <% if File.file?("app/assets/images/foto/#{@find_guest[0].event_id}/#{@find_guest[0].nama_peserta}.jpg") %>
+       <%#= image_tag("foto/#{@find_guest[0].guest_id}.jpg", style:'height:354.5px;') %>
+       <%= image_tag("foto/#{@find_guest[0].event_id}/#{@find_guest[0].nama_peserta}.jpg", style:'height:6cm;') %>
+       <% else %>
+       <%= render 'hadir-svg' %>
+       <% end %>
+ </div>
+
+<%#= render 'hadir-svg' %>
+<div class="result-text">
+  <% if @find_guest[0].guest_id.present? %><p><span class="address"><%= @find_guest[0].guest_id %></span></p><% end %>
+  <% if @find_guest[0].guest_id != nil %><p><span class="name"><%= @find_guest[0].nama_peserta %></span></p><% end %>
+  <% if @find_guest[0].address.present? %><p><span class="address">Asal: <%= @find_guest[0].address %></span></p><% end %>
+  <% if @find_guest[0].nip.present? %><p><span class="name">Invoice: <%= @find_guest[0].nip %></span></p><% end %>
+  <% if @find_guest[0].email.present? %><p><span class="name">Email: <%= @find_guest[0].email %></span></p><% end %>
+  <% if false %>
+    <% if @find_guest[0].instansi.present? %><p><span class="name"><%= @find_guest[0].instansi %></span></p><% end %>
+    <% if @find_guest[0].jabatan.present? %><p><span class="address"><%= @find_guest[0].jabatan %></span></p><% end %>
+    <% if @find_guest[0].category.present? %><p><span class="name"><%= @find_guest[0].category %></span></p><% end %>
+    <% if @find_guest[0].kelas.present? %><p><span class="name"><%= @find_guest[0].kelas %></span></p><% end %>
+  <% end%>
+  <br>
+  <% if @find_guest[0].guest_id != nil %><p><span class="address" style="font-size:16px;">Waktu Kehadiran : <%= Time.now.in_time_zone.strftime("%H:%M:%S")  %></span></p><% end %>
+</div>

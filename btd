@@ -1,0 +1,57 @@
+#!/bin/bash
+
+SCRIPT_PATH="$(dirname "$0")"
+cd "${SCRIPT_PATH}" || exit
+
+UP_PARAMS=""
+
+print_style() {
+    if [ "$2" == "info" ]; then
+        COLOR=$BLUE
+    elif [ "$2" == "success" ]; then
+        COLOR=$GREEN
+    elif [ "$2" == "warning" ]; then
+        COLOR=$YELLOW
+    elif [ "$2" == "danger" ]; then
+        COLOR=$RED
+    else #default color
+        COLOR=$NC
+    fi
+
+    printf "$COLOR%b$NC%b" "$1" "$3"
+}
+
+do_docker_compose() {
+    # shellcheck disable=SC2086
+    docker compose ${UP_PARAMS} "${@}"
+}
+
+command_up() {
+    print_style "\nInitializing Docker Compose\n" "info"
+    do_docker_compose up -d "${@}"
+}
+
+if [ "$1" == "up" ]; then
+    print_style "Boot All Services\n" "warning"
+    shift
+    command_up "${@}"
+
+elif [ "$1" == "down" ]; then
+    print_style "Stopping Docker Compose\n" "info"
+    shift
+    do_docker_compose down "${@}"
+
+elif [ "$1" == "restart" ]; then
+    print_style "Restarting Docker Compose\n" "info"
+    shift
+    do_docker_compose restart app web sidekiq
+
+elif [ "$1" == "logs" ]; then
+    do_docker_compose "${@}"
+
+elif [ "$1" == "console" ]; then
+    print_style "Entering Console\n" "info"
+    shift
+    do_docker_compose exec app bundle exec rails c
+
+fi

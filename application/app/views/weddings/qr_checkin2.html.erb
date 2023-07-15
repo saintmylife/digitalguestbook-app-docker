@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%= stylesheet_link_tag    'fonts/fonts.min' %>
+    <%= javascript_include_tag "application" %>
+
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+            font-size: 18px;
+            font-family: 'Proxima Nova'
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .navbar {
+            flex-basis: 10%;
+            background: url(<%= asset_path 'scanner/bg-header.jpg' %>);
+            background-position: top right;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .qr-scanner {
+            flex-basis: 60%;
+            /* background: blue; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #reader {
+            width: 100%;
+            height: 100%;
+        }
+
+        #reader video {
+            width: 100% !important;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #qr-shaded-region {
+            border-color: rgba(0, 0, 0, 0.25) !important;
+        }
+
+        #cam-permission-modal {
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: rgba(0, 0, 0, .5);
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+
+        .inner-modal {
+            width: 50%;
+            height: 25%;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            padding: 25px;
+            box-sizing: border-box;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+
+        .cam-grant {
+            border: none;
+            border-radius: 25px;
+            height: 48px;
+            width: 48px;
+            background: red;
+            margin-top: 10px;
+        }
+
+        #cam-permission-modal .inner-modal .modal-content,
+        #cam-permission-modal .inner-modal #btn-start-cam {
+            display: none;
+        }
+
+        .result {
+            flex-basis: 30%;
+            background: url(<%= asset_path 'scanner/bg-footer.jpg' %>);
+            background-position: bottom left;
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        .guest-information {
+            flex-basis: 70%;
+            /* background: green; */
+            padding: 3% 5%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* align-items: center; */
+            text-align: left;
+        }
+
+        .guest-status {
+            flex-basis: 30%;
+            /* background: red; */
+            display: flex;
+            justify-content: space-evenly;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .guest-name {
+            font-family: 'proxima_nova_altbold';
+            font-size: 38pt;
+            font-weight: bold;
+        }
+
+        .guest-category {
+            font-family: 'Proxima Nova';
+        }
+
+        #result-popup {
+            position: absolute;
+            z-index: 5;
+            /* background: rgba(255, 255, 255, .5); */
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #search-popup {
+            position: absolute;
+            z-index: 5;
+            background: white;
+            display: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-direction: row;
+            /* padding: 10px; */
+            overflow-x: hidden;
+        }
+
+        .search-top {
+            /* background: green; */
+            width: 100%;
+            height: 75px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+        }
+
+        .search-top button {
+            flex-basis: 10%;
+            height: 100%;
+            font-size: 24px;
+            background: rgb(143, 4, 10);
+            border-radius: 25px;
+            color: white;
+            font-weight: 800;
+        }
+
+
+        #myInput {
+            flex-basis: 90%;
+            font-size: 20px;
+            height: 100%;
+
+        }
+
+        #search-table {
+            overflow-y: scroll;
+            position: relative;
+            max-height: 100%;
+            padding: 10px;
+        }
+
+        #search-table>div {
+            position: relative;
+        }
+
+        .guest {
+            border-bottom: 1px solid black;
+            padding-bottom: 10px;
+        }
+
+        .guest-masking {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+        }
+
+        .border-outline-n {
+            border: none;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <button style="width:100px;height:50%;border:none;outline:none;background:none" onclick="searchPerson()">
+                <%= image_tag("scanner/search-white.png", height:'100%',width:'50%')  %>
+            </button>
+        </div>
+        <div class="qr-scanner">
+            <div id="reader"></div>
+        </div>
+        <div class="result" id="result">
+            <div class="guest-information">
+                <h1 class="guest-name" id="guest-name">REDD ONE DIGITAL</h1>
+                <h5 class="guest-category" id="guest-category">SYSTEM</h5>
+            </div>
+            <div class="guest-status" id="guest-status">
+            </div>
+        </div>
+    </div>
+
+    <%# cam-permission popup %>
+
+    <div id="cam-permission-modal">
+        <div class="inner-modal">
+            <div class="modal-top">
+                <h3>GRANT PERMISSION</h3>
+                <button class="cam-grant" onclick="camPermission()"></button>
+            </div>
+        </div>
+    </div>
+
+    <%# checkin popup %>
+    <div id="result-popup">
+        <div class="inner-modal" id="result-popup-inner">
+        </div>
+    </div>
+
+    <%# search popup %>
+    <div id="search-popup">
+        <div class="search-top">
+            <input id="myInput" class="border-outline-n" type="text" placeholder="Search..">
+            <button class="border-outline-n" onclick="$('#search-popup').fadeOut()">X</button>
+        </div>
+        <div id="search-table" style="position:relative">
+        </div>
+    </div>
+
+    <script>
+        function camPermission() {
+            Html5Qrcode.getCameras().then(devices => {
+                if (devices && devices.length) {
+                    // camStart();
+                    $('#cam-permission-modal').fadeOut();
+                    setTimeout(() => {
+                        qrCodeStart(devices[1].id)
+                    }, 500);
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        };
+        var state = 1;
+
+        function qrCodeStart(cameraId) {
+            console.log('Scan Started');
+            var width = document.getElementById('reader').offsetWidth;
+            const html5QrCode = new Html5Qrcode( /* element id */ "reader", true);
+            var lastQR;
+            html5QrCode.start(
+                    cameraId, {
+                        fps: 10, // Optional frame per seconds for qr code scanning
+                        qrbox: 250 // Optional if you want bounded box UI
+                    },
+                    qrCodeMessage => {
+                        // do something when code is read
+                        console.log('qrOld = ' + lastQR);
+                        if (qrCodeMessage && state) {
+                            lastQR = qrCodeMessage;
+                            state = 0;
+                            $.ajax({
+                                type: 'GET',
+                                url: '/weddings/update_presence_mobile',
+                                data: {
+                                    guest_code: qrCodeMessage,
+                                    name: "Weddings"
+                                },
+                                success: function (result) {
+                                    var data = result;
+                                    console.log("ngajax");
+                                    if (data['nama']) {
+                                        $('#guest-name').html(data['nama']);
+                                    } else {
+                                        $('#guest-name').html('ID Tidak Terdaftar');
+                                    }
+                                    $('#guest-category').html(data['guest_id']);
+                                    // add popup
+                                    if (data['hasil']) {
+                                        $("#guest-status").html("<%= j render 'hadir-svg' %>");
+                                        $("#result-popup").fadeIn();
+                                        $("#result-popup").css('display', 'flex');
+                                        $("#result-popup-inner").html("<h1>" + data['message'] +
+                                            "</h1><%= j render 'hadir-svg' %>");
+                                    } else {
+                                        $("#guest-status").html(
+                                            "<%= j render 'already-svg' %><h2>" +
+                                            data['message'] + "</h2>");
+                                        $("#result-popup").fadeIn();
+                                        $("#result-popup").css('display', 'flex');
+                                        $("#result-popup-inner").html("<h1>" + data['message'] +
+                                            "</h1><%= j render 'already-svg' %>");
+                                    }
+                                    setTimeout(() => {
+                                        $("#result-popup").fadeOut();
+                                        setTimeout(() => {
+                                            state = 1;
+                                            console.log('ganti state1')
+                                        }, 150);
+                                    }, 2500);
+                                }
+                            });
+
+                            console.log(state);
+
+                        } else {
+                            setTimeout(() => {
+                                $("#result-popup").fadeOut();
+                                setTimeout(() => {
+                                    state = 1;
+                                    console.log('ganti state1')
+                                }, 150);
+                            }, 2500);
+                        }
+                    },
+                    errorMessage => {})
+                .catch(err => {
+                    // Start failed, handle it.
+                });
+        }
+
+        function searchPerson() {
+            $('#search-popup').css('display', 'block');
+            $.ajax({
+                type: 'GET',
+                url: '/type_of_events/getalldata',
+                success: function (result) {
+                    console.log(result['data']);
+                    $.each(result['data'], function (index, val) {
+                        console.log(val['guest_id']);
+                        // $('#search-table').append("<div ontaphold='clickPerson(" + '"' + val[
+                        //         'guest_id'] + '"' + ")'><h2>" + val['nama'] + "</h2><p>" + val[
+                        //         'guest_id'] +
+                        //     "</p></div>");
+                        $('#search-table').append("<div class='guest'><h2>" +
+                            val['nama'] + "</h2><p>" + val['guest_id'] +
+                            "</p><div class='guest-masking' data-qr='" + val['guest_id'] +
+                            "'></div></div>")
+                    })
+                }
+            })
+        }
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#search-table div").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+
+        $('#search-table').longpress(function (e) {
+            // var tes = $(e.target.getAttribute('guest-qr'));
+            var qr = $(e.target).data('qr');
+            $.ajax({
+                type: 'GET',
+                url: '/weddings/update_presence_mobile',
+                data: {
+                    guest_code: qr,
+                    name: "Weddings"
+                },
+                success: function (result) {
+                    var data = result;
+                    $('#search-popup').fadeOut('fast');
+                    $('#guest-name').html(data['nama']);
+                    $('#guest-category').html(data['guest_id']);
+                    // add popup
+                    if (data['hasil']) {
+                        $("#guest-status").html("<%= j render 'hadir-svg' %><h2>" + data[
+                            'message'] + "</h2>");
+                        $("#result-popup").fadeIn();
+                        $("#result-popup").css('display', 'flex');
+                        $("#result-popup-inner").html("<h1>" + data['message'] +
+                            "</h1><%= j render 'hadir-svg' %>");
+                    } else {
+                        $("#guest-status").html(
+                            "<%= j render 'already-svg' %><h2>" +
+                            data['message'] + "</h2>");
+                        $("#result-popup-inner").html("<h1>" + data['message'] +
+                            "</h1><%= j render 'already-svg' %>");
+                        $("#result-popup").fadeIn();
+                        $("#result-popup").css('display', 'flex');
+                        $("#result-popup-inner").html("<h1>" + data['message'] +
+                            "</h1><%= j render 'already-svg' %>");
+                    }
+                    setTimeout(() => {
+                        $("#result-popup").fadeOut();
+                    }, 2500);
+                }
+            })
+        });
+
+        $('body').on('click', function (event) {
+            var camPermission = $('#cam-permission-modal').css('display');
+            if (camPermission !== 'none') {
+                if (event.target.id === 'cam-permission-modal') {
+                    $('#' + event.target.id).fadeOut();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

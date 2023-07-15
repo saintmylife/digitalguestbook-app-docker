@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Master Event Type
+            <%= link_to 'New Event Type', new_type_of_event_path, class: 'btn btn-primary btn-sm pull-right' %>
+        </h3>
+    </div><br>
+
+    <%= form_tag type_of_events_path, method: "GET" do %>
+      <% 5.times do %>
+        <div class="col-sm-2"></div>
+      <% end %>
+      <div class="col-sm-2">
+        <%= text_field_tag :name, params[:name], class: "form-control form-control-sm", placeholder: "Search" %>
+      </div>
+    <% end %><br>
+
+  <div class="panel-body">
+    <table id="data-table" class="table table-hovered table-bordered margin10">
+        <thead class="thead-default">
+            <tr>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @type_of_events.each do |type_of_event| %>
+            <tr>
+                <td><%= type_of_event.name %></td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-success btn-sm"><%= link_to 'Edit', edit_type_of_event_path(type_of_event) %></button>
+                        <button type="button" class="btn btn-delete btn-sm"><%= link_to 'Destroy', type_of_event, method: :delete, data: { confirm: 'Are you sure?' } %></button>
+                    </div>
+                </td>
+            </tr>
+            <% end %>
+
+            </tbody>
+        </table>
+        <%= paginate @type_of_events %>
+  </div>
+
+
+</div>
