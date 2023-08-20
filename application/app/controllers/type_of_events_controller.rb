@@ -68,15 +68,15 @@ class TypeOfEventsController < ApplicationController
                   .first.name
     case @checkaktif
     when 'Weddings'
-      @all_guest = Guest.joins(:event).where("events.status=true").select("guests.id, guests.guest_id, guests.nama, guests.kategori").order(nama: :asc)
+      @all_guest = Guest.joins(:event).where("events.status=true").select("guests.id, guests.guest_id, guests.nama, guests.kategori, guests.presence as checkin, guests.souvenir as checkout").order(nama: :asc)
     when 'Concert'
-      @all_guest = Concert.joins(:event).where("events.status=true").select("concerts.id, concerts.guest_id, concerts.nama").order(nama: :asc)
+      @all_guest = Concert.joins(:event).where("events.status=true").select("concerts.id, concerts.guest_id, concerts.nama, concerts.presence as checkin, concerts.ticket as checkout").order(nama: :asc)
     when 'Movings'
-      @all_guest = Moving.joins(:event).where("events.status=true").select("movings.id, movings.guest_id, movings.nama").order(nama: :asc)
+      @all_guest = Moving.joins(:event).where("events.status=true").select("movings.id, movings.guest_id, movings.nama, movings.presence as checkin, movings.souvenir as checkout").order(nama: :asc)
     when 'Absensis'
-      @all_guest = Absensi.joins(:event).where("events.status=true").select("absensi.id, absensi.guest_id, absensi.nama").order(nama: :asc)
+      @all_guest = Absensi.joins(:event).where("events.status=true").select("absensi.id, absensi.guest_id, absensi.nama, absensi.presence as checkin, absensi.souvenir as checkout").order(nama: :asc)
     else
-      @all_guest = Gathering.joins(:event).where("events.status=true").select("gatherings.id, gatherings.guest_id, gatherings.nama_peserta as nama").order(nama_peserta: :asc)
+      @all_guest = Gathering.joins(:event).where("events.status=true").select("gatherings.id, gatherings.guest_id, gatherings.nama_peserta as nama, gatherings.presence as checkin, gatherings.souvenir as checkout").order(nama_peserta: :asc)
     end
     if params[:q].present?
       if @checkaktif != 'Gatherings'
