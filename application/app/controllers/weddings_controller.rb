@@ -193,6 +193,8 @@ end
           other1: @find_guest[0].nama_meja,
           other2: @find_guest[0].kategori,
           other3: "#{@find_guest[0].jumlah_undangan} Person",
+          kategori: @find_guest[0].kategori,
+          rsvp: @find_guest[0].custom_two_text,
           guest_status: @find_guest[0].status,
           hasil: true, # ini buat logo
           setting: @settingan
@@ -215,6 +217,8 @@ end
              other1: @find_guest[0].nama_meja,
              other2: @find_guest[0].kategori,
              other3: "",
+             kategori: @find_guest[0].kategori,
+             rsvp: @find_guest[0].custom_two_text,
              hasil: false, # ini buat logo
              setting: @settingan
           },status:200
@@ -230,6 +234,8 @@ end
             other1: "",
             other2: "",
             other3: "",
+            kategori: "",
+            rsvp: 0,
             hasil: false, # ini buat logo
           },status:200
         }
