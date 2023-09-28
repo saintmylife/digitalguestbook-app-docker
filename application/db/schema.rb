@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210326073807) do
+ActiveRecord::Schema.define(version: 20220420234535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 20210326073807) do
     t.integer "jumlah_undangan"
     t.string "jabatan"
     t.boolean "winner", default: false
+    t.integer "real_person", default: 0
   end
 
   create_table "jenis_kategoris", force: :cascade do |t|
@@ -277,6 +278,7 @@ ActiveRecord::Schema.define(version: 20210326073807) do
     t.boolean "nama_angpao"
     t.boolean "jumlah_souvenir"
     t.boolean "jumlah_undangan", default: false
+    t.boolean "count_person", default: false
   end
 
   create_table "settingundians", force: :cascade do |t|
