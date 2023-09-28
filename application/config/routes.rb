@@ -100,6 +100,7 @@ Rails.application.routes.draw do
       #update reset_presence_souvenir
       patch :reset_presence_souvenir
       # get :reset_presence_souvenir_info
+      put 'update_real_person/:guest_code',action: :update_real_person, :defaults => {:format => 'json'}
     }
   end
 

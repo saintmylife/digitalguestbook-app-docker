@@ -623,6 +623,38 @@ end
     logger.debug('tes')
   end
 
+  def update_real_person
+    @find_guest = Guest.joins(event: :type_of_event)
+                    .where("type_of_events.name ilike '%Wedding%'")
+                    .where("events.status = TRUE")
+                    .where(guest_id: params[:guest_code])
+    if params[:real_person].present?
+      if @find_guest.present?
+        @find_guest.update(real_person: params[:real_person])
+        respond_to do |format|
+          format.json { render json:{
+            message: "Success",
+            guest: @find_guest
+            },status:200}
+        end
+      else
+          respond_to do |format|
+            format.json { render json:{
+              message: "Not Found",
+              },status:404}
+          end
+      end
+    else
+      respond_to do |format|
+        format.json { 
+          render json:{
+            message: "Guest Count is Required",
+          },
+          status:422}
+      end
+    end
+  end
+
   private
 
   def guest_params
