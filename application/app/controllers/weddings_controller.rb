@@ -170,73 +170,73 @@ end
 
   def update_presence_mobile
     @find_guest = Guest.joins(event: :type_of_event)
-                        .where("type_of_events.name ilike '%Wedding%'")
-                        .where("events.status = TRUE")
-                        .where(guest_id: params[:guest_code])
-    @settingan = Setting.select('id,nama_meja AS table, nama_angpao AS gift').last
-    # logger.debug @settingan.gift
-    if @find_guest.present? && @find_guest.first.presence != true
-      setting = Setting.where(id:@find_guest.first.event_id)
-      # @settingan = Setting.pluck('nama_meja AS table, nama_angpao AS gift').last
+                       .where("type_of_events.name ilike '%Wedding%'")
+                       .where("events.status = TRUE")
+                       .where(guest_id: params[:guest_code])
+                       .first
+    @settingan = Setting.select('id,nama_meja AS table, nama_angpao AS gift, count_person').last
+
+    if @find_guest.present? && @find_guest.presence != true
+      setting = Setting.where(id:@find_guest.event_id)
       @print = {}
       ScanWorker.perform_async(params[:guest_code],params[:name])
       respond_to do |format|
         format.json { render json:{
           message: "Selamat Datang", #data yang mau ditampilkan di app
-          guest_id: @find_guest[0].guest_id,
-          # guest_id: "#{@find_guest[0].nama} \n \n#{@find_guest[0].kategori} #{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-          # guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori} #{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-          # guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].custom_one_text ? @find_guest[0].custom_one_text : ''}",
-          nama: @find_guest[0].nama,
-          alamat: @find_guest[0].alamat,
-          jumlah_undangan: @find_guest[0].jumlah_undangan,
-          other1: @find_guest[0].nama_meja,
-          other2: @find_guest[0].kategori,
-          other3: "#{@find_guest[0].jumlah_undangan} Person",
-          kategori: @find_guest[0].kategori,
-          rsvp: @find_guest[0].custom_two_text,
-          guest_status: @find_guest[0].status,
           hasil: true, # ini buat logo
+          guest_id: @find_guest.guest_id,
+          nama: @find_guest.nama,
+          alamat: @find_guest.alamat,
+          kategori: "Kategori : #{@find_guest.kategori}",
+          jumlah_undangan: @find_guest.jumlah_undangan,
+          other1: @find_guest.nama_meja,
+          other2: "",
+          other3: "",
+          guest_status: @find_guest.status, # VIP, VVIP
+          real_person: @find_guest.real_person,
+          rsvp: @find_guest.jumlah_undangan ? @find_guest.jumlah_undangan : 0, #for printing
           setting: @settingan
         },status:200
       }
       end
     else
-      if @find_guest.first.presence == true
+      if @find_guest.presence == true
         respond_to do |format|
           format.json { render json:{
             message: "Already", #data yang mau ditampilkan di app
-            guest_id: @find_guest[0].guest_id,
-            #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori}#{@find_guest[0].nama_meja ? ', '+@find_guest[0].nama_meja : ''}",
-            #  guest_id: "#{@find_guest[0].nama} \n \n#{@find_guest[0].kategori}#{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-            #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori}#{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-             #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].custom_one_text ? @find_guest[0].custom_one_text : ''}",
-             nama: @find_guest[0].nama,
-             alamat: @find_guest[0].kategori,
-             jumlah_undangan: @find_guest[0].jumlah_undangan,
-             other1: @find_guest[0].nama_meja,
-             other2: @find_guest[0].kategori,
-             other3: "",
-             kategori: @find_guest[0].kategori,
-             rsvp: @find_guest[0].custom_two_text,
-             hasil: false, # ini buat logo
-             setting: @settingan
+            hasil: false, # ini buat logo
+            guest_id: @find_guest.guest_id,
+            nama: @find_guest.nama,
+            alamat: @find_guest.alamat,
+            kategori: "Kategori : #{@find_guest.kategori}",
+            jumlah_undangan: @find_guest.jumlah_undangan,
+            other1: @find_guest.nama_meja,
+            other2: nil,
+            other3: nil,
+            guest_status: @find_guest.status, # VIP, VVIP
+            real_person: @find_guest.real_person,
+            rsvp: @find_guest.jumlah_undangan ? @find_guest.jumlah_undangan : 0,
+            setting: @settingan
           },status:200
         }
         end
       else  
         respond_to do |format|
           format.json { render json:{
+            hasil: false,
             message: "ID Tidak Terdaftar", #data yang mau ditampilkan di app
             guest_id: "",
             nama: "ID Tidak Terdaftar",
             alamat: "",
+            kategori: "",
+            jumlah_undangan: 0,
             other1: "",
             other2: "",
             other3: "",
-            kategori: "",
-            rsvp: 0,
-            hasil: false, # ini buat logo
+            guest_status: "",
+            real_person: "",
+            rsvp: "",
+            setting: nil,
           },status:200
         }
         end 
@@ -459,8 +459,12 @@ end
     @vendor_belum_hadir = Guest.joins(:event).where("events.status=true").where("guests.presence=false").where("guests.kategori='VENDOR'").where("guests.kategori != 'SYSTEM'").count
     @jumlah_souvenir = Guest.joins(:event).where("events.status=true").where("guests.souvenir=true").where("guests.kategori != 'VENDOR'").where("guests.kategori != 'SYSTEM'").count
 
+    @setting = Setting.first
+    @real_person = Guest.joins(:event).where("events.status=true").where("guests.presence=true").sum("real_person")
+    @rsvp_count = Guest.joins(:event).where("events.status=true").where("guests.presence=true").sum("jumlah_undangan")
+
     # Buat Hitung Jumlah P/W
-    @isEnabled = true
+    @isEnabled = false
     @guestCountWoman = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori != 'SYSTEM'").where("guests.custom_one_text = 'W'").count
     @personCountWoman = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori != 'SYSTEM'").where("guests.custom_one_text = 'W'").sum("guests.jumlah_undangan")
     @guestCountOthers = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori = 'Tambahan'").count
@@ -633,6 +637,7 @@ end
         @find_guest.update(real_person: params[:real_person])
         respond_to do |format|
           format.json { render json:{
+            hasil: true,
             message: "Success",
             guest: @find_guest
             },status:200}
@@ -640,6 +645,7 @@ end
       else
           respond_to do |format|
             format.json { render json:{
+              hasil: false,
               message: "Not Found",
               },status:404}
           end
@@ -648,6 +654,7 @@ end
       respond_to do |format|
         format.json { 
           render json:{
+            hasil: false,
             message: "Guest Count is Required",
           },
           status:422}
