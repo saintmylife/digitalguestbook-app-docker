@@ -25,7 +25,7 @@ services:
     env_file: .env
 
   redis:
-    image: redis:alpine
+    image: redis:7.4.3-alpine3.21
 
   sidekiq:
     build:
