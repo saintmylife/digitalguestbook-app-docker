@@ -8,6 +8,7 @@ services:
     entrypoint: ./entrypoints/app-entrypoint.sh
     volumes:
     - ./application:/application
+    - public-files:/application/public
     depends_on:
       - db
     ports:
@@ -48,7 +49,10 @@ services:
       - db
     ports:
       - "3000:3000"
+    volumes:
+      - public-files:/application/public:ro
 
 volumes:
   db_data:
   application:
+  public-files:

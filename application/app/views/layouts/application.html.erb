@@ -59,97 +59,6 @@
             <a id="dLabel" role="button" data-toggle="dropdown" class="dropdown-toggle" data-target="#" href="#">
               Absensi <span class="caret"></span></a>
             <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-              <li class="dropdown-submenu">
-                <a tabindex="-1" href="#">Moving Class</a>
-                <ul class="dropdown-menu">
-                  <!-- Menu Moving Class -->
-                  <li><a href="<%= dashboard_movings_path %>">Dashboard</a></li>
-                  <li><a href="<%= masterdata_movings_path %>">Master</a></li>
-                  <li class="divider"></li>
-                  <!-- Class I -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class I</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class II -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class II</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class2_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir2_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class III -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class III</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class3_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir3_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class IV -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class IV</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class4_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir4_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class V -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class V</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class5_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir5_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class VI -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class VI</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class6_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir6_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class VII -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class VII</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class7_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir7_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class VIII -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class VIII</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class8_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir8_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class IX -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class IX</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class9_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir9_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- Class X -->
-                  <li class="dropdown-submenu">
-                    <a href="#">Class X</a>
-                    <ul class="dropdown-menu">
-                      <li><a href=<%= class10_movings_path %>>Check In</a></li>
-                      <li><a href=<%= souvenir10_movings_path %>>Check Out</a></li>
-                    </ul>
-                  </li>
-                  <!-- DONE -->
-                </ul>
-              </li>
-              <li class="divider"></li>
               <li><a href="<%= dashboard_absensis_path %>">Dashboard</a></li>
               <li><a href="<%= absensis_path %>">Check In</a></li>
               <li><a href="<%= souvenir_absensis_path %>">Check Out</a></li>
@@ -200,6 +109,21 @@
             <ul class="dropdown-menu">
               <li><a href="<%= undians_path %>">Lucky Draw</a></li>
               <li><a href="<%= winner_undians_path %>">List Pemenang</a></li>
+            </ul>
+          </li>
+
+          <!-- MOVING -->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false">Moving Class<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="<%= dashboard_movings_path %>">Dashboard</a></li>
+              <li><a href="<%= masterdata_movings_path %>">Master</a></li>
+              <li class="divider"></li>
+              <li><a href="<%= movings_path %>">Check In Registrasi</a></li>
+              <li><a href="<%= class2_movings_path %>">Goodie Bag</a></li>
+              <li><a href="<%= class3_movings_path %>">Ruang Seminar</a></li>
+              <li><a href="<%= class4_movings_path %>">Makan Siang</a></li>
             </ul>
           </li>
 

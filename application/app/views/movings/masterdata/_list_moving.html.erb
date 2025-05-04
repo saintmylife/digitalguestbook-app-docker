@@ -1,0 +1,29 @@
+<% @movings.each do |moving| %>
+  <tr>
+    <td style="text-align:center;vertical-align:middle"><%= moving.guest_id %></td>
+    <td style="text-align:center;vertical-align:middle"><%= moving.kategori %></td>
+    <td style="vertical-align:middle"><%= moving.nama %> </td>
+    <td style="text-align:center;vertical-align:middle"><%= moving.instansi %></td>
+    <td style="text-align:center;vertical-align:middle"><%= moving.jabatan %></td>
+    <td style="text-align:center;vertical-align:middle"><%= moving.unit_kerja %></td>
+    <td style="text-align:center;vertical-align:middle">
+      <%= link_to print_qr_master_movings_path(guest_id: moving.guest_id), remote: true do %>
+        Print
+        </td>
+        <td style="text-align:center;vertical-align:middle">
+            <%= link_to "Detail", moving_path(moving), remote: true, class: "btn btn-info btn-sm", style: "color:white", data: {toggle: "modal", "target": "#show-data"} %>
+        </td>
+        <td style="text-align:center;vertical-align:middle">
+            <%= link_to "Edit", edit_moving_path(moving), method: :get, class: "btn btn-success btn-sm", style: "color:white" %>
+        </td>
+        <td style="text-align:center;vertical-align:middle">
+          <%= link_to "Reset", reset_presence_souvenir_movings_path(id: moving.id), method: :patch, remote: true, class: "btn btn-warning btn-sm", style: "color:white" %>
+        </td>
+        <td style="text-align:center;vertical-align:middle">
+            <%= link_to "Delete", moving_path(moving), method: :delete, data: { confirm: 'Data Akan Dihapus ' }, class: "btn btn-delete btn-sm", style: "color:white" %>
+        </td>
+      <% end %>
+      </tr>
+<% end %>
+<div id="show-data" stlye="display:none;">
+</div>

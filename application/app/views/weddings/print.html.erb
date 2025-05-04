@@ -37,6 +37,14 @@
     .pagebreak {
       page-break-before: always;
     }
+
+    @media print {
+      @page { 
+        size: 5cm 3cm;
+        margin: 0;
+      }
+      body { margin: 0.1cm; }
+    }
   </style>
 </head>
 
@@ -49,9 +57,9 @@
 <%# 1, Angpao %>
   <% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == false && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
   <div class="container">
-    <div style="font-size:14px;margin-bottom:10px">G I F T</div>
+    <div style="font-size:12px;margin-bottom:4px">G I F T</div>
     <hr style="border:.1px solid black;width:100%">
-    <p style="font-size:18px;margin-top:15px"><b><%= guest.guest_id %></b></p>
+    <p style="font-size:16px;margin-top:8px"><b><%= guest.nama %></b></p>
   </div>
   <% end %>
   <%# 3 %>
@@ -67,13 +75,11 @@
   <% if setting.no_undian == false && setting.nama_angpao == true && setting.nama_meja == true && setting.jumlah_souvenir == false && setting.nama_undangan == false  %>
   <div class="container">
     <div style="font-size:14px;margin-bottom:10px">G I F T</div>
-    <hr style="border:.1px solid black;width:100%">
-    <p style="font-size:14px;margin-top:15px"><b><%= guest.nama %></b></p>
+    <p style="font-size:18px;margin-top:8px"><b><%= guest.nama %></b></p>
   </div>
   <div class="pagebreak"></div>
   <div class="container">
     <div style="font-size:14px;margin-bottom:10px">T A B L E</div>
-    <hr style="border:.1px solid black;width:100%">
     <p style="font-size:18px;margin-top:15px"><b><%= guest.nama_meja %></b></p>
   </div>
   <% end %>

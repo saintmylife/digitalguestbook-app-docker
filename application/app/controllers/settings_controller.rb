@@ -106,10 +106,7 @@ class SettingsController < ApplicationController
         waktu = Log.where(event_id: event_id)
         waktu.update_all(:status => false)
     else "Moving"
-        guest = Moving.where(event_id: event_id)
-        guest.update_all(:presence => false, :presence2 => false, :presence3 => false, :presence4 => false, :presence5 => false, :presence6 => false, :presence7 => false, :presence8 => false, :presence9 => false, :presence10 => false, :souvenir =>false, :souvenir2 =>false, :souvenir3 =>false, :souvenir4 =>false,  :souvenir5 =>false, :souvenir6 =>false, :souvenir7 =>false, :souvenir8 =>false, :souvenir9 =>false, :souvenir10 =>false,)
-        waktu = Logmoving.where(event_id: event_id)
-        waktu.update_all(:status => false)
+      Moving.reset_all(event_id)
     end
 #    redirect_to settings_path
     @con = true

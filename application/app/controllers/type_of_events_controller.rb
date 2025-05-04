@@ -71,7 +71,7 @@ class TypeOfEventsController < ApplicationController
       @all_guest = Guest.joins(:event).where("events.status=true").select("guests.id, guests.guest_id, guests.nama, guests.kategori, guests.presence as checkin, guests.souvenir as checkout").order(nama: :asc)
     when 'Concert'
       @all_guest = Concert.joins(:event).where("events.status=true").select("concerts.id, concerts.guest_id, concerts.nama, concerts.presence as checkin, concerts.ticket as checkout").order(nama: :asc)
-    when 'Movings'
+    when 'Moving'
       @all_guest = Moving.joins(:event).where("events.status=true").select("movings.id, movings.guest_id, movings.nama, movings.presence as checkin, movings.souvenir as checkout").order(nama: :asc)
     when 'Absensis'
       @all_guest = Absensi.joins(:event).where("events.status=true").select("absensi.id, absensi.guest_id, absensi.nama, absensi.presence as checkin, absensi.souvenir as checkout").order(nama: :asc)

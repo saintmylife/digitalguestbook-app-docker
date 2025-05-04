@@ -10,4 +10,11 @@ $("#vendor_belum_hadir").html("<%= @vendor_belum_hadir.present? ? @vendor_belum_
 $("#guest_kategori").html("<% @units.each do |unit| %><tr><td><%= unit.kategori %></td><td><%= unit.total %></td><td><%= unit.hadir %></td><td><%= unit.tidakhadir %></td></tr><% end %>");
 
 $("#list_kategori").html("<%= j (render 'list_kategori', units: @units)%>");
+
+$("#guest_tambahan").html("<%= @total_guest_tambahan %>")
+$("#guest_sudah_hadir_percentage").html("<%= number_to_percentage @guestSudahHadirPercentage, :precision => 2, :strip_insignificant_zeros => true %>")
+$("#guest_belum_hadir_percentage").html("<%= number_to_percentage @guestBelumHadirPercentage, :precision => 2, :strip_insignificant_zeros => true %>")
+$("#jumlah_souvenir_percentage").html("<%= number_to_percentage @jumlahSouvenirPercentage, :precision => 2, :strip_insignificant_zeros => true %>")
+$("#souvenir_total").html("<%= @souvenir_total %>")
+
 toastr['info']('Refresh data berhasil');

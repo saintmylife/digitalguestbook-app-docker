@@ -4,7 +4,7 @@ class ScanWorker
   def perform(guest_id,type)
     case type
     when "Weddings"
-          guest = Guest.where(guest_id: guest_id)
+          guest = Guest.find(guest_id)
           guest.update(presence:true,time_of_entry:Time.now())
     when "Concerts"
           guest = Concert.where(guest_id: guest_id)

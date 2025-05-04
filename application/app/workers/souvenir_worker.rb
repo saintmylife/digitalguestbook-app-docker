@@ -6,7 +6,7 @@ class SouvenirWorker
 #     souvenir.update(souvenir:true,time_of_get_souvenir:Time.now())
     case type
     when "Weddings"
-      souvenir = Guest.where(guest_id: guest_id)
+      souvenir = Guest.find(guest_id)
       souvenir.update(souvenir:true,time_of_get_souvenir:Time.now())
     when "Concerts"
       souvenir = Concert.where(guest_id: guest_id)

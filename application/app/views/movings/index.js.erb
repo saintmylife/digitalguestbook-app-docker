@@ -1,19 +1,7 @@
-//Checkin
-<% if @presence == 'Sukses' %>
-  $("#notice").html("<%= escape_javascript(render 'hadir') %>")
-<% elsif @presence == 'Setelah' %>
-  $("#notice").html("<%= escape_javascript(render 'already') %>")
-<% elsif @presence == 'Belum' %>
-  $("#notice").html("<%= escape_javascript(render 'belum') %>")
-<% elsif @presence == 'Gagal' %>
-  $("#notice").html("<%= escape_javascript(render 'tolak') %>")
-  //Checkout
-<% elsif @souvenir == 'Sukses'  %>
-  $("#notice").html("<%= escape_javascript(render 'souvenir_hadir') %>")
-<% elsif @souvenir == 'Belum' %>
-  $("#notice").html("<%= escape_javascript(render 'souvenir_belum_hadir') %>")
-<% elsif @souvenir == 'Sudah' %>
-  $("#notice").html("<%= escape_javascript(render 'souvenir_non_hadir') %>")
-<% elsif @souvenir == 'Gagal' %>
-  $("#notice").html("<%= escape_javascript(render 'souvenir_not_found') %>")
+<% if @presence == true %>
+$("#notice").html("<%= escape_javascript(render 'hadir') %>")
+<% elsif @presence == false %>
+$("#notice").html("<%= escape_javascript(render 'already') %>")
+<% elsif @presence == nil %>
+$("#notice").html("<%= escape_javascript(render 'tolak') %>")
 <% end %>

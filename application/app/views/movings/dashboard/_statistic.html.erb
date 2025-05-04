@@ -1,0 +1,159 @@
+<div class="row" id="statistic_row">
+  <!-- Jumlah Undangan -->
+  <div class="col-md-2 col-lg-3">
+    <div class="panel-dashboard rounded">
+      <div class="row">
+        <div class="col-sm-8">
+          <h5 class="text-muted" style="font-weight: 600; margin-bottom: 4px; margin-top: 0">JUMLAH UNDANGAN</h5>
+          <span class="title-card h1" id="total_guest"><%= @guest_total %></span>
+        </div>
+        <div class="col-sm-4">
+          <i class="fa fa-users fa-4x"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted caption-card">Tambahan
+            <span id="guest_total_added" class="success-color"><%= @guest_total_added %></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- REGISTRASI -->
+  <div class="col-md-2 col-lg-3">
+    <div class="panel-dashboard rounded">
+      <div class="row">
+        <div class="col-sm-8">
+          <h5 class="text-muted" style="font-weight: 600; margin-bottom: 4px; margin-top: 0">Registrasi</h5>
+          <span class="title-card h1" id="guest_presence_time">
+            <%= @guest_count_map["presence_time"] ? @guest_count_map["presence_time"]["percentage"] : "0%" %>
+          </span>
+        </div>
+        <div class="col-sm-4" style="text-align: right">
+          <i class="fa fa-check-square fa-4x"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted caption-card">
+            Undangan
+            <span id="guest_presence_time_attend" class="success-color"><%= @guest_count_map["presence_time"] ? @guest_count_map["presence_time"]["count"] : 0 %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Goodie Bag -->
+  <div class="col-md-2 col-lg-3">
+    <div class="panel-dashboard rounded">
+      <div class="row">
+        <div class="col-sm-8">
+          <h5 class="text-muted" style="font-weight: 600; margin-bottom: 4px; margin-top: 0">Goodie Bag</h5>
+          <span class="title-card h1" id="guest_presence_2_time">
+            <%= @guest_count_map["presence_2_time"] ? @guest_count_map["presence_2_time"]["percentage"] : "0%" %>
+          </span>
+        </div>
+        <div class="col-sm-4" style="text-align: right">
+          <i class="fa fa-check-square fa-4x"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted caption-card">
+            Undangan
+            <span id="guest_presence_2_time_attend" class="success-color"><%= @guest_count_map["presence_2_time"] ? @guest_count_map["presence_2_time"]["count"] : 0 %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row statistic_row" style="margin-top:15px">
+  <!-- Ruang Seminar -->
+  <div class="col-md-2 col-lg-3">
+    <div class="panel-dashboard rounded">
+      <div class="row">
+        <div class="col-sm-8">
+          <h5 class="text-muted" style="font-weight: 600; margin-bottom: 4px; margin-top: 0">Ruang Seminar</h5>
+          <span class="title-card h1" id="guest_presence_3_time">
+            <%= @guest_count_map["presence_3_time"] ? @guest_count_map["presence_3_time"]["percentage"] : "0%" %>
+          </span>
+        </div>
+        <div class="col-sm-4" style="text-align: right">
+          <i class="fa fa-check-square fa-4x"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted caption-card">
+            Undangan
+            <span id="guest_presence_3_time_attend" class="success-color"><%= @guest_count_map["presence_3_time"] ? @guest_count_map["presence_3_time"]["count"] : 0 %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Makan Siang -->
+  <div class="col-md-2 col-lg-3">
+    <div class="panel-dashboard rounded">
+      <div class="row">
+        <div class="col-sm-8">
+          <h5 class="text-muted" style="font-weight: 600; margin-bottom: 4px; margin-top: 0">Makan Siang</h5>
+          <span class="title-card h1" id="guest_presence_4_time">
+            <%= @guest_count_map["presence_4_time"] ? @guest_count_map["presence_4_time"]["percentage"] : "0%" %>
+          </span>
+        </div>
+        <div class="col-sm-4" style="text-align: right">
+          <i class="fa fa-check-square fa-4x"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="text-muted caption-card">
+            Undangan
+            <span id="guest_presence_4_time_attend" class="success-color"><%= @guest_count_map["presence_4_time"] ? @guest_count_map["presence_4_time"]["count"] : 0 %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .title-card {
+        color: #32325d !important;
+    }
+
+    .rounded {
+        border-radius: .875rem;
+    }
+
+    .text-muted {
+        color: #6c757d !important;
+    }
+
+    .caption-card {
+        margin-top: 1rem;
+        font-size: 1.2rem !important;
+    }
+
+    .success-color {
+        color: #49C9B0;
+    }
+
+    .danger-color {
+        color: red;
+    }
+
+    .caption-card span {
+        font-weight: 600;
+    }
+
+    #statistic_row, .statistic_row {
+        display: flex;
+        justify-content: center;
+    }
+
+    @media only screen and (max-width: 480px) {
+        #statistic_row, .statistic_row {
+            display: unset;
+            justify-content: unset;
+        }
+    }
+</style>

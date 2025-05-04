@@ -1,0 +1,26 @@
+<table class="table table-hovered table-bordered margin10 pretty">
+  <thead>
+  <tr>
+    <th width="5%" style="text-align:center;">Keterangan</th>
+    <th width="10%" style="text-align:center;">Waktu</th>
+  </tr>
+  </thead>
+  <tbody id='list_wedding'>
+  <tr>
+    <td style="text-align:center;">Registrasi</td>
+    <td style="text-align:center;"> <%= @moving.presence_time.nil? ? "-" : @moving.presence_time.strftime('%H:%M:%S %Z') %> </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">Goodie Bag</td>
+    <td style="text-align:center;"> <%= @moving.presence_2_time.nil? ? "-" : @moving.presence_2_time.strftime('%H:%M:%S %Z') %> </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">Ruang Seminar</td>
+    <td style="text-align:center;"> <%= @moving.presence_3_time.nil? ? "-" : @moving.presence_3_time.strftime('%H:%M:%S %Z') %> </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">Makan Siang</td>
+    <td style="text-align:center;"> <%= @moving.presence_4_time.nil? ? "-" : @moving.presence_4_time.strftime('%H:%M:%S %Z') %> </td>
+  </tr>
+  </tbody>
+</table>

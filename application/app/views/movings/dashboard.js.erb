@@ -1,5 +1,15 @@
-$("#total_guest").html("<%= @jenis_kategori.present? ? @jenis_kategori:"-" %>");
-$("#jumlah_souvenir").html("<%= @jumlah_souvenir.present? ? @jumlah_souvenir:"-" %>");
-$("#guest_sudah_hadir").html("<%= @guest_sudah_hadir.present? ? @guest_sudah_hadir:"-" %>");
-$("#guest_belum_hadir").html("<%= @guest_belum_hadir.present? ? @guest_belum_hadir:"-" %>");
+$("#total_guest").html("<%= @guest_total %>");
+$("#guest_total_added").html("<%= @guest_total_added %>");
+
+$("#guest_presence_time").html("<%= @guest_count_map["presence_time"] ? @guest_count_map["presence_time"]["percentage"] : "0%" %>");
+$("#guest_presence_time_attend").html("<%= @guest_count_map["presence_time"] ? @guest_count_map["presence_time"]["count"] : 0 %>");
+$("#guest_presence_2_time").html("<%= @guest_count_map["presence_2_time"] ? @guest_count_map["presence_2_time"]["percentage"] : "0%" %>");
+$("#guest_presence_2_time_attend").html("<%= @guest_count_map["presence_2_time"] ? @guest_count_map["presence_2_time"]["count"] : 0 %>");
+$("#guest_presence_3_time").html("<%= @guest_count_map["presence_3_time"] ? @guest_count_map["presence_3_time"]["percentage"] : "0%" %>");
+$("#guest_presence_3_time_attend").html("<%= @guest_count_map["presence_3_time"] ? @guest_count_map["presence_3_time"]["count"] : 0 %>");
+$("#guest_presence_4_time").html("<%= @guest_count_map["presence_4_time"] ? @guest_count_map["presence_4_time"]["percentage"] : "0%" %>");
+$("#guest_presence_4_time_attend").html("<%= @guest_count_map["presence_4_time"] ? @guest_count_map["presence_4_time"]["count"] : 0 %>");
+
+$("#list_kategori").html("<%= j(render 'movings/dashboard/list_moving', @guest_count_category)%>");
+
 toastr['info']('Refresh data berhasil');
