@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220420234535) do
+ActiveRecord::Schema.define(version: 20241202150153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -244,6 +244,16 @@ ActiveRecord::Schema.define(version: 20220420234535) do
     t.boolean "souvenir8", default: false
     t.boolean "souvenir9", default: false
     t.boolean "souvenir10", default: false
+    t.datetime "presence_time"
+    t.datetime "presence_2_time"
+    t.datetime "presence_3_time"
+    t.datetime "presence_4_time"
+    t.datetime "presence_5_time"
+    t.datetime "presence_6_time"
+    t.datetime "presence_7_time"
+    t.datetime "presence_8_time"
+    t.datetime "presence_9_time"
+    t.datetime "presence_10_time"
   end
 
   create_table "posts", force: :cascade do |t|

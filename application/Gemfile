@@ -43,7 +43,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-jquery', '2.1.1'
   gem 'rails-assets-bootstrap', '3.3.6'
   gem 'rails-assets-tether'
-  gem 'rails-assets-animated'
+  gem 'rails-assets-animated', '3.7.1' , git: 'https://github.com/animate-css/animate.css.git'
   gem 'rails-assets-material-design-iconic-font'
   gem 'rails-assets-toastr'
 

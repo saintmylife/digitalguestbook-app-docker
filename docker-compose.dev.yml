@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/local/app/Dockerfile
+#    entrypoint: bash -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
+    entrypoint: bash -c "rm -f tmp/pids/server.pid && bundle exec rake db:setup && bundle exec rails server -b 0.0.0.0 -p 3000"
+    volumes:
+      - ./application:/application
+    ports:
+      - "3000:3000"
+    env_file: .env.dev
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:12.1
+    volumes:
+      - db_data_dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file: .env.dev
+
+  redis:
+    image: redis:7.4.3-alpine3.21
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: ./docker/local/app/Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec sidekiq"
+    volumes:
+      - ./application:/application
+    depends_on:
+      - db
+      - redis
+    env_file: .env.dev
+
+volumes:
+  db_data_dev:
