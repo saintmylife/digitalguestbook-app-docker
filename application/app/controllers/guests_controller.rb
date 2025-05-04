@@ -159,6 +159,6 @@ class GuestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def guest_params
-      params.require(:guest).permit(:guest_id, :nama, :event_id, :alamat, :kategori, :nama_meja, :jumlah_undangan, :presence ,:time_of_entry, :custom_one_text, :custom_two_text, :nomor_ponsel,:status)
+      params.require(:guest).permit(:guest_id, :nama, :event_id, :alamat, :kategori, :nama_meja, :jumlah_undangan, :presence ,:time_of_entry, :nomor_ponsel,:status, :souvenir_text, :custom_one_text, :custom_two_text, :custom_three_text, :custom_four_text, :custom_five_text)
     end
 end

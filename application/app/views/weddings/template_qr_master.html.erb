@@ -6,7 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <style>
     @media print {
-      @page { margin: 0; }
+      @page { 
+        size: 5cm 3cm;
+        margin: 0; }
       body { margin: 0.5cm; }
     }
   </style>
@@ -15,10 +17,10 @@
     <table style="width: 100%; text-align: center;" >
         <tbody>
           <tr>
-            <td><img src="<%= generate_qr(params[:guest_id]) %>" class: "qr-code" style="width:50%;"></td>
+            <td><img src="<%= generate_qr(params[:guest_id]) %>" class: "qr-code" style="margin-top:-13px;width:60%;"></td>
           </tr>
           <tr>
-            <td><p style="font-size:8px; margin-top:-5px;"><%= params[:guest_id] %></p></td>
+          <td><p style="font-size:8px; margin-top:-13px;"><%= params[:guest_id] %></p></td>
           </tr>
         </tbody>
       </table>

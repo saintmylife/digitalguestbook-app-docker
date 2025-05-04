@@ -22,6 +22,8 @@
 // require_tree dihapus karena crash
 // = require html5-qrcode.min
 // = require jquery.longpress
+// = require html5shiv.min
+// = require respond.min
 
 $(function() {
     $('#date-picker').datetimepicker({

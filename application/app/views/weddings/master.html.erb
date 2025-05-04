@@ -5,55 +5,57 @@
     <h3 class="panel-title">Master Data</h3><br>
   </div>
 
-  <div class="panel-body" >
-    <h4><div class="alert alert-info">Data Wedding yang sedang aktif : <b><u><%= active_wedding_name %></u></b></div></h4>
+  <div class="panel-body">
+    <h4>
+      <div class="alert alert-info">Data Wedding yang sedang aktif : <b><u><%= active_wedding_name %></u></b></div>
+    </h4>
     <hr>
     <div class="row">
       <%= form_tag master_weddings_path, :method => 'GET' do %>
-      <div class="col-sm-5">
-      <%= text_field_tag :search ,params[:search], class: "form-control form-control-sm", placeholder: "Search" %>
-      <%# <input id="page" name="page" type="hidden" value="Weddings"> %>
-      </div>
-      <%= submit_tag "Search", :name => nil, class:'btn btn-success col-sm-0' %>
-      <%= submit_tag "Reset", :name => "reset_button", class:'btn btn-danger col-sm-0' %>
-      <%= link_to "Back", masterdata_weddings_path, class:'btn btn-primary waves-effect' %>
+        <div class="col-sm-5">
+          <%= text_field_tag :search, params[:search], class: "form-control form-control-sm", placeholder: "Search" %>
+          <%# <input id="page" name="page" type="hidden" value="Weddings"> %>
+        </div>
+        <%= submit_tag "Search", :name => nil, class: 'btn btn-success col-sm-0' %>
+        <%= submit_tag "Reset", :name => "reset_button", class: 'btn btn-danger col-sm-0' %>
+        <%= link_to "Back", masterdata_weddings_path, class: 'btn btn-primary waves-effect' %>
       <% end %>
     </div>
 
     <table class="table table-hovered table-bordered margin10">
       <thead>
-        <tr>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "guest_id", "ID" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "nama", "Nama"%></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "alamat", "Alamat" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "kategori", "Kategori" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "nama_meja", "Nama Meja" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "status", "Status" %></th>
-          <th style="text-align:center;vertical-align:middle;">Jumlah Undangan</th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "presence", "Status Kehadiran" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "time_of_entry", "Waktu Kehadiran" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "souvenir", "Status Souvenir" %></th>
-          <th style="text-align:center;vertical-align:middle;"><%= sortable "time_of_get_souvenir", "Waktu Tukar Souvenir"%></th>
-          <th style="text-align:center;vertical-align:middle;">Print QR</th>
-          <th colspan="3" style="text-align:center;vertical-align:middle;">Action</th>
-        </tr>
+      <tr>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "guest_id", "ID" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "nama", "Nama" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "alamat", [24, 25, 26, 70].include?(@event.id) ? "Keterangan" : "Alamat" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "kategori", "Kategori" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= @event.id == 72 ? "Keterangan" : (sortable "nama_meja", "Nama Meja") %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "status", "Status" %></th>
+        <th style="text-align:center;vertical-align:middle;">Jumlah Undangan</th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "presence", "Status Kehadiran" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "time_of_entry", "Waktu Kehadiran" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "souvenir", "Status Souvenir" %></th>
+        <th style="text-align:center;vertical-align:middle;"><%= sortable "time_of_get_souvenir", "Waktu Tukar Souvenir" %></th>
+        <th style="text-align:center;vertical-align:middle;">Print QR</th>
+        <th colspan="3" style="text-align:center;vertical-align:middle;">Action</th>
+      </tr>
       </thead>
       <tbody id='list_wedding'>
-        <%= render 'list_wedding' %>
+      <%= render 'list_wedding' %>
       </tbody>
     </table>
     <div class="pull-right">
-          <%= paginate @weddings %>
+      <%= paginate @weddings %>
     </div>
 
   </div>
 </div>
 
 <script>
-    $(document).ready(function(){
-      const input = $("#search");
-      let len = input.val().length;
-      input[0].focus();
-      input[0].setSelectionRange(len, len);
+    $(document).ready(function () {
+        const input = $("#search");
+        let len = input.val().length;
+        input[0].focus();
+        input[0].setSelectionRange(len, len);
     });
 </script>

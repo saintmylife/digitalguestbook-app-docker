@@ -34,19 +34,20 @@ end
 
   def master
     @page = params[:page]
+    @event = Event.where(status: true)
+                  .where(type_of_event_id: 1)
+                  .first
+
     if params[:search].present? || params[:direction] == nil
-      @weddings = Guest.joins(event: :type_of_event)
-                      .where("type_of_events.name ilike  '%Wedding%'")
-                      .where("events.status = TRUE")
-                      .search_live(params[:search])
-                      .order(guest_id: :asc)
-                      .page(@page).per(50)
+      @weddings = Guest.where(event_id: @event.id)
+                       .search_live(params[:search])
+                       .order(guest_id: :asc)
+                       .page(@page).per(50)
     else
-      @weddings = Guest.joins(event: :type_of_event).where("type_of_events.name ilike  '%Wedding%'")
-                      .where("events.status = TRUE")
-                      .order(sort_column + " " + sort_direction)
-                      .page(@page).per(50)
-                    end
+      @weddings = Guest.where(event_id: @event.id)
+                       .order(sort_column + " " + sort_direction)
+                       .page(@page).per(50)
+    end
     if params[:reset_button]
       redirect_to master_weddings_path
     end
@@ -57,27 +58,27 @@ end
   end
 
   def masterdata
+    @event = Event.where(status: true)
+                  .where(type_of_event_id: 1)
+                  .first
+
     if params[:search].present?
       data = JSON.parse(params[:search])["data_search"]
       if data["data"] == "all"
-        @weddings = Guest.joins(event: :type_of_event).where("type_of_events.name ilike  '%Wedding%'")
-                      .where("events.status = TRUE")
-                      .order(guest_id: :asc)
-                      .page(params[:page]).per(50)
+        @weddings = Guest.where(event_id: @event.id)
+                         .order(guest_id: :asc)
+                         .page(params[:page]).per(50)
       else
-        @weddings = search(data["name"],data["alamat"],data["kategori"])
+        @weddings = search(data["name"], data["alamat"], data["kategori"])
       end
       respond_to do |f|
         f.js
       end
     else
       @page = params[:page]
-
-
-      @weddings = Guest.joins(event: :type_of_event).where("type_of_events.name ilike  '%Wedding%'")
-                      .where("events.status = TRUE")
-                      .order(guest_id: :asc)
-                      .page(@page).per(50)
+      @weddings = Guest.where(event_id: @event.id)
+                       .order(guest_id: :asc)
+                       .page(@page).per(50)
 
       respond_to do |f|
         f.js
@@ -170,77 +171,111 @@ end
 
   def update_presence_mobile
     @find_guest = Guest.joins(event: :type_of_event)
-                        .where("type_of_events.name ilike '%Wedding%'")
-                        .where("events.status = TRUE")
-                        .where(guest_id: params[:guest_code])
+                       .where("type_of_events.name ilike '%Wedding%'")
+                       .where("events.status = TRUE")
+                       .where(guest_id: params[:guest_code])
+                       .first
+
     @settingan = Setting.select('id,nama_meja AS table, nama_angpao AS gift').last
-    # logger.debug @settingan.gift
-    if @find_guest.present? && @find_guest.first.presence != true
-      setting = Setting.where(id:@find_guest.first.event_id)
-      # @settingan = Setting.pluck('nama_meja AS table, nama_angpao AS gift').last
-      @print = {}
-      ScanWorker.perform_async(params[:guest_code],params[:name])
-      respond_to do |format|
-        format.json { render json:{
-          message: "Selamat Datang", #data yang mau ditampilkan di app
-          guest_id: @find_guest[0].guest_id,
-          # guest_id: "#{@find_guest[0].nama} \n \n#{@find_guest[0].kategori} #{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-          # guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori} #{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-          # guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].custom_one_text ? @find_guest[0].custom_one_text : ''}",
-          nama: @find_guest[0].nama,
-          alamat: @find_guest[0].alamat,
-          jumlah_undangan: @find_guest[0].jumlah_undangan,
-          other1: @find_guest[0].nama_meja,
-          other2: @find_guest[0].kategori,
-          other3: "#{@find_guest[0].jumlah_undangan} Person",
-          kategori: @find_guest[0].kategori,
-          rsvp: @find_guest[0].custom_two_text,
-          guest_status: @find_guest[0].status,
-          hasil: true, # ini buat logo
-          setting: @settingan
-        },status:200
-      }
+
+    data = {
+      "message"  => "ID Tidak Terdaftar",
+      "guest_id" => "",
+      "nama"     => "ID Tidak Terdaftar",
+      "alamat"   => "",
+      "other1"   => "",
+      "other2"   => "",
+      "other3"   => "",
+      "kategori" => "",
+      "rsvp"     => 0,
+      "hasil"    => false
+    }
+
+    if @find_guest.present?
+      data["message"] = "Already"
+      if @find_guest.presence == false
+        ScanWorker.perform_async(@find_guest.id, "Weddings")
+        data["message"] = "Selamat Datang"
+        data["hasil"]   = true
       end
-    else
-      if @find_guest.first.presence == true
-        respond_to do |format|
-          format.json { render json:{
-            message: "Already", #data yang mau ditampilkan di app
-            guest_id: @find_guest[0].guest_id,
-            #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori}#{@find_guest[0].nama_meja ? ', '+@find_guest[0].nama_meja : ''}",
-            #  guest_id: "#{@find_guest[0].nama} \n \n#{@find_guest[0].kategori}#{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-            #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].kategori}#{@find_guest[0].status ? ', '+@find_guest[0].status : ''}",
-             #  guest_id: "#{@find_guest[0].guest_id} \n \n#{@find_guest[0].custom_one_text ? @find_guest[0].custom_one_text : ''}",
-             nama: @find_guest[0].nama,
-             alamat: @find_guest[0].kategori,
-             jumlah_undangan: @find_guest[0].jumlah_undangan,
-             other1: @find_guest[0].nama_meja,
-             other2: @find_guest[0].kategori,
-             other3: "",
-             kategori: @find_guest[0].kategori,
-             rsvp: @find_guest[0].custom_two_text,
-             hasil: false, # ini buat logo
-             setting: @settingan
-          },status:200
-        }
+
+      data["guest_id"]        = @find_guest.guest_id
+      data["nama"]            = @find_guest.nama
+      data["alamat"]          = @find_guest.alamat
+      data["jumlah_undangan"] = @find_guest.jumlah_undangan
+      data["other1"]          = @find_guest.nama_meja
+      data["kategori"]        = @find_guest.kategori
+      data["rsvp"]            = @find_guest.custom_two_text
+      data["guest_status"]    = @find_guest.status
+      data["setting"]         = @settingan
+
+      data["guest_id"] = @find_guest.guest_id
+
+      case @find_guest.event_id
+      when 22 # Gamas & Viona
+        data["guest_id"] << "\nAlamat #{@find_guest.alamat}"
+      when 23 # Stephen & Natasya
+        data["guest_id"] << "\nAlamat #{@find_guest.alamat}"
+        data["guest_id"] << "\nNama Meja #{@find_guest.nama_meja}"
+        data["guest_id"] << "\n#{@find_guest.custom_two_text}"
+      when 24 # Inalum Golf
+        data["guest_id"] << "\n#{@find_guest.alamat}"
+        data["guest_id"] << "\nGolf: #{@find_guest.custom_three_text}"
+      when 25 # Inalum Aluminium Talk
+        data["guest_id"] << "\n#{@find_guest.alamat}"
+        data["guest_id"] << "\nAluminum Talk: #{@find_guest.nama_meja}"
+      when 26 # Inalum Gala Dinner
+        data["guest_id"] << "\n#{@find_guest.alamat}"
+        data["guest_id"] << "\nGala Dinner: #{@find_guest.nama_meja}"
+      when 27 # Alfian & Chita
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nStatus: #{@find_guest.status}\nKategori: #{@find_guest.kategori}"
+      when 28 # Ninda & Redam
+        data["guest_id"] << "\nKeterangan: #{@find_guest.alamat}\nStatus: #{@find_guest.status}\nKategori: #{@find_guest.kategori}"
+      when 29 # Christian & Imelda
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}"
+        data["guest_id"] << "\nNama Meja: #{@find_guest.nama_meja}"
+      when 30 # NSS
+        data["guest_id"] << "\nKeterangan: #{@find_guest.alamat}\nKategori: #{@find_guest.kategori}"
+      when 31 # Goza
+        data["guest_id"] << "Pax: #{@find_guest.jumlah_undangan}\nMeja: #{@find_guest.nama_meja}"
+      when 32 # Della & Nandar
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nStatus: #{@find_guest.status}\nKategori: #{@find_guest.kategori}"
+      when 65 # Nestle 18 Dec
+        data["guest_id"] = ""
+        data["nama"] = "Selamat Datang di\nNESTLE GOLDEN DAIRY AWARD 2024"
+        data["nama"] << "\n\n#{@find_guest.nama}\n"
+        data["nama"] << "Departemen: #{@find_guest.alamat}\nNo.Karyawan: #{@find_guest.kota}\nNama Meja: #{@find_guest.nama_meja}"
+      when 66 # Nestle 19 Dec
+        data["guest_id"] = ""
+        data["nama"] = "Selamat Datang di\nNESTLE GOLDEN DAIRY AWARD 2024"
+        data["nama"] << "\n\n#{@find_guest.nama}\n"
+        data["nama"] << "Departemen: #{@find_guest.alamat}\nNama Meja: #{@find_guest.nama_meja}"
+      when 67 # Thomas & Bella
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nKategori: #{@find_guest.kategori}"
+      when 68 # Rifqy & Rica
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nNama Meja: #{@find_guest.nama_meja}"
+      when 69 # William & Claudia
+        data["guest_id"] << "\nNama Meja: #{@find_guest.nama_meja}"
+        data["guest_id"] << "\nKategori: #{@find_guest.kategori}"
+        if @find_guest.status == 'VIP'
+          data["guest_id"] << "\nVIP"
         end
-      else  
-        respond_to do |format|
-          format.json { render json:{
-            message: "ID Tidak Terdaftar", #data yang mau ditampilkan di app
-            guest_id: "",
-            nama: "ID Tidak Terdaftar",
-            alamat: "",
-            other1: "",
-            other2: "",
-            other3: "",
-            kategori: "",
-            rsvp: 0,
-            hasil: false, # ini buat logo
-          },status:200
-        }
-        end 
+      when 70 # Prudential
+        data["guest_id"] << "\n#{@find_guest.alamat}\n#{@find_guest.kota}\n#{@find_guest.kategori}"
+      when 71 # Nabilah Huda
+        data["guest_id"] << "\n#{@find_guest.alamat}\nKategori: #{@find_guest.kategori}\n#{@find_guest.status}"
+      when 72 # RSI
+        data["guest_id"] << "\n#{@find_guest.custom_three_text}\n#{@find_guest.status}"
+      when 73 # HwaInd - Stellar Soire
+        data["guest_id"] << "\nKeterangan: #{@find_guest.alamat}"
+      else
+        # Noop
       end
+
+    end
+
+    respond_to do |format|
+      format.json { render json: data, status: 200 }
     end
   end
 
@@ -251,66 +286,106 @@ end
 
   def update_souvenir_mobile
     @find_guest = Guest.joins(event: :type_of_event)
-                        .where("type_of_events.name ilike 'Wedding%'")
-                        .where("events.status = TRUE")
-                        .where(guest_id: params[:souvenir])
-    # params[:name] = 'Weddings'      
-    if @find_guest.present? && @find_guest.first.souvenir != TRUE
-      @souvenir = 'Sukses'
-      # SouvenirWorker.perform_async(params[:souvenir],params[:name])
-      SouvenirWorker.perform_async(params[:souvenir], "Weddings")
-    elsif @find_guest.present? && @find_guest.first.souvenir == TRUE
-      @souvenir = 'Sudah'
-    # elsif @find_guest.blank?
-    else
-      @souvenir = 'Gagal'
-    end
-    #filter
-    respond_to do |format|
-      case @souvenir
-      when 'Sukses'
-        format.json { render json:{
-          message: "Terimakasih", #data yang mau ditampilkan di app
-          guest_id: "#{@find_guest[0].guest_id},#{@find_guest[0].kategori}\n\n #{@find_guest[0].status}",
-          nama: @find_guest[0].nama,
-          alamat: @find_guest[0].alamat,
-          other1: "",
-          other2: "Table #{@find_guest[0].nama_meja}",
-          other3: "#{@find_guest[0].jumlah_undangan} Person",
-          jumlah_undangan: @find_guest[0].jumlah_undangan,
-          kategori: @find_guest[0].kategori,
-          hasil: true, # ini buat logo
-        },status:200
-        }
-      when 'Sudah'
-        format.json { render json:{
-          message: "Already", #data yang mau ditampilkan di app
-          guest_id: "#{@find_guest[0].guest_id},#{@find_guest[0].kategori}\n\n #{@find_guest[0].status}",
-          nama: @find_guest[0].nama,
-          alamat: @find_guest[0].alamat,
-          other1: @find_guest[0].custom_one_text,
-          other2: @find_guest[0].nama_meja,
-          other3: @find_guest[0].jumlah_undangan,
-          jumlah_undangan: @find_guest[0].jumlah_undangan,
-          kategori: @find_guest[0].kategori,
-          hasil: false, # ini buat logo
-        },status:200
-      }
-      else
-        format.json { render json:{
-          message: "ID Tidak Terdaftar", #data yang mau ditampilkan di app
-          guest_id: "",
-          nama: "ID Tidak Terdaftar",
-          alamat: "",
-          other1: "",
-          other2: "",
-          other3: "",
-          jumlah_undangan: "",
-          kategori: "",
-          hasil: false, # ini buat logo
-        },status:200
-      }
+                       .where("type_of_events.name ilike 'Wedding%'")
+                       .where("events.status = TRUE")
+                       .where(guest_id: params[:souvenir])
+                       .first
+
+    data = {
+      "message"         => "ID Tidak Terdaftar",
+      "guest_id"        => "",
+      "nama"            => "ID Tidak Terdaftar",
+      "alamat"          => "",
+      "other1"          => "",
+      "other2"          => "",
+      "other3"          => "",
+      "jumlah_undangan" => "",
+      "kategori"        => "",
+      "hasil"           => false,
+    }
+
+    if @find_guest.present?
+      data["message"] = "Already"
+      if @find_guest.souvenir == false
+        SouvenirWorker.perform_async(@find_guest.id, "Weddings")
+        data["message"] = "Terimakasih"
+        data["hasil"]   = true
       end
+
+      data["nama"]            = @find_guest.nama
+      data["alamat"]          = @find_guest.alamat
+      data["other1"]          = @find_guest.custom_one_text
+      data["other2"]          = @find_guest.nama_meja
+      data["other3"]          = @find_guest.jumlah_undangan
+      data["jumlah_undangan"] = @find_guest.jumlah_undangan
+      data["kategori"]        = @find_guest.kategori
+
+      data["guest_id"] = @find_guest.guest_id
+
+      case @find_guest.event_id
+      when 22 # Gamas & Viona
+        data["guest_id"] << "\nAlamat #{@find_guest.alamat}"
+      when 23 # Stephen & Natasya
+        data["guest_id"] << "\nAlamat #{@find_guest.alamat}"
+        data["guest_id"] << "\nNama Meja #{@find_guest.nama_meja}"
+        data["guest_id"] << "\n#{@find_guest.custom_two_text}"
+      when 24 # Inalum Golf
+        data["guest_id"] << "\n#{@find_guest.alamat}"
+        data["guest_id"] << "\nGolf: #{@find_guest.custom_three_text}"
+      when 25 # Inalum Aluminium Talk
+        data["guest_id"] << "\n#{@find_guest.alamat}"
+        data["guest_id"] << "\nAluminum Talk: #{@find_guest.nama_meja}"
+      when 26 # Inalum Gala Dinner
+        data["guest_id"] << "\n#{@find_guest.alamat}"
+        data["guest_id"] << "\nGala Dinner: #{@find_guest.nama_meja}"
+      when 27 # Alfian & Chita
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nStatus: #{@find_guest.status}\nKategori: #{@find_guest.kategori}"
+      when 28 # Ninda & Redam
+        data["guest_id"] << "\nKeterangan: #{@find_guest.alamat}\nStatus: #{@find_guest.status}\nKategori: #{@find_guest.kategori}"
+      when 29 # Christian & Imelda
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}"
+        data["guest_id"] << "\nNama Meja: #{@find_guest.nama_meja}"
+      when 30 # NSS
+        data["guest_id"] << "\nKeterangan: #{@find_guest.alamat}\nKategori: #{@find_guest.kategori}"
+      when 31 # Goza
+        data["guest_id"] << "Pax: #{@find_guest.jumlah_undangan}\nMeja: #{@find_guest.nama_meja}"
+      when 32 # Della & Nandar
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nStatus: #{@find_guest.status}\nKategori: #{@find_guest.kategori}"
+      when 65 # Nestle 18 Dec
+        data["guest_id"] = ""
+        data["nama"] = "Selamat Datang di\nNESTLE GOLDEN DAIRY AWARD 2024"
+        data["nama"] << "\n\n#{@find_guest.nama}\n"
+        data["nama"] << "Departemen: #{@find_guest.alamat}\nNo.Karyawan: #{@find_guest.kota}\nNama Meja: #{@find_guest.nama_meja}"
+      when 66 # Nestle 19 Dec
+        data["guest_id"] = ""
+        data["nama"] = "Selamat Datang di\nNESTLE GOLDEN DAIRY AWARD 2024"
+        data["nama"] << "\n\n#{@find_guest.nama}\n"
+        data["nama"] << "Departemen: #{@find_guest.alamat}\nNama Meja: #{@find_guest.nama_meja}"
+      when 67 # Thomas & Bella
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nKategori: #{@find_guest.kategori}"
+      when 68 # Rifqy & Rica
+        data["guest_id"] << "\nAlamat: #{@find_guest.alamat}\nNama Meja: #{@find_guest.nama_meja}"
+      when 69
+        data["guest_id"] << "\nNama Meja: #{@find_guest.nama_meja}"
+        data["guest_id"] << "\nKategori: #{@find_guest.kategori}"
+        if @find_guest.status == 'VIP'
+          data["guest_id"] << "\nVIP"
+        end
+      when 70 #Prudential
+        data["guest_id"] << "\n#{@find_guest.alamat}\n#{@find_guest.kota}\n#{@find_guest.kategori}"
+      when 71 #Nabilah & Huda
+        data["guest_id"] << "\n#{@find_guest.alamat}\nKategori: #{@find_guest.kategori}\n#{@find_guest.status}"
+      when 72 # RSI
+        data["guest_id"] << "\n#{@find_guest.custom_three_text}\n#{@find_guest.status}"
+      when 73 # HwaInd - Stellar Soire
+        data["guest_id"] << "\nKeterangan: #{@find_guest.alamat}"
+      else
+        # Noop
+      end
+    end
+
+    respond_to do |format|
+      format.json { render json: data, status: 200 }
     end
   end
 #end for mobile
@@ -323,7 +398,7 @@ end
       setting = Setting.where(id:@find_guest.first.event_id)
       @settingan = Setting.last
       @print = {}
-      ScanWorker.perform_async(params[:guest_code],params[:name])
+      ScanWorker.perform_async(@find_guest.first.id,params[:name])
         respond_to do |format|
           format.js { render 'weddings/update_presence' }
         end
@@ -426,7 +501,7 @@ end
                        .where(guest_id: params[:souvenir])
     if @find_guest.present? && @find_guest.first.souvenir != TRUE
       @souvenir = 'Sukses'
-      SouvenirWorker.perform_async(params[:souvenir],params[:name])
+      SouvenirWorker.perform_async(@find_guest.first.id,params[:name])
     elsif @find_guest.present? && @find_guest.first.souvenir == TRUE
       @souvenir = 'Sudah'
     elsif @find_guest.blank?
@@ -458,9 +533,10 @@ end
     @vendor_sudah_hadir = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori='VENDOR'").where("guests.kategori != 'SYSTEM'").count
     @vendor_belum_hadir = Guest.joins(:event).where("events.status=true").where("guests.presence=false").where("guests.kategori='VENDOR'").where("guests.kategori != 'SYSTEM'").count
     @jumlah_souvenir = Guest.joins(:event).where("events.status=true").where("guests.souvenir=true").where("guests.kategori != 'VENDOR'").where("guests.kategori != 'SYSTEM'").count
+    @souvenir_total = Guest.joins(:event).where("events.status=true").where("guests.souvenir=true").where("guests.kategori != 'VENDOR'").where("guests.kategori != 'SYSTEM'").sum("CAST(guests.jumlah_souvenir as INTEGER)")
 
     # Buat Hitung Jumlah P/W
-    @isEnabled = true
+    @isEnabled = false
     @guestCountWoman = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori != 'SYSTEM'").where("guests.custom_one_text = 'W'").count
     @personCountWoman = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori != 'SYSTEM'").where("guests.custom_one_text = 'W'").sum("guests.jumlah_undangan")
     @guestCountOthers = Guest.joins(:event).where("events.status=true").where("guests.presence=true").where("guests.kategori = 'Tambahan'").count
@@ -479,6 +555,13 @@ end
       .where("events.status=true")
       .where("guests.kategori!='SYSTEM'")
       .order(kategori: :asc)
+
+      @total_guest_tambahan = Guest.joins(:event).where("events.status=true").where("guests.kategori = 'Tambahan'").count
+      @guestSudahHadirPercentage = @guest_sudah_hadir.to_f / @total_guest * 100
+      @guestBelumHadirPercentage = @guest_belum_hadir.to_f / @total_guest * 100
+      @jumlahSouvenirPercentage = @jumlah_souvenir.to_f / @total_guest * 100
+
+      render layout: 'dashboard'
 
       respond_to do |format|
         format.html
@@ -658,7 +741,7 @@ end
   private
 
   def guest_params
-    params.require(:guest).permit(:guest_id, :nama, :event_id, :alamat, :kategori, :nama_meja, :jumlah_undangan, :custom_one_text, :custom_two_text, :nomor_ponsel)
+    params.require(:guest).permit(:guest_id, :nama, :event_id, :alamat, :kategori, :nama_meja, :jumlah_undangan, :nomor_ponsel, :souvenir_text, :custom_one_text, :custom_two_text, :custom_three_text, :custom_four_text, :custom_five_text)
   end
 
   def sort_column

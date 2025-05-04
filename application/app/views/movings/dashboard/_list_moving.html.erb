@@ -1,0 +1,17 @@
+<% @guest_count_category.each do |category, count| %>
+  <tr>
+    <td><%= category %></td>
+    <td><%= count %></td>
+    <% if @guest_count_category_map[category].nil? %>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    <% else %>
+      <td><%= @guest_count_category_map[category]["presence_time"] ? @guest_count_category_map[category]["presence_time"] : 0 %></td>
+      <td><%= @guest_count_category_map[category]["presence_2_time"] ? @guest_count_category_map[category]["presence_2_time"] : 0 %></td>
+      <td><%= @guest_count_category_map[category]["presence_3_time"] ? @guest_count_category_map[category]["presence_3_time"] : 0 %></td>
+      <td><%= @guest_count_category_map[category]["presence_4_time"] ? @guest_count_category_map[category]["presence_4_time"] : 0 %></td>
+    <% end %>
+  </tr>
+<% end %>

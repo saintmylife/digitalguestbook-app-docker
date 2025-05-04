@@ -251,6 +251,7 @@ Rails.application.routes.draw do
        get :souvenir8
        get :souvenir9
        get :souvenir10
+       patch :reset_presence_souvenir
      }
    end
 
