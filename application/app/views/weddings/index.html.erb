@@ -1,95 +1,94 @@
-<section class="scanning" style="padding:0 !important;margin:0 !important">
-  <div class="input-qr col-sm-12">
+<style>
+    #notice {
+        width: 100%;
+        height: calc(100% - 100px);
+        display: flex;
+        color: black;
+        font-weight: bold;
+    }
+    #notice>div{
+        align-content: center;
+    }
+</style>
+
+<section class="scanning" style="padding:0 !important;margin:0 !important;overflow: hidden">
+  <div class="input-qr col-sm-12" style="margin-bottom: 0">
     <%= form_tag print_qr_weddings_path, method: "GET" do %>
-    <%#text_field_tag "guest_qr",nil, class:"form-control", autofocus:"true" %>
+      <%#text_field_tag "guest_qr",nil, class:"form-control", autofocus:"true" %>
       <%#= collection_select(:guest_qr, :id, Guest.joins(event: :type_of_event).where("type_of_events.name ilike '%Wedding%'").where("events.status = TRUE"), :guest_id, :nama, {:prompt => ''}) %>
       <select id="guest_qr_id">
       </select>
     <% end %>
   </div>
-  <div>
-    <div class="active-wedding">
-        <%# <h4><span class="bg-black">25th WEDDING ANNIVERSARY OF</span></h4> %>
-            <span class="active-wedding-name">
-              <%= @settingwedd.custom_one_text.present? ? @settingwedd.custom_one_text : active_wedding_name %>
-              </span><br>
-              <% if @settingwedd.custom_two_text !=nil %>
-              <span class="active-wedding-name">
-                <%= @settingwedd.custom_two_text %>
-                </span>
-              <% end %>
-        </div>
-        <br>
-        <div id="notice"></div>
-      </div>
-      <div class="input-guest col-sm-12">
-        <%= form_tag update_presence_weddings_path, method: "GET", id: 'form_scanning', remote: true do %>
-        <%= text_field_tag "guest_code",nil, class:"form-control", autofocus:"true" %>
-        <input id="name" name="name" type="hidden" value="Weddings">
-      <% end %>
-    </div>
-  </section>
-  <script>
+  <div id="notice"></div>
+  <div class="input-guest col-sm-12">
+    <%= form_tag update_presence_weddings_path, method: "GET", id: 'form_scanning', remote: true do %>
+      <%= text_field_tag "guest_code", nil, class: "form-control", autofocus: "true" %>
+      <input id="name" name="name" type="hidden" value="Weddings">
+    <% end %>
+  </div>
+</section>
+<script>
     $("#submit_presence").click(function () {
-      if ($("#guest_code").val() == "" || $("#guest_code").val() == undefined) {
-        alert("Input cannot be null");
-      }
+        if ($("#guest_code").val() == "" || $("#guest_code").val() == undefined) {
+            alert("Input cannot be null");
+        }
     });
     // $("#guest_qr_id").change(function () {
-    $("#guest_qr_id").on('select2:select',function (e) {
-      $.ajax({
-        type: 'GET',
-        url: '/weddings/print_qr',
-        data: {
-          guest_qr: $(this).val()
-        }
-      });
-      $.ajax({
-        type: 'GET',
-        url: '/weddings/update_presence',
-        data: {
-          guest_code: $("#guest_qr_id").val(),
-          name: "Weddings"
-        },
-        success: function () {
-          setTimeout(() => {
-            $('#result').empty();
-            $('#guest_code').focus();
-            $("#guest_qr_id").val('').trigger('change');
-          }, 500);
-        }
-      });
+    $("#guest_qr_id").on('select2:select', function (e) {
+        $.ajax({
+            type: 'GET',
+            url: '/weddings/print_qr',
+            data: {
+                guest_qr: $(this).val()
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: '/weddings/update_presence',
+            data: {
+                guest_code: $("#guest_qr_id").val(),
+                name: "Weddings"
+            },
+            success: function () {
+                setTimeout(() => {
+                    $('#result').empty();
+                    $('#guest_code').focus();
+                    $("#guest_qr_id").val('').trigger('change');
+                }, 500);
+            }
+        });
     });
 
     $(document).ready(function () {
-      $('#guest_qr_id').select2({
-        ajax: {
-          url: '/type_of_events/getalldata',
-          cache: false,
-          dataType: 'JSON',
-          processResults: function (data) {
-            let temp = {};
-            temp = data.data;
-            temp = $.map(temp, function(obj){
-                    obj.id = obj.guest_id;
-                    if(obj.kategori){
-                      obj.text = obj.nama + ', Kategori : ' + obj.kategori;
-                    }else{
-                      obj.text = obj.nama;
-                    }
-                    return obj;
+        $('#guest_qr_id').select2({
+            ajax: {
+                url: '/type_of_events/getalldata',
+                cache: false,
+                dataType: 'JSON',
+                processResults: function (data) {
+                    let temp = {};
+                    temp = data.data;
+                    temp = $.map(temp, function (obj) {
+                        obj.id = obj.guest_id;
+                        if (obj.kategori) {
+                            obj.text = obj.nama + ', Kategori : ' + obj.kategori;
+                        } else {
+                            obj.text = obj.nama;
+                        }
+                        return obj;
                     });
-            return {
-              results: temp
-            };
-          }
-        }
-      });
-      $("#form_scanning").bind("ajax:complete", function (event, xhr, status) {
-        $('#guest_code').val('');
-      });
+                    return {
+                        results: temp
+                    };
+                }
+            }
+        });
+        $("#form_scanning").bind("ajax:complete", function (event, xhr, status) {
+            $('#guest_code').val('');
+        });
     });
-    $(window).on('blur',function(){
-      $('#guest_code')[0].focus();
+    $(window).on('blur', function () {
+        $('#guest_code')[0].focus();
     });
-  </script>
+</script>

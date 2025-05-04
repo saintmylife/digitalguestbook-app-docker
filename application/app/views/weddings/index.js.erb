@@ -1,5 +1,5 @@
 <% if @presence == TRUE %>
-  $("#notice").html("<%= escape_javascript(render 'already') %>")
+  $("#notice").html("<%= escape_javascript(render 'hadir') %>")
 <% elsif @presence == FALSE %>
   $("#notice").html("<%= escape_javascript(render 'tolak') %>")
 <% elsif @souvenir == 'Sukses'  %>

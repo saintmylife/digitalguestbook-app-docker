@@ -58,4 +58,8 @@ elif [ "$1" == "rails" ]; then
     shift
     do_docker_compose exec app bundle exec rails "${@}"
 
+elif [ "$1" == "compose" ]; then
+    shift
+    do_docker_compose "${@}"
+
 fi
